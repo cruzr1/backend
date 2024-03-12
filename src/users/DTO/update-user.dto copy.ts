@@ -2,9 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
   IsDate,
-  IsEmail,
   IsEnum,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   Length,
@@ -13,60 +11,35 @@ import {
   Max,
 } from 'class-validator';
 import { UserValidationParams } from '../user.constant';
-import {
-  Gender,
-  UserRole,
-  Level,
-  TrainType,
-  Duration,
-} from 'src/shared/libs/types';
+import { Gender, Level, TrainType, Duration } from 'src/shared/libs/types';
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @ApiProperty({
     description: 'User first name',
     example: 'Alex',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @Length(
     UserValidationParams.Name.Length.Minimal,
     UserValidationParams.Name.Length.Maximal,
   )
-  public name: string;
-
-  @ApiProperty({
-    description: 'User unique email address',
-    example: 'user@user.com',
-  })
-  @IsNotEmpty()
-  @IsEmail()
-  public email: string;
+  public name?: string;
 
   @ApiProperty({
     description: 'User avatar',
     example: 'avatar.png',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @Matches(UserValidationParams.Image.Regex)
-  public avatar: string;
-
-  @ApiProperty({
-    description: 'User password',
-    example: '123456',
-  })
-  @IsNotEmpty()
-  @Length(
-    UserValidationParams.Password.Length.Minimal,
-    UserValidationParams.Password.Length.Maximal,
-  )
-  public password: string;
+  public avatar?: string;
 
   @ApiProperty({
     description: 'User gender',
     example: 'male',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(Gender)
-  public gender: Gender;
+  public gender?: Gender;
 
   @ApiProperty({
     description: 'User birthday',
@@ -77,89 +50,81 @@ export class CreateUserDto {
   public birthDate?: Date;
 
   @ApiProperty({
-    description: 'User role',
-    example: 'Trainer',
-  })
-  @IsNotEmpty()
-  @IsEnum(UserRole)
-  public role: UserRole;
-
-  @ApiProperty({
     description: 'User info',
     example: 'Lorem ipsum',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @Length(
     UserValidationParams.Description.Length.Minimal,
     UserValidationParams.Description.Length.Maximal,
   )
-  public description: string;
+  public description?: string;
 
   @ApiProperty({
     description: 'User location',
     example: 'Pionerskaya',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(Location)
-  public location: Location;
+  public location?: Location;
 
   @ApiProperty({
     description: 'User background image',
     example: 'background.jpg',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @Matches(UserValidationParams.Image.Regex)
-  public backgroundImage: string;
+  public backgroundImage?: string;
 
   @ApiProperty({
     description: 'User level',
     example: 'newby',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(Level)
-  public level: Level;
+  public level?: Level;
 
   @ApiProperty({
     description: 'User train type',
     example: 'running',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(TrainType)
-  public trainType: TrainType;
+  public trainType?: TrainType;
 
   @ApiProperty({
     description: 'Desirable training duration',
     example: '10-30 мин',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(Duration)
-  public duration: Duration;
+  public duration?: Duration;
 
   @ApiProperty({
     description: 'User calories target',
     example: '3500',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
-  public caloriesTarget: number;
+  public caloriesTarget?: number;
 
   @ApiProperty({
     description: 'User calories daily target',
     example: '1500',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
-  public caloriesDaily: number;
+  public caloriesDaily?: number;
 
   @ApiProperty({
     description: 'User ready/not ready to train',
     example: 'true',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsBoolean()
-  public isReadyTrain: boolean;
+  public isReadyTrain?: boolean;
 }

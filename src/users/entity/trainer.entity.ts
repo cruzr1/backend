@@ -1,4 +1,4 @@
-import { BaseUserEntity } from 'src/users/base-user.entity';
+import { BaseUserEntity } from 'src/users/entity/base-user.entity';
 import { Trainer } from 'src/shared/libs/types';
 
 export class TrainerEntity extends BaseUserEntity implements Trainer {

@@ -5,28 +5,21 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
+  IsString,
   Length,
   Matches,
-  Min,
-  Max,
 } from 'class-validator';
 import { UserValidationParams } from '../user.constant';
-import {
-  Gender,
-  UserRole,
-  Level,
-  TrainType,
-  Duration,
-} from 'src/shared/libs/types';
+import { Gender, UserRole, Level, TrainType } from 'src/shared/libs/types';
 
-export class CreateUserDto {
+export class CreateTrainerDto {
   @ApiProperty({
-    description: 'User first name',
+    description: 'Trainer first name',
     example: 'Alex',
   })
   @IsNotEmpty()
+  @IsString()
   @Length(
     UserValidationParams.Name.Length.Minimal,
     UserValidationParams.Name.Length.Maximal,
@@ -34,7 +27,7 @@ export class CreateUserDto {
   public name: string;
 
   @ApiProperty({
-    description: 'User unique email address',
+    description: 'Trainer unique email address',
     example: 'user@user.com',
   })
   @IsNotEmpty()
@@ -42,7 +35,7 @@ export class CreateUserDto {
   public email: string;
 
   @ApiProperty({
-    description: 'User avatar',
+    description: 'Trainer avatar',
     example: 'avatar.png',
   })
   @IsNotEmpty()
@@ -50,7 +43,7 @@ export class CreateUserDto {
   public avatar: string;
 
   @ApiProperty({
-    description: 'User password',
+    description: 'Trainer password',
     example: '123456',
   })
   @IsNotEmpty()
@@ -58,10 +51,11 @@ export class CreateUserDto {
     UserValidationParams.Password.Length.Minimal,
     UserValidationParams.Password.Length.Maximal,
   )
+  @IsString()
   public password: string;
 
   @ApiProperty({
-    description: 'User gender',
+    description: 'Trainer gender',
     example: 'male',
   })
   @IsNotEmpty()
@@ -69,7 +63,7 @@ export class CreateUserDto {
   public gender: Gender;
 
   @ApiProperty({
-    description: 'User birthday',
+    description: 'Trainer birthday',
     example: '01.01.2001',
   })
   @IsOptional()
@@ -77,7 +71,7 @@ export class CreateUserDto {
   public birthDate?: Date;
 
   @ApiProperty({
-    description: 'User role',
+    description: 'Trainer role',
     example: 'Trainer',
   })
   @IsNotEmpty()
@@ -85,7 +79,7 @@ export class CreateUserDto {
   public role: UserRole;
 
   @ApiProperty({
-    description: 'User info',
+    description: 'Trainer info',
     example: 'Lorem ipsum',
   })
   @IsNotEmpty()
@@ -96,7 +90,7 @@ export class CreateUserDto {
   public description: string;
 
   @ApiProperty({
-    description: 'User location',
+    description: 'Trainer location',
     example: 'Pionerskaya',
   })
   @IsNotEmpty()
@@ -104,7 +98,7 @@ export class CreateUserDto {
   public location: Location;
 
   @ApiProperty({
-    description: 'User background image',
+    description: 'Trainer background image',
     example: 'background.jpg',
   })
   @IsNotEmpty()
@@ -112,7 +106,7 @@ export class CreateUserDto {
   public backgroundImage: string;
 
   @ApiProperty({
-    description: 'User level',
+    description: 'Trainer level',
     example: 'newby',
   })
   @IsNotEmpty()
@@ -120,7 +114,7 @@ export class CreateUserDto {
   public level: Level;
 
   @ApiProperty({
-    description: 'User train type',
+    description: 'Trainer train type',
     example: 'running',
   })
   @IsNotEmpty()
@@ -128,35 +122,26 @@ export class CreateUserDto {
   public trainType: TrainType;
 
   @ApiProperty({
-    description: 'Desirable training duration',
-    example: '10-30 мин',
+    description: 'Trainer certificates',
+    example: 'certificate.pdf',
   })
   @IsNotEmpty()
-  @IsEnum(Duration)
-  public duration: Duration;
+  @Matches(UserValidationParams.Certificates.Regex)
+  public certificates: string;
 
   @ApiProperty({
-    description: 'User calories target',
-    example: '3500',
+    description: 'Trainer achievements',
+    example: 'Lorem ipsum',
   })
   @IsNotEmpty()
-  @IsNumber()
-  @Min(UserValidationParams.Calories.Value.Minimal)
-  @Max(UserValidationParams.Calories.Value.Maximal)
-  public caloriesTarget: number;
+  @Length(
+    UserValidationParams.Description.Length.Minimal,
+    UserValidationParams.Description.Length.Maximal,
+  )
+  public achievements: string;
 
   @ApiProperty({
-    description: 'User calories daily target',
-    example: '1500',
-  })
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(UserValidationParams.Calories.Value.Minimal)
-  @Max(UserValidationParams.Calories.Value.Maximal)
-  public caloriesDaily: number;
-
-  @ApiProperty({
-    description: 'User ready/not ready to train',
+    description: 'Trainer ready/not ready to train',
     example: 'true',
   })
   @IsNotEmpty()

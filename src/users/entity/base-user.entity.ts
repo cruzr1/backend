@@ -1,5 +1,5 @@
 import { genSalt, compare, hash } from 'bcrypt';
-import { SALT_ROUNDS } from './user.constant';
+import { SALT_ROUNDS } from '../user.constant';
 import {
   BaseUser,
   UserRole,
@@ -25,6 +25,7 @@ export class BaseUserEntity implements BaseUser {
   level: Level;
   trainType: TrainType;
   isReadyTrain: boolean;
+  friends: string[];
 
   constructor(data: BaseUser) {
     this.id = data.id;
@@ -42,6 +43,7 @@ export class BaseUserEntity implements BaseUser {
     this.level = data.level;
     this.trainType = data.trainType;
     this.isReadyTrain = data.isReadyTrain;
+    this.friends = [];
   }
 
   public toPOJO(): BaseUser {

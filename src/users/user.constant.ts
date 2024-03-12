@@ -19,6 +19,24 @@ export const UserValidationParams = {
       Maximal: 12,
     },
   },
+  Image: {
+    Regex: RegExp(/(.png$|.jpg$|.jpeg$)/i),
+  },
+  Description: {
+    Length: {
+      Minimal: 10,
+      Maximal: 140,
+    },
+  },
+  Calories: {
+    Value: {
+      Minimal: 1000,
+      Maximal: 5000,
+    },
+  },
+  Certificates: {
+    Regex: RegExp(/.pdf/i),
+  },
 } as const;
 
 export const UserValidationMessage = {
@@ -37,5 +55,8 @@ export const UserValidationMessage = {
     InvalidLength:
       'User password should have a minimal length of 6 letters, maximal length of 12 letters',
     InvalidPassword: 'User password should be a string value',
+  },
+  Avatar: {
+    InvalidFormat: 'User avatar should be jpg or png image file',
   },
 } as const;

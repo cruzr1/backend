@@ -1,18 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsBoolean,
-  IsDate,
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  Length,
-  Matches,
-  Min,
-  Max,
-} from 'class-validator';
-import { UserValidationParams } from '../user.constant';
+import { Expose } from 'class-transformer';
+
 import {
   Gender,
   UserRole,
@@ -21,145 +9,108 @@ import {
   Duration,
 } from 'src/shared/libs/types';
 
-export class CreateUserDto {
+export class UserRdo {
+  @Expose()
   @ApiProperty({
     description: 'User first name',
     example: 'Alex',
   })
-  @IsNotEmpty()
-  @Length(
-    UserValidationParams.Name.Length.Minimal,
-    UserValidationParams.Name.Length.Maximal,
-  )
   public name: string;
 
+  @Expose()
   @ApiProperty({
     description: 'User unique email address',
     example: 'user@user.com',
   })
-  @IsNotEmpty()
-  @IsEmail()
   public email: string;
 
+  @Expose()
   @ApiProperty({
     description: 'User avatar',
     example: 'avatar.png',
   })
-  @IsNotEmpty()
-  @Matches(UserValidationParams.Image.Regex)
   public avatar: string;
 
-  @ApiProperty({
-    description: 'User password',
-    example: '123456',
-  })
-  @IsNotEmpty()
-  @Length(
-    UserValidationParams.Password.Length.Minimal,
-    UserValidationParams.Password.Length.Maximal,
-  )
-  public password: string;
-
+  @Expose()
   @ApiProperty({
     description: 'User gender',
     example: 'male',
   })
-  @IsNotEmpty()
-  @IsEnum(Gender)
   public gender: Gender;
 
+  @Expose()
   @ApiProperty({
     description: 'User birthday',
     example: '01.01.2001',
   })
-  @IsOptional()
-  @IsDate()
-  public birthDate?: Date;
+  public birthDate: Date;
 
+  @Expose()
   @ApiProperty({
     description: 'User role',
     example: 'Trainer',
   })
-  @IsNotEmpty()
-  @IsEnum(UserRole)
   public role: UserRole;
 
+  @Expose()
   @ApiProperty({
     description: 'User info',
     example: 'Lorem ipsum',
   })
-  @IsNotEmpty()
-  @Length(
-    UserValidationParams.Description.Length.Minimal,
-    UserValidationParams.Description.Length.Maximal,
-  )
   public description: string;
 
+  @Expose()
   @ApiProperty({
     description: 'User location',
     example: 'Pionerskaya',
   })
-  @IsNotEmpty()
-  @IsEnum(Location)
   public location: Location;
 
+  @Expose()
   @ApiProperty({
     description: 'User background image',
     example: 'background.jpg',
   })
-  @IsNotEmpty()
-  @Matches(UserValidationParams.Image.Regex)
   public backgroundImage: string;
 
+  @Expose()
   @ApiProperty({
     description: 'User level',
     example: 'newby',
   })
-  @IsNotEmpty()
-  @IsEnum(Level)
   public level: Level;
 
+  @Expose()
   @ApiProperty({
     description: 'User train type',
     example: 'running',
   })
-  @IsNotEmpty()
-  @IsEnum(TrainType)
   public trainType: TrainType;
 
   @ApiProperty({
     description: 'Desirable training duration',
     example: '10-30 мин',
   })
-  @IsNotEmpty()
-  @IsEnum(Duration)
   public duration: Duration;
 
+  @Expose()
   @ApiProperty({
     description: 'User calories target',
     example: '3500',
   })
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(UserValidationParams.Calories.Value.Minimal)
-  @Max(UserValidationParams.Calories.Value.Maximal)
   public caloriesTarget: number;
 
+  @Expose()
   @ApiProperty({
     description: 'User calories daily target',
     example: '1500',
   })
-  @IsNotEmpty()
-  @IsNumber()
-  @Min(UserValidationParams.Calories.Value.Minimal)
-  @Max(UserValidationParams.Calories.Value.Maximal)
   public caloriesDaily: number;
 
+  @Expose()
   @ApiProperty({
     description: 'User ready/not ready to train',
     example: 'true',
   })
-  @IsNotEmpty()
-  @IsBoolean()
   public isReadyTrain: boolean;
 }

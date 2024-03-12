@@ -1,5 +1,7 @@
+import { TrainType } from './train-type.enum';
+
 export interface Account {
   id?: string;
-  trainingId: string;
+  trainType: TrainType;
   trainingsCount: number;
 }

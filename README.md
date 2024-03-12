@@ -9,6 +9,15 @@
 $ npm install
 ```
 
+## Установка образов и запуск контейнеров Docker c базой данных Mongo для бэкенда производится следующей командой:
+
+```
+docker compose \
+--file ./docker-compose.dev.yml \
+--env-file ./.env \
+--project-name "fit-friends" up -d
+```
+
 ## Running the app
 
 ```bash

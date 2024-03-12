@@ -1,7 +1,7 @@
 import { Status } from './status.enum';
 
 export interface Application {
-  id: string;
+  id?: string;
   authorId: string;
   userId: string;
   createdAt: string;

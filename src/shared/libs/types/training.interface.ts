@@ -4,7 +4,7 @@ import { Level } from './level.enum';
 import { TrainType } from './train-type.enum';
 
 export interface Training {
-  id: string;
+  id?: string;
   name: string;
   backgroundImage: string;
   level: Level;

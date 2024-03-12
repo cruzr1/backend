@@ -5,11 +5,11 @@ import { TrainType } from './train-type.enum';
 import { Gender } from './gender.enum';
 
 export interface BaseUser {
-  id: string;
+  id?: string;
   name: string;
   email: string;
   avatar: string;
-  password: string;
+  passwordHash: string;
   gender: Gender;
   birthDate?: Date;
   role: UserRole;

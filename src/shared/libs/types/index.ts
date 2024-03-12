@@ -16,3 +16,6 @@ export { Application } from './application.interface';
 export { Status } from './status.enum';
 export { Notification } from './notification.interface';
 export { Account } from './account.interface';
+export { Entity } from './entity.interface';
+export { Repository } from './repository.interface';
+export { MongoRepository } from './mongo-repository';

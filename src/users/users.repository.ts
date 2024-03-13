@@ -6,7 +6,7 @@ import { MongoRepository, User } from 'src/shared/libs/types';
 import { UserModel } from './user.model';
 
 @Injectable()
-export class UserRepository extends MongoRepository<UserEntity, User> {
+export class UsersRepository extends MongoRepository<UserEntity, User> {
   constructor(@InjectModel(UserModel.name) UserModel: Model<UserModel>) {
     super(UserModel, UserEntity.fromObject);
   }

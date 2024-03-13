@@ -20,6 +20,7 @@ import {
   Level,
   TrainType,
   Duration,
+  Location,
 } from 'src/shared/libs/types';
 
 export class CreateUserDto {
@@ -132,8 +133,8 @@ export class CreateUserDto {
     description: 'Desirable training duration',
     example: '10-30 мин',
   })
-  @IsOptional()
   @ValidateIf((obj) => obj.role === UserRole.User)
+  @IsNotEmpty()
   @IsEnum(Duration)
   public duration: Duration;
 
@@ -141,8 +142,8 @@ export class CreateUserDto {
     description: 'User calories target',
     example: '3500',
   })
-  @IsOptional()
   @ValidateIf((obj) => obj.role === UserRole.User)
+  @IsNotEmpty()
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
@@ -152,8 +153,8 @@ export class CreateUserDto {
     description: 'User calories daily target',
     example: '1500',
   })
-  @IsOptional()
   @ValidateIf((obj) => obj.role === UserRole.User)
+  @IsNotEmpty()
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
@@ -171,8 +172,8 @@ export class CreateUserDto {
     description: 'Trainer certificates',
     example: 'certificate.pdf',
   })
-  @IsOptional()
   @ValidateIf((obj) => obj.role === UserRole.Trainer)
+  @IsNotEmpty()
   @Matches(UserValidationParams.Certificates.Regex)
   public certificates: string;
 
@@ -180,8 +181,8 @@ export class CreateUserDto {
     description: 'Trainer achievements',
     example: 'Lorem ipsum',
   })
-  @IsOptional()
   @ValidateIf((obj) => obj.role === UserRole.Trainer)
+  @IsNotEmpty()
   @Length(
     UserValidationParams.Description.Length.Minimal,
     UserValidationParams.Description.Length.Maximal,

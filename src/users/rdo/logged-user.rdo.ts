@@ -9,7 +9,7 @@ import {
   Location,
 } from 'src/shared/libs/types';
 
-export class UserRdo {
+export class LoggedUserRdo {
   @Expose()
   @ApiProperty({
     description: 'User id',
@@ -134,4 +134,18 @@ export class UserRdo {
     example: 'Lorem ipsum',
   })
   public achievements: boolean;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Access token',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+  })
+  public accessToken: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Refresh token',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
+  })
+  public refreshToken: string;
 }

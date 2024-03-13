@@ -9,11 +9,27 @@ import {
   Matches,
   Min,
   Max,
+  IsNotEmpty,
+  ValidateIf,
 } from 'class-validator';
-import { UserValidationParams } from '../user.constant';
-import { Gender, Level, TrainType, Duration } from 'src/shared/libs/types';
+import { UserValidationParams } from '../users.constant';
+import {
+  Gender,
+  Level,
+  TrainType,
+  Duration,
+  UserRole,
+} from 'src/shared/libs/types';
 
 export class UpdateUserDto {
+  @ApiProperty({
+    description: 'User role',
+    example: 'Trainer',
+  })
+  @IsNotEmpty()
+  @IsEnum(UserRole)
+  public role: UserRole;
+
   @ApiProperty({
     description: 'User first name',
     example: 'Alex',
@@ -97,6 +113,7 @@ export class UpdateUserDto {
     example: '10-30 мин',
   })
   @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.User)
   @IsEnum(Duration)
   public duration?: Duration;
 
@@ -105,6 +122,7 @@ export class UpdateUserDto {
     example: '3500',
   })
   @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.User)
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
@@ -115,6 +133,7 @@ export class UpdateUserDto {
     example: '1500',
   })
   @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.User)
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
@@ -127,4 +146,25 @@ export class UpdateUserDto {
   @IsOptional()
   @IsBoolean()
   public isReadyTrain?: boolean;
+
+  @ApiProperty({
+    description: 'Trainer certificates',
+    example: 'certificate.pdf',
+  })
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.Trainer)
+  @Matches(UserValidationParams.Certificates.Regex)
+  public certificates?: string;
+
+  @ApiProperty({
+    description: 'Trainer achievements',
+    example: 'Lorem ipsum',
+  })
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.Trainer)
+  @Length(
+    UserValidationParams.Description.Length.Minimal,
+    UserValidationParams.Description.Length.Maximal,
+  )
+  public achievements?: string;
 }

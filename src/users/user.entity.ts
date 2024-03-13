@@ -1,15 +1,16 @@
 import { genSalt, compare, hash } from 'bcrypt';
-import { SALT_ROUNDS } from '../user.constant';
+import { SALT_ROUNDS } from './users.constant';
 import {
-  BaseUser,
+  User,
   UserRole,
   Location,
   Level,
   TrainType,
   Gender,
+  Duration,
 } from 'src/shared/libs/types';
 
-export class BaseUserEntity implements BaseUser {
+export class UserEntity implements User {
   id?: string;
   name: string;
   email: string;
@@ -26,8 +27,13 @@ export class BaseUserEntity implements BaseUser {
   trainType: TrainType;
   isReadyTrain: boolean;
   friends: string[];
+  certificates: string;
+  achievements: string;
+  duration: Duration;
+  caloriesTarget: number;
+  caloriesDaily: number;
 
-  constructor(data: BaseUser) {
+  constructor(data: User) {
     this.id = data.id;
     this.name = data.name;
     this.email = data.email;
@@ -44,9 +50,14 @@ export class BaseUserEntity implements BaseUser {
     this.trainType = data.trainType;
     this.isReadyTrain = data.isReadyTrain;
     this.friends = [];
+    this.certificates = data.certificates || '';
+    this.achievements = data.achievements || '';
+    this.duration = data.duration || Duration['10-30 мин'];
+    this.caloriesTarget = data.caloriesTarget || 0;
+    this.caloriesDaily = data.caloriesDaily || 0;
   }
 
-  public toPOJO(): BaseUser {
+  public toPOJO(): User {
     return {
       id: this.id,
       name: this.name,
@@ -63,10 +74,15 @@ export class BaseUserEntity implements BaseUser {
       level: this.level,
       trainType: this.trainType,
       isReadyTrain: this.isReadyTrain,
+      certificates: this.certificates,
+      achievements: this.achievements,
+      duration: this.duration,
+      caloriesTarget: this.caloriesTarget,
+      caloriesDaily: this.caloriesDaily,
     };
   }
 
-  public async setPassword(password: string): Promise<BaseUserEntity> {
+  public async setPassword(password: string): Promise<UserEntity> {
     const salt = await genSalt(SALT_ROUNDS);
     this.passwordHash = await hash(password, salt);
     return this;
@@ -76,7 +92,7 @@ export class BaseUserEntity implements BaseUser {
     return compare(password, this.passwordHash);
   }
 
-  static fromObject(data: BaseUser): BaseUserEntity {
-    return new BaseUserEntity(data);
+  static fromObject(data: User): UserEntity {
+    return new UserEntity(data);
   }
 }

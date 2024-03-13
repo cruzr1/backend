@@ -11,8 +11,9 @@ import {
   Matches,
   Min,
   Max,
+  ValidateIf,
 } from 'class-validator';
-import { UserValidationParams } from '../user.constant';
+import { UserValidationParams } from '../users.constant';
 import {
   Gender,
   UserRole,
@@ -131,7 +132,8 @@ export class CreateUserDto {
     description: 'Desirable training duration',
     example: '10-30 мин',
   })
-  @IsNotEmpty()
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.User)
   @IsEnum(Duration)
   public duration: Duration;
 
@@ -139,7 +141,8 @@ export class CreateUserDto {
     description: 'User calories target',
     example: '3500',
   })
-  @IsNotEmpty()
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.User)
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
@@ -149,7 +152,8 @@ export class CreateUserDto {
     description: 'User calories daily target',
     example: '1500',
   })
-  @IsNotEmpty()
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.User)
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
@@ -162,4 +166,25 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsBoolean()
   public isReadyTrain: boolean;
+
+  @ApiProperty({
+    description: 'Trainer certificates',
+    example: 'certificate.pdf',
+  })
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.Trainer)
+  @Matches(UserValidationParams.Certificates.Regex)
+  public certificates: string;
+
+  @ApiProperty({
+    description: 'Trainer achievements',
+    example: 'Lorem ipsum',
+  })
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.Trainer)
+  @Length(
+    UserValidationParams.Description.Length.Minimal,
+    UserValidationParams.Description.Length.Maximal,
+  )
+  public achievements: string;
 }

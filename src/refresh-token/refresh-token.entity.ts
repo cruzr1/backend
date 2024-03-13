@@ -4,7 +4,7 @@ export class RefreshTokenEntity implements TokenDescription {
   public id?: string;
   public tokenId: string;
   public createdAt: Date;
-  public userId: string;
+  public userId?: string;
   public expiresIn: Date;
 
   constructor(refreshToken: TokenDescription) {

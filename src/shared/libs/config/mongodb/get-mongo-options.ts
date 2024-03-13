@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { MongooseModuleAsyncOptions } from '@nestjs/mongoose';
-import { getMongoConnectionString} from '@guitar-shop/helpers';
+import { getMongoConnectionString } from 'src/shared/libs/utils/helpers';
 
 export function getMongoOptions(): MongooseModuleAsyncOptions {
   return {
@@ -13,9 +13,9 @@ export function getMongoOptions(): MongooseModuleAsyncOptions {
           port: config.get<string>('db.port'),
           authDatabase: config.get<string>('db.authBase'),
           databaseName: config.get<string>('db.name'),
-        })
-      }
+        }),
+      };
     },
-    inject: [ConfigService]
-  }
+    inject: [ConfigService],
+  };
 }

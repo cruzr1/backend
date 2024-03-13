@@ -1,6 +1,6 @@
 import { ENVIRONMENTS, Environment } from 'src/shared/libs/types';
 import { registerAs } from '@nestjs/config';
-import Joi from 'joi';
+import * as Joi from 'joi';
 
 const DEFAULT_BACKEND_PORT = 3000;
 

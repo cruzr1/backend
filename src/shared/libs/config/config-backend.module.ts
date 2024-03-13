@@ -4,7 +4,7 @@ import applicationConfig from './application/application.config';
 import mongoConfig from './mongodb/mongodb.config';
 import jwtConfig from './jwt/jwt.config';
 
-const ENV_BACKEND_FILE_PATH = './.env';
+const ENV_BACKEND_FILE_PATH = '.backend.env';
 
 @Module({
   imports: [

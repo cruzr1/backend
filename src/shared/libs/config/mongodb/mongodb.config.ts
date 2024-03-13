@@ -4,12 +4,12 @@ import * as Joi from 'joi';
 const DEFAULT_MONGO_PORT = 27017;
 
 export interface MongoConfig {
-  host: string;
-  name: string;
-  port: number;
-  user: string;
-  password: string;
-  authBase: string;
+  host?: string;
+  name?: string;
+  port?: number;
+  user?: string;
+  password?: string;
+  authBase?: string;
 }
 
 const dbValidationSchema = Joi.object({
@@ -37,7 +37,6 @@ function getDbConfig(): MongoConfig {
     password: process.env.MONGO_PASSWORD,
     authBase: process.env.MONGO_AUTH_BASE,
   };
-
   validateMongoConfig(config);
   return config;
 }

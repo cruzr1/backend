@@ -9,6 +9,7 @@ import {
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: getJwtOptions,
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -2,7 +2,7 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { jwtConfig } from 'src/shared/libs/config';
-import { UserService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { RefreshTokenPayload } from 'src/shared/libs/types';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
@@ -17,7 +17,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   constructor(
     @Inject(jwtConfig.KEY)
     private readonly jwtOptions: ConfigType<typeof jwtConfig>,
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
     private readonly refreshTokenService: RefreshTokenService,
   ) {
     super({

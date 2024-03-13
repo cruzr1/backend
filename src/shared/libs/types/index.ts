@@ -23,3 +23,6 @@ export { Environment, ENVIRONMENTS } from './environments.type';
 export { TokenDescription } from './token.description.interface';
 export { RefreshTokenPayload } from './refresh-token-payload.interface';
 export { DateTimeUnit, TimeAndUnit } from './date-time-unit.type';
+export { RequestWithTokenPayload } from './request-with-token-payload.interface';
+export { RequestWithUser } from './request-with-user.interface';
+export { LoginUser } from './login-user.type';

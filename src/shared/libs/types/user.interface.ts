@@ -17,7 +17,7 @@ export interface User {
   description: string;
   location: Location;
   backgroundImage: string;
-  createdAt: Date;
+  createdAt?: Date;
   level: Level;
   trainType: TrainType;
   isReadyTrain: boolean;

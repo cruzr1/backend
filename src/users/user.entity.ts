@@ -45,19 +45,41 @@ export class UserEntity implements User {
     this.description = data.description;
     this.location = data.location;
     this.backgroundImage = data.backgroundImage;
-    this.createdAt = data.createdAt;
+    this.createdAt = data.createdAt || new Date();
     this.level = data.level;
     this.trainType = data.trainType;
     this.isReadyTrain = data.isReadyTrain;
     this.friends = [];
     this.certificates = data.certificates || '';
     this.achievements = data.achievements || '';
-    this.duration = data.duration || Duration['10-30 мин'];
+    this.duration = data.duration || Duration.From10to30min;
     this.caloriesTarget = data.caloriesTarget || 0;
     this.caloriesDaily = data.caloriesDaily || 0;
   }
 
   public toPOJO(): User {
+    if (this.role === UserRole.User) {
+      return {
+        id: this.id,
+        name: this.name,
+        email: this.email,
+        avatar: this.avatar,
+        passwordHash: this.passwordHash,
+        gender: this.gender,
+        birthDate: this.birthDate,
+        role: this.role,
+        description: this.description,
+        location: this.location,
+        backgroundImage: this.backgroundImage,
+        createdAt: this.createdAt,
+        level: this.level,
+        trainType: this.trainType,
+        isReadyTrain: this.isReadyTrain,
+        duration: this.duration,
+        caloriesTarget: this.caloriesTarget,
+        caloriesDaily: this.caloriesDaily,
+      };
+    }
     return {
       id: this.id,
       name: this.name,
@@ -76,9 +98,6 @@ export class UserEntity implements User {
       isReadyTrain: this.isReadyTrain,
       certificates: this.certificates,
       achievements: this.achievements,
-      duration: this.duration,
-      caloriesTarget: this.caloriesTarget,
-      caloriesDaily: this.caloriesDaily,
     };
   }
 

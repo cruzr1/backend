@@ -2,6 +2,6 @@ export interface TokenDescription {
   id?: string;
   tokenId: string;
   createdAt: Date;
-  userId: string;
+  userId?: string;
   expiresIn: Date;
 }

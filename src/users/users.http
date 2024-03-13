@@ -1,0 +1,59 @@
+# Register new user
+POST http://localhost:3000/api/users/signin HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "new9@user.com",
+  "name": "Alex",
+  "password": "123456",
+  "avatar": "avarar.jpg",
+  "gender": "Male",
+  "role": "Trainer",
+  "description": "lorem ipsum dolor sit amet",
+  "location": "Pionerskaya",
+  "backgroundImage": "background.png",
+  "level": "Newby",
+  "trainType": "Running",
+  "isReadyTrain": true,
+  "duration": "10-30 мин",
+  "caloriesTarget": 3000,
+  "caloriesDaily": 1000,
+  "certificates": "certificate.pdf",
+  "achievements": "lorem ipsum dolor sit amet"
+
+}
+
+###
+
+
+
+# Login user
+POST http://localhost:3000/api/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "new9@user.com",
+  "password": "123456"
+}
+
+###
+
+# Get new JWT pair
+POST http://localhost:3000/api/users/refresh HTTP/1.1
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxYTJlMWRhODZjOGE2NDc2MjhkMmUiLCJlbWFpbCI6Im5ldzlAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsInRva2VuSWQiOiJhYjM1NzYwMS01YmZmLTQ1Y2YtOGIyNC05MTQyMWNkM2E0MWYiLCJpYXQiOjE3MTAzMzQ3ODMsImV4cCI6MTcxMDkzOTU4M30.pDwFoU82PiikLME-0rpFeBrkprBBneNDXO5E5EjP68I
+
+
+###
+
+# Get user by Id
+GET http://localhost:3000/api/users/65f19e4b854f792f77f0fe4c HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxYTJlMWRhODZjOGE2NDc2MjhkMmUiLCJlbWFpbCI6Im5ldzlAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDMzNDgzOCwiZXhwIjoxNzEwMzM1NzM4fQ.bK9kyItvhPbemH45aKt_QQgw6mqEG_1adO7H8VQV4k8
+
+###
+
+# Authorize user by accessToken
+
+POST http://localhost:3000/api/users/check HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxYTJlMWRhODZjOGE2NDc2MjhkMmUiLCJlbWFpbCI6Im5ldzlAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDMzNDgzOCwiZXhwIjoxNzEwMzM1NzM4fQ.bK9kyItvhPbemH45aKt_QQgw6mqEG_1adO7H8VQV4k8
+
+###

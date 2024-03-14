@@ -17,13 +17,15 @@ import {
 import { UserEntity } from './user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UsersRepository } from './users.repository';
-import { Token, User } from 'src/shared/libs/types';
+import { PaginationResult, Token, User } from 'src/shared/libs/types';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from 'src/shared/libs/config';
 import { ConfigType } from '@nestjs/config';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import { createJWTPayload } from 'src/shared/libs/utils/helpers';
 import * as crypto from 'node:crypto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { IndexUsersQuery } from 'src/query/index-users.query';
 
 @Injectable()
 export class UsersService {
@@ -99,5 +101,17 @@ export class UsersService {
       throw new NotFoundException(USER_NOT_FOUND);
     }
     return existUser;
+  }
+
+  public async updateUser(userId: string, dto: UpdateUserDto) {
+    const existUser = await this.getUserEntity(userId);
+    const updateUser = new UserEntity({ ...existUser, ...dto });
+    return await this.usersRepository.update(userId, updateUser);
+  }
+
+  public async indexUsers(
+    query?: IndexUsersQuery,
+  ): Promise<PaginationResult<UserEntity>> {
+    return await this.usersRepository.findMany(query ?? {});
   }
 }

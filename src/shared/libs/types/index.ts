@@ -26,3 +26,6 @@ export { DateTimeUnit, TimeAndUnit } from './date-time-unit.type';
 export { RequestWithTokenPayload } from './request-with-token-payload.interface';
 export { RequestWithUser } from './request-with-user.interface';
 export { LoginUser } from './login-user.type';
+export { EntitiesWithPaginationRdo } from './entities-with-pagination.rdo';
+export { PaginationResult } from './pagination-result.interface';
+export { SortByOrder, SortByField } from './sort-by-order.type';

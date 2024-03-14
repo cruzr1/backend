@@ -4,6 +4,10 @@ export const USER_NOT_FOUND = 'User not found';
 export const USER_PASSWORD_WRONG = 'User password is wrong';
 export const REFRESH_TOKEN_NOT_EXISTS = 'Refresh token does not exist';
 export const USERMAIL_FIELD = 'email';
+export const DEFAULT_PAGE_NUMBER = 1;
+export const DEFAULT_SORT_BY_FIELD = 'role';
+export const DEFAULT_SORT_BY_ORDER = 'asc';
+export const DEFAULT_LIST_REQUEST_COUNT = 50;
 
 export const UserValidationParams = {
   Name: {

@@ -9,7 +9,6 @@ import {
   Matches,
   Min,
   Max,
-  IsNotEmpty,
   ValidateIf,
 } from 'class-validator';
 import { UserValidationParams } from '../users.constant';
@@ -19,6 +18,7 @@ import {
   TrainType,
   Duration,
   UserRole,
+  Location,
 } from 'src/shared/libs/types';
 
 export class UpdateUserDto {
@@ -26,7 +26,7 @@ export class UpdateUserDto {
     description: 'User role',
     example: 'Trainer',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(UserRole)
   public role: UserRole;
 
@@ -39,7 +39,7 @@ export class UpdateUserDto {
     UserValidationParams.Name.Length.Minimal,
     UserValidationParams.Name.Length.Maximal,
   )
-  public name?: string;
+  public name: string;
 
   @ApiProperty({
     description: 'User avatar',

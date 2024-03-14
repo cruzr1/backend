@@ -67,4 +67,4 @@ export class TrainingModel extends Document implements Training {
   public isSpecial: boolean;
 }
 
-export const UserSchema = SchemaFactory.createForClass(TrainingModel);
+export const TrainingSchema = SchemaFactory.createForClass(TrainingModel);

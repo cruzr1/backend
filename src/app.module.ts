@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import {
   ConfigBackendModule,
   getMongoOptions,
@@ -10,6 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { TrainingsModule } from './trainings/trainings.module';
 
 @Module({
   imports: [
@@ -20,8 +19,9 @@ import { UsersModule } from './users/users.module';
       useFactory: getJwtOptions,
     }),
     UsersModule,
+    TrainingsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

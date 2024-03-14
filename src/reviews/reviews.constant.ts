@@ -12,3 +12,7 @@ export const ReviewValidationParams = {
     },
   },
 };
+
+export const REVIEW_NOT_FOUND = 'Review does not exist';
+export const DEFAULT_PAGE_NUMBER = 1;
+export const DEFAULT_LIST_REQUEST_COUNT = 50;

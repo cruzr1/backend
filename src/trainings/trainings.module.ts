@@ -9,7 +9,7 @@ import { RefreshTokenModule } from 'src/refresh-token/refresh-token.module';
 import { TrainingsController } from './trainings.controller';
 import { TrainingsService } from './trainings.service';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
-import { JwtAccessStrategy } from 'src/strategies';
+import { JwtAccessStrategy } from 'src/shared/strategies';
 import { TrainingsRepository } from './trainings.repository';
 
 @Module({

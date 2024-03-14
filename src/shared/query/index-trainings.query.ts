@@ -14,7 +14,7 @@ import { Duration, SortByOrder, TrainType } from 'src/shared/libs/types';
 import {
   DEFAULT_SORT_BY_FIELD,
   TrainingValidationParams,
-} from '../trainings/trainings.constant';
+} from '../../trainings/trainings.constant';
 
 const TRAININGS_SORT_BY_ORDERS = ['asc', 'desc'];
 const DEFAULT_PAGE_NUMBER = 1;

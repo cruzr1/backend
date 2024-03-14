@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
-import { UsersService } from '../users/users.service';
-import { USERMAIL_FIELD } from '../users/users.constant';
+import { UsersService } from '../../users/users.service';
+import { USERMAIL_FIELD } from '../../users/users.constant';
 import { User } from 'src/shared/libs/types';
 
 @Injectable()

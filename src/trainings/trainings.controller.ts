@@ -15,16 +15,16 @@ import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CreateTrainingDto } from './dto/create-training.dto';
 import { TrainingRdo } from './rdo/training.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
-import { CheckAuthGuard } from 'src/guards/check-auth.guard';
-import { RoleGuard } from 'src/guards/check-role.guard';
+import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
+import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import {
   UserRole,
   RequestWithTokenPayload,
   EntitiesWithPaginationRdo,
 } from 'src/shared/libs/types';
-import { MongoIdValidationPipe } from 'src/pipes/mongo-id-validation.pipe';
+import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateTrainingDto } from './dto/update-training.dto';
-import { IndexTrainingsQuery } from 'src/query/index-trainings.query';
+import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 
 @ApiTags('controllers')
 @Controller('trainings')

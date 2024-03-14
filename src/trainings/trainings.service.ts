@@ -8,7 +8,7 @@ import {
   TRAINING_NOT_FOUND,
 } from './trainings.constant';
 import { PaginationResult } from 'src/shared/libs/types';
-import { IndexTrainingsQuery } from 'src/query/index-trainings.query';
+import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 
 export class TrainingsService {
   constructor(private readonly trainingsRepository: TrainingsRepository) {}

@@ -25,7 +25,7 @@ import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import { createJWTPayload } from 'src/shared/libs/utils/helpers';
 import * as crypto from 'node:crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IndexUsersQuery } from 'src/query/index-users.query';
+import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 
 @Injectable()
 export class UsersService {

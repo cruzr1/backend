@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
 import { MongoRepository, User, PaginationResult } from 'src/shared/libs/types';
 import { UserModel } from './user.model';
-import { IndexUsersQuery } from 'src/query/index-users.query';
+import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import {
   DEFAULT_LIST_REQUEST_COUNT,
   DEFAULT_PAGE_NUMBER,

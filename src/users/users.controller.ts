@@ -17,8 +17,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { LocalAuthGuard } from '../guards/local-auth.guard';
+import { JwtAuthGuard } from '../shared/guards/jwt-auth.guard';
+import { LocalAuthGuard } from '../shared/guards/local-auth.guard';
 import {
   RequestWithUser,
   RequestWithTokenPayload,
@@ -27,12 +27,12 @@ import {
   EntitiesWithPaginationRdo,
   UserRole,
 } from 'src/shared/libs/types';
-import { IndexUsersQuery } from 'src/query/index-users.query';
-import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
-import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
-import { CheckUnAuthGuard } from 'src/guards/check-unauth.guard';
+import { IndexUsersQuery } from 'src/shared/query/index-users.query';
+import { JwtRefreshGuard } from '../shared/guards/jwt-refresh.guard';
+import { MongoIdValidationPipe } from '../shared/pipes/mongo-id-validation.pipe';
+import { CheckUnAuthGuard } from 'src/shared/guards/check-unauth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { RoleGuard } from 'src/guards/check-role.guard';
+import { RoleGuard } from 'src/shared/guards/check-role.guard';
 // import { MailService } from '../mail/mail.service';
 
 @ApiTags('users')

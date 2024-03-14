@@ -8,7 +8,7 @@ import {
   PaginationResult,
 } from 'src/shared/libs/types';
 import { TrainingModel } from './training.model';
-import { IndexTrainingsQuery } from 'src/query/index-trainings.query';
+import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 import {
   DEFAULT_LIST_REQUEST_COUNT,
   DEFAULT_PAGE_NUMBER,

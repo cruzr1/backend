@@ -13,7 +13,7 @@ import {
   JwtAccessStrategy,
   JwtRefreshStrategy,
   LocalStrategy,
-} from 'src/strategies';
+} from 'src/shared/strategies';
 import { UsersRepository } from './users.repository';
 
 @Module({

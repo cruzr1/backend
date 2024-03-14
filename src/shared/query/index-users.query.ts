@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsOptional, IsIn, IsEnum, Equals } from 'class-validator';
 import { SortByOrder, Location, Level, TrainType } from 'src/shared/libs/types';
-import { DEFAULT_SORT_BY_FIELD } from '../users/users.constant';
+import { DEFAULT_SORT_BY_FIELD } from '../../users/users.constant';
 
 const USER_SORT_BY_ORDERS = ['asc', 'desc'];
 const DEFAULT_PAGE_NUMBER = 1;

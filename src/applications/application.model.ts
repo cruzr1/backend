@@ -20,11 +20,6 @@ export class ApplicationModel extends Document implements Application {
   @Prop({
     required: true,
   })
-  public createdAt: string;
-
-  @Prop({
-    required: true,
-  })
   public updatedAt: string;
 
   @Prop({

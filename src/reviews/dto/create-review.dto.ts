@@ -7,7 +7,7 @@ import {
   Max,
   Min,
 } from 'class-validator';
-import { ReviewValidationParams } from '../review.constant';
+import { ReviewValidationParams } from '../reviews.constant';
 
 export class CreateReviewDto {
   @ApiProperty({

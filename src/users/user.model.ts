@@ -68,11 +68,6 @@ export class UserModel extends Document implements User {
   @Prop({
     required: true,
   })
-  public createdAt: Date;
-
-  @Prop({
-    required: true,
-  })
   public level: Level;
 
   @Prop({

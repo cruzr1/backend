@@ -41,11 +41,6 @@ export class OrderModel extends Document implements Order {
     required: true,
   })
   public payment: Payment;
-
-  @Prop({
-    required: true,
-  })
-  public createdAt: Date;
 }
 
 export const ApplicationSchema = SchemaFactory.createForClass(OrderModel);

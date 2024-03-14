@@ -4,5 +4,4 @@ export interface Review {
   trainingId: string;
   rating: number;
   comment: string;
-  createdAt: Date;
 }

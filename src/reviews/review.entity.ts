@@ -6,7 +6,6 @@ export class ReviewEntity implements Review {
   trainingId: string;
   rating: number;
   comment: string;
-  createdAt: Date;
 
   constructor(data: Review) {
     this.id = data.id;
@@ -14,7 +13,6 @@ export class ReviewEntity implements Review {
     this.trainingId = data.trainingId;
     this.rating = data.rating;
     this.comment = data.comment;
-    this.createdAt = data.createdAt;
   }
 
   public toPOJO(): Review {
@@ -24,7 +22,6 @@ export class ReviewEntity implements Review {
       trainingId: this.trainingId,
       rating: this.rating,
       comment: this.comment,
-      createdAt: this.createdAt,
     };
   }
 

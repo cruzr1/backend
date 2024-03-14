@@ -9,7 +9,6 @@ export class OrderEntity implements Order {
   quantity: number;
   sum: number;
   payment: Payment;
-  createdAt: Date;
 
   constructor(data: Order) {
     this.id = data.id;
@@ -19,7 +18,6 @@ export class OrderEntity implements Order {
     this.quantity = data.quantity;
     this.sum = data.sum;
     this.payment = data.payment;
-    this.createdAt = data.createdAt;
   }
 
   public toPOJO(): Order {
@@ -31,7 +29,6 @@ export class OrderEntity implements Order {
       quantity: this.quantity,
       sum: this.sum,
       payment: this.payment,
-      createdAt: this.createdAt,
     };
   }
 

@@ -9,5 +9,4 @@ export interface Order {
   quantity: number;
   sum: number;
   payment: Payment;
-  createdAt: Date;
 }

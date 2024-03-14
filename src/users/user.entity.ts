@@ -22,7 +22,6 @@ export class UserEntity implements User {
   description: string;
   location: Location;
   backgroundImage: string;
-  createdAt: Date;
   level: Level;
   trainType: TrainType[];
   isReadyTrain: boolean;
@@ -45,7 +44,6 @@ export class UserEntity implements User {
     this.description = data.description;
     this.location = data.location;
     this.backgroundImage = data.backgroundImage;
-    this.createdAt = data.createdAt || new Date();
     this.level = data.level;
     this.trainType = data.trainType;
     this.isReadyTrain = data.isReadyTrain;
@@ -71,7 +69,6 @@ export class UserEntity implements User {
         description: this.description,
         location: this.location,
         backgroundImage: this.backgroundImage,
-        createdAt: this.createdAt,
         level: this.level,
         trainType: this.trainType,
         isReadyTrain: this.isReadyTrain,
@@ -92,7 +89,6 @@ export class UserEntity implements User {
       description: this.description,
       location: this.location,
       backgroundImage: this.backgroundImage,
-      createdAt: this.createdAt,
       level: this.level,
       trainType: this.trainType,
       isReadyTrain: this.isReadyTrain,

@@ -29,7 +29,6 @@ import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 @ApiTags('controllers')
 @Controller('trainings')
 export class TrainingsController {
-  trin: any;
   constructor(private readonly trainingsService: TrainingsService) {}
 
   @ApiResponse({

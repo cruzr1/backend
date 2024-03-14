@@ -113,7 +113,7 @@ export class UpdateUserDto {
   @IsArray()
   @ArrayMaxSize(MAX_TRAIN_TYPE_ARRAY_SIZE)
   @IsEnum(TrainType, { each: true })
-  public trainType?: TrainType;
+  public trainType?: TrainType[];
 
   @ApiProperty({
     description: 'Desirable training duration',

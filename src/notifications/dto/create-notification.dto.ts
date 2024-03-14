@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsMongoId, IsNotEmpty, Length } from 'class-validator';
-import { NotificationValidationParams } from '../notification.constant';
+import { NotificationValidationParams } from '../notifications.constant';
 
 export class CreateNotificaiton {
   @ApiProperty({

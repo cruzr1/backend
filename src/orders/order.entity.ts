@@ -3,6 +3,7 @@ import { Order, OrderType, Payment } from 'src/shared/libs/types';
 export class OrderEntity implements Order {
   id?: string;
   orderType: OrderType;
+  userId: string;
   trainingId: string;
   price: number;
   quantity: number;

@@ -1,17 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsOptional, IsIn, IsEnum } from 'class-validator';
-import {
-  SortByOrder,
-  SortByField,
-  Location,
-  Level,
-  TrainType,
-} from 'src/shared/libs/types';
+import { IsOptional, IsIn, IsEnum, Equals } from 'class-validator';
+import { SortByOrder, Location, Level, TrainType } from 'src/shared/libs/types';
 import { DEFAULT_SORT_BY_FIELD } from '../users/users.constant';
 
 const USER_SORT_BY_ORDERS = ['asc', 'desc'];
-const USER_SORT_BY_FIELDS = ['role'];
 const DEFAULT_PAGE_NUMBER = 1;
 const DEFAULT_SORT_BY_ORDER = 'asc';
 
@@ -53,8 +46,8 @@ export class IndexUsersQuery {
     example: 'price',
   })
   @IsOptional()
-  @IsIn(USER_SORT_BY_FIELDS)
-  public sortByField?: SortByField = DEFAULT_SORT_BY_FIELD;
+  @Equals(DEFAULT_SORT_BY_FIELD)
+  public sortByField?: typeof DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({
     description: 'SortBy order',

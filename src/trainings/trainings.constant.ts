@@ -19,6 +19,12 @@ export const TrainingValidationParams = {
       Maximum: 5000,
     },
   },
+  Rating: {
+    Value: {
+      Minimum: 0,
+      Maximum: 5,
+    },
+  },
   Video: {
     Regex: RegExp(/(.mov$|.avi$|.mp4$)/i),
   },
@@ -29,3 +35,8 @@ export const TrainingValidationParams = {
     },
   },
 } as const;
+
+export const DEFAULT_SORT_BY_FIELD = 'price';
+export const DEFAULT_LIST_REQUEST_COUNT = 50;
+export const DEFAULT_PAGE_NUMBER = 1;
+export const DEFAULT_SORT_BY_ORDER = 'asc';

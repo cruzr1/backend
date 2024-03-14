@@ -11,7 +11,7 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { Level, TrainType, Duration, Gender } from 'src/shared/libs/types';
-import { TrainingValidationParams } from '../training.constant';
+import { TrainingValidationParams } from '../trainings.constant';
 
 export class CreateTrainingDto {
   @ApiProperty({

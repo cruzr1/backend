@@ -28,4 +28,4 @@ export { RequestWithUser } from './request-with-user.interface';
 export { LoginUser } from './login-user.type';
 export { EntitiesWithPaginationRdo } from './entities-with-pagination.rdo';
 export { PaginationResult } from './pagination-result.interface';
-export { SortByOrder, SortByField } from './sort-by-order.type';
+export { SortByOrder } from './sort-by-order.type';

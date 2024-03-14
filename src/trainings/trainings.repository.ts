@@ -27,13 +27,16 @@ export class TrainingsRepository extends MongoRepository<
     super(TrainingModel, TrainingEntity.fromObject);
   }
 
-  public async findMany({
-    page = DEFAULT_PAGE_NUMBER,
-    sortByField = DEFAULT_SORT_BY_FIELD,
-    sortByOrder = DEFAULT_SORT_BY_ORDER,
-    ...queryParams
-  }: IndexTrainingsQuery): Promise<PaginationResult<TrainingEntity>> {
-    const query: FilterQuery<IndexTrainingsQuery> = {};
+  public async findMany(
+    {
+      page = DEFAULT_PAGE_NUMBER,
+      sortByField = DEFAULT_SORT_BY_FIELD,
+      sortByOrder = DEFAULT_SORT_BY_ORDER,
+      ...queryParams
+    }: IndexTrainingsQuery,
+    trainerId: string,
+  ): Promise<PaginationResult<TrainingEntity>> {
+    const query: FilterQuery<IndexTrainingsQuery> = { trainerId };
     if (queryParams.priceFilter) {
       query.price = {
         $and: [

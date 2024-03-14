@@ -13,7 +13,7 @@ import {
 import { Level, TrainType, Duration, Gender } from 'src/shared/libs/types';
 import { TrainingValidationParams } from '../trainings.constant';
 
-export class CreateTrainingDto {
+export class UpdateTrainingDto {
   @ApiProperty({
     description: 'Training name',
     example: 'Lorem ipsum',

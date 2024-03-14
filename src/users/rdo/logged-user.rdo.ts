@@ -92,7 +92,7 @@ export class LoggedUserRdo {
     description: 'User train type',
     example: 'running',
   })
-  public trainType: TrainType;
+  public trainType: TrainType[];
 
   @ApiProperty({
     description: 'Desirable training duration',

@@ -24,7 +24,7 @@ export class UserEntity implements User {
   backgroundImage: string;
   createdAt: Date;
   level: Level;
-  trainType: TrainType;
+  trainType: TrainType[];
   isReadyTrain: boolean;
   friends: string[];
   certificates: string;

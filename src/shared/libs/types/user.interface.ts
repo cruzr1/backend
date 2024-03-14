@@ -19,7 +19,7 @@ export interface User {
   backgroundImage: string;
   createdAt?: Date;
   level: Level;
-  trainType: TrainType;
+  trainType: TrainType[];
   isReadyTrain: boolean;
   duration?: Duration;
   caloriesTarget?: number;

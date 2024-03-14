@@ -31,7 +31,7 @@ export class IndexUsersQuery {
   })
   @IsOptional()
   @IsEnum(TrainType)
-  public trainType?: TrainType;
+  public trainType?: TrainType[];
 
   @ApiProperty({
     description: 'Page number',

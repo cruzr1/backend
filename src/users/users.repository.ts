@@ -40,7 +40,7 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
       query.level = queryParams.level;
     }
     if (queryParams.trainType) {
-      query.trainType = queryParams.trainType;
+      query.trainType = { $in: [...queryParams.trainType] };
     }
     console.log(query);
     const skip = (page - DEFAULT_PAGE_NUMBER) * DEFAULT_LIST_REQUEST_COUNT;

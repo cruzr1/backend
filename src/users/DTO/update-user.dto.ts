@@ -10,8 +10,13 @@ import {
   Min,
   Max,
   ValidateIf,
+  IsArray,
+  ArrayMaxSize,
 } from 'class-validator';
-import { UserValidationParams } from '../users.constant';
+import {
+  UserValidationParams,
+  MAX_TRAIN_TYPE_ARRAY_SIZE,
+} from '../users.constant';
 import {
   Gender,
   Level,
@@ -105,7 +110,9 @@ export class UpdateUserDto {
     example: 'running',
   })
   @IsOptional()
-  @IsEnum(TrainType)
+  @IsArray()
+  @ArrayMaxSize(MAX_TRAIN_TYPE_ARRAY_SIZE)
+  @IsEnum(TrainType, { each: true })
   public trainType?: TrainType;
 
   @ApiProperty({

@@ -8,6 +8,7 @@ export const DEFAULT_PAGE_NUMBER = 1;
 export const DEFAULT_SORT_BY_FIELD = 'role';
 export const DEFAULT_SORT_BY_ORDER = 'asc';
 export const DEFAULT_LIST_REQUEST_COUNT = 50;
+export const MAX_TRAIN_TYPE_ARRAY_SIZE = 3;
 
 export const UserValidationParams = {
   Name: {

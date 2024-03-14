@@ -78,7 +78,7 @@ export class UserModel extends Document implements User {
   @Prop({
     required: true,
   })
-  public trainType: TrainType;
+  public trainType: TrainType[];
 
   @Prop({
     required: true,

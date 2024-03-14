@@ -12,8 +12,13 @@ import {
   Min,
   Max,
   ValidateIf,
+  IsArray,
+  ArrayMaxSize,
 } from 'class-validator';
-import { UserValidationParams } from '../users.constant';
+import {
+  UserValidationParams,
+  MAX_TRAIN_TYPE_ARRAY_SIZE,
+} from '../users.constant';
 import {
   Gender,
   UserRole,
@@ -126,8 +131,10 @@ export class CreateUserDto {
     example: 'running',
   })
   @IsNotEmpty()
-  @IsEnum(TrainType)
-  public trainType: TrainType;
+  @IsArray()
+  @ArrayMaxSize(MAX_TRAIN_TYPE_ARRAY_SIZE)
+  @IsEnum(TrainType, { each: true })
+  public trainType: TrainType[];
 
   @ApiProperty({
     description: 'Desirable training duration',

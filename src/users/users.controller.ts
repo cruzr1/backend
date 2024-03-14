@@ -25,12 +25,14 @@ import {
   Token,
   TokenPayload,
   EntitiesWithPaginationRdo,
+  UserRole,
 } from 'src/shared/libs/types';
 import { IndexUsersQuery } from 'src/query/index-users.query';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { MongoIdValidationPipe } from '../pipes/mongo-id-validation.pipe';
 import { CheckUnAuthGuard } from 'src/guards/check-unauth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { RoleGuard } from 'src/guards/check-role.guard';
 // import { MailService } from '../mail/mail.service';
 
 @ApiTags('users')
@@ -46,6 +48,7 @@ export class UsersController {
     description: 'The following Users have been found.',
   })
   @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard(UserRole.User))
   @Get('/')
   public async index(
     @Query() query?: IndexUsersQuery,

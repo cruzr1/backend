@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { TrainingsModule } from './trainings/trainings.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TrainingsModule } from './trainings/trainings.module';
     }),
     UsersModule,
     TrainingsModule,
+    ReviewsModule,
   ],
   controllers: [],
   providers: [],

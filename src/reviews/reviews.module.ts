@@ -4,12 +4,12 @@ import { ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { getJwtOptions } from 'src/shared/libs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TrainingSchema, TrainingModel } from './training.model';
-import { TrainingsController } from './trainings.controller';
-import { TrainingsService } from './trainings.service';
+import { ReviewModel, ReviewSchema } from './review.model';
+import { ReviewsController } from './reviews.controller';
+import { ReviewsService } from './reviews.service';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
-import { TrainingsRepository } from './trainings.repository';
+import { ReviewsRepository } from './reviews.repository';
 
 @Module({
   imports: [
@@ -22,10 +22,10 @@ import { TrainingsRepository } from './trainings.repository';
       useFactory: getJwtOptions,
     }),
     MongooseModule.forFeature([
-      { name: TrainingModel.name, schema: TrainingSchema },
+      { name: ReviewModel.name, schema: ReviewSchema },
     ]),
   ],
-  controllers: [TrainingsController],
-  providers: [TrainingsService, JwtAccessStrategy, TrainingsRepository],
+  controllers: [ReviewsController],
+  providers: [ReviewsService, JwtAccessStrategy, ReviewsRepository],
 })
-export class TrainingsModule {}
+export class ReviewsModule {}

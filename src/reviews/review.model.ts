@@ -28,4 +28,4 @@ export class ReviewModel extends Document implements Review {
   public comment: string;
 }
 
-export const ApplicationSchema = SchemaFactory.createForClass(ReviewModel);
+export const ReviewSchema = SchemaFactory.createForClass(ReviewModel);

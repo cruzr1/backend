@@ -1,20 +1,23 @@
-import { Account, TrainType } from 'src/shared/libs/types';
+import { Account } from 'src/shared/libs/types';
 
 export class AccountEntity implements Account {
   id?: string;
-  trainType: TrainType;
+  userId: string;
+  trainingId: string;
   trainingsCount: number;
 
   constructor(data: Account) {
     this.id = data.id;
-    this.trainType = data.trainType;
+    this.userId = data.userId;
+    this.trainingId = data.trainingId;
     this.trainingsCount = data.trainingsCount;
   }
 
   public toPOJO(): Account {
     return {
       id: this.id,
-      trainType: this.trainType,
+      userId: this.userId,
+      trainingId: this.trainingId,
       trainingsCount: this.trainingsCount,
     };
   }

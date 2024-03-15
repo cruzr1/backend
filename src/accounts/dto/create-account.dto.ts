@@ -1,15 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNotEmpty, IsNumber } from 'class-validator';
-import { TrainType } from 'src/shared/libs/types';
+import { IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateAccountDto {
   @ApiProperty({
-    description: 'Account training type',
-    example: 'boxing',
+    description: 'Account owner Id',
+    example: '1234-5678-1234',
   })
   @IsNotEmpty()
-  @IsEnum(TrainType)
-  public trainType: TrainType;
+  @IsMongoId()
+  public userId: string;
+
+  @ApiProperty({
+    description: 'Account training Id',
+    example: '1234-5678-1234',
+  })
+  @IsNotEmpty()
+  @IsMongoId()
+  public trainingId: string;
 
   @ApiProperty({
     description: 'Account training count',

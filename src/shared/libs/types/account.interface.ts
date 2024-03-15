@@ -2,5 +2,6 @@ export interface Account {
   id?: string;
   userId: string;
   trainingId: string;
-  trainingsCount: number;
+  trainingsActive: number;
+  trainingsInactive: number;
 }

@@ -12,6 +12,8 @@ import { TrainingsModule } from './trainings/trainings.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { UploaderModule } from './uploader/uploader.module';
+import { ApplicationsModule } from './applications/applications.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { UploaderModule } from './uploader/uploader.module';
     ReviewsModule,
     AccountsModule,
     UploaderModule,
+    ApplicationsModule,
+    OrdersModule,
   ],
   controllers: [],
   providers: [],

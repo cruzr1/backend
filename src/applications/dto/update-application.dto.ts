@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum, IsNotEmpty } from 'class-validator';
 import { Status } from 'src/shared/libs/types';
 
-export class UpdateApplication {
+export class UpdateApplicationDto {
   @ApiProperty({
     description: 'Application status',
     example: 'Accepted',

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsMongoId, IsNotEmpty } from 'class-validator';
 
-export class CreateApplication {
+export class CreateApplicationDto {
   @ApiProperty({
     description: 'Application author id',
     example: '1234-5678-1234',

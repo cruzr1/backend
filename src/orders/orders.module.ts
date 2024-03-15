@@ -11,6 +11,7 @@ import { OrdersRepository } from './orders.repository';
 import { OrdersService } from './orders.service';
 import { AccountsModule } from 'src/accounts/accounts.module';
 import { OrdersController } from './orders.controller';
+import { TrainingsModule } from 'src/trainings/trainings.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { OrdersController } from './orders.controller';
     }),
     MongooseModule.forFeature([{ name: OrderModel.name, schema: OrderSchema }]),
     AccountsModule,
+    TrainingsModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService, JwtAccessStrategy, OrdersRepository],

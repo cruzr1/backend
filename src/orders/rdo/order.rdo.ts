@@ -40,6 +40,20 @@ export class OrderRdo {
 
   @Expose()
   @ApiProperty({
+    description: 'Order trining price',
+    example: '2500',
+  })
+  trainingPrice: number;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Order sum',
+    example: '25000',
+  })
+  trainingSum: number;
+
+  @Expose()
+  @ApiProperty({
     description: 'Order payment type',
     example: 'Visa',
   })

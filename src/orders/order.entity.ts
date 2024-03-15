@@ -6,6 +6,8 @@ export class OrderEntity implements Order {
   userId: string;
   trainingId: string;
   trainingsCount: number;
+  trainingPrice: number;
+  trainingSum: number;
   payment: Payment;
 
   constructor(data: Order) {
@@ -13,6 +15,8 @@ export class OrderEntity implements Order {
     this.orderType = data.orderType;
     this.trainingId = data.trainingId;
     this.trainingsCount = data.trainingsCount;
+    this.trainingPrice = data.trainingPrice;
+    this.trainingSum = data.trainingSum;
     this.payment = data.payment;
   }
 
@@ -22,6 +26,8 @@ export class OrderEntity implements Order {
       orderType: this.orderType,
       trainingId: this.trainingId,
       trainingsCount: this.trainingsCount,
+      trainingPrice: this.trainingPrice,
+      trainingSum: this.trainingSum,
       payment: this.payment,
     };
   }

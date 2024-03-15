@@ -6,5 +6,7 @@ export interface Order {
   orderType: OrderType;
   trainingId: string;
   trainingsCount: number;
+  trainingPrice: number;
+  trainingSum: number;
   payment: Payment;
 }

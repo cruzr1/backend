@@ -14,8 +14,8 @@ import {
 
 @Injectable()
 export class UsersRepository extends MongoRepository<UserEntity, User> {
-  constructor(@InjectModel(UserModel.name) UserModel: Model<UserModel>) {
-    super(UserModel, UserEntity.fromObject);
+  constructor(@InjectModel(UserModel.name) userModel: Model<UserModel>) {
+    super(userModel, UserEntity.fromObject);
   }
 
   public async findByEmail(email: string): Promise<UserEntity | null> {

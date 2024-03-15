@@ -22,9 +22,9 @@ export class TrainingsRepository extends MongoRepository<
   Training
 > {
   constructor(
-    @InjectModel(TrainingModel.name) TrainingModel: Model<TrainingModel>,
+    @InjectModel(TrainingModel.name) trainingModel: Model<TrainingModel>,
   ) {
-    super(TrainingModel, TrainingEntity.fromObject);
+    super(trainingModel, TrainingEntity.fromObject);
   }
 
   public async findMany(

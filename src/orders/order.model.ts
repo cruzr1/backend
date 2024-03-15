@@ -35,6 +35,16 @@ export class OrderModel extends Document implements Order {
   @Prop({
     required: true,
   })
+  public trainingPrice: number;
+
+  @Prop({
+    required: true,
+  })
+  public trainingSum: number;
+
+  @Prop({
+    required: true,
+  })
   public sum: number;
 
   @Prop({

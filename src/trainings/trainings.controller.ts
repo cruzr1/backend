@@ -26,7 +26,7 @@ import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 
-@ApiTags('controllers')
+@ApiTags('trainings')
 @Controller('trainings')
 export class TrainingsController {
   constructor(private readonly trainingsService: TrainingsService) {}

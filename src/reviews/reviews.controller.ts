@@ -17,7 +17,7 @@ import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { IndexReviewsQuery } from 'src/shared/query/index-reviews.query';
 import { UserRole, EntitiesWithPaginationRdo } from 'src/shared/libs/types';
 
-@ApiTags('controllers')
+@ApiTags('reviews')
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}

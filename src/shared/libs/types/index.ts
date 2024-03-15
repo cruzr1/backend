@@ -29,3 +29,5 @@ export { LoginUser } from './login-user.type';
 export { EntitiesWithPaginationRdo } from './entities-with-pagination.rdo';
 export { PaginationResult } from './pagination-result.interface';
 export { SortByOrder } from './sort-by-order.type';
+export { File } from './file.interface';
+export { StoredFile } from './stored-file.interface';

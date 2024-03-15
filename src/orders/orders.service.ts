@@ -11,12 +11,12 @@ export class OrdersService {
 
   public async createNewOrder(dto: CreateOrderDto): Promise<OrderEntity> {
     const newOrder = new OrderEntity(dto);
-    const { userId, trainingId, trainingsCount } = dto;
-    await this.accountsService.createNewAccount({
-      userId,
-      trainingId,
-      trainingsCount,
-    });
+    // const { userId, trainingId, trainingsCount } = dto;
+    // await this.accountsService.createNewAccount({
+    //   userId,
+    //   trainingId,
+    //   trainingsCount,
+    // });
     return await this.ordersRepository.save(newOrder);
   }
 }

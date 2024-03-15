@@ -9,6 +9,8 @@ import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { OrdersRepository } from './orders.repository';
 import { OrdersService } from './orders.service';
+import { AccountsModule } from 'src/accounts/accounts.module';
+import { OrdersController } from './orders.controller';
 
 @Module({
   imports: [
@@ -23,7 +25,7 @@ import { OrdersService } from './orders.service';
     MongooseModule.forFeature([{ name: OrderModel.name, schema: OrderSchema }]),
     AccountsModule,
   ],
-  controllers: [],
+  controllers: [OrdersController],
   providers: [OrdersService, JwtAccessStrategy, OrdersRepository],
 })
-export class AccountsModule {}
+export class OrdersModule {}

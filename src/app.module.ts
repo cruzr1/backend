@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { TrainingsModule } from './trainings/trainings.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { ReviewsModule } from './reviews/reviews.module';
     UsersModule,
     TrainingsModule,
     ReviewsModule,
+    AccountsModule,
   ],
   controllers: [],
   providers: [],

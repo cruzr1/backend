@@ -5,10 +5,12 @@ import { ApplicationsRepository } from './applications.repository';
 import { Status } from 'src/shared/libs/types';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { APPLICATION_NOT_FOUND } from './applications.constant';
+import { AccountsService } from 'src/accounts/account.service';
 
 export class ApplicationsService {
   constructor(
     private readonly applicationsRepository: ApplicationsRepository,
+    private readonly accountsService: AccountsService,
   ) {}
 
   public async createNewApplication(
@@ -44,6 +46,11 @@ export class ApplicationsService {
       ...existApplication,
       ...dto,
     });
+    if (dto.status === Status.Accepted) {
+      this.accountsService.useActiveTrainings(existApplication.authorId, {
+        trainingsCount: 1,
+      });
+    }
     return await this.applicationsRepository.update(
       applicationId,
       updatedApplication,

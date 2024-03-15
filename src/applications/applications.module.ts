@@ -10,6 +10,7 @@ import { ApplicationsService } from './applications.service';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { ApplicationsRepository } from './applications.repository';
+import { AccountsModule } from 'src/accounts/accounts.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ApplicationsRepository } from './applications.repository';
     MongooseModule.forFeature([
       { name: ApplicationModel.name, schema: ApplicationSchema },
     ]),
+    AccountsModule,
   ],
   controllers: [ApplicationsController],
   providers: [ApplicationsService, JwtAccessStrategy, ApplicationsRepository],

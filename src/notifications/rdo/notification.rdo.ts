@@ -4,6 +4,13 @@ import { Expose } from 'class-transformer';
 export class NotificationRdo {
   @Expose()
   @ApiProperty({
+    description: 'Notification id',
+    example: '1234-5678-1234',
+  })
+  public id: string;
+
+  @Expose()
+  @ApiProperty({
     description: 'Notification date',
     example: '01.01.2024',
   })

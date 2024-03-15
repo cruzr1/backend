@@ -21,11 +21,11 @@ export class TrainingsService {
   }
 
   public async getTrainingEntity(trainingId: string): Promise<TrainingEntity> {
-    const existGuitar = await this.trainingsRepository.findById(trainingId);
-    if (!existGuitar) {
+    const existTraining = await this.trainingsRepository.findById(trainingId);
+    if (!existTraining) {
       throw new NotFoundException(TRAINING_NOT_FOUND);
     }
-    return existGuitar;
+    return existTraining;
   }
 
   public async updateTraining(

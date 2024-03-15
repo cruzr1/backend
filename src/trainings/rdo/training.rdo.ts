@@ -5,6 +5,13 @@ import { Level, TrainType, Duration, Gender } from 'src/shared/libs/types';
 export class TrainingRdo {
   @Expose()
   @ApiProperty({
+    description: 'Training id',
+    example: '1234-5678-1234',
+  })
+  public id: string;
+
+  @Expose()
+  @ApiProperty({
     description: 'Training name',
     example: 'Lorem ipsum',
   })

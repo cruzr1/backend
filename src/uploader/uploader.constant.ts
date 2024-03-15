@@ -4,5 +4,5 @@ export const CANT_SAVE_FILE = "Can't save file";
 export const FileValidationParams = {
   AvatarSize: 1000000,
   PhotoSize: 1000000,
-  MimeTypeRegex: RegExp(/(.png$|.jpg$|.pdf$|.jpeg$)/i),
+  MimeTypeRegex: RegExp(/.(png|mov|avi|mp4|jpg|pdf|jpeg)$/i),
 };

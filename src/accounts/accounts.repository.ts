@@ -16,4 +16,14 @@ export class AccountsRepository extends MongoRepository<
   ) {
     super(accountModel, AccountEntity.fromObject);
   }
+
+  public async findAccountByUserId(
+    userId: string,
+  ): Promise<AccountEntity | null> {
+    const existAccount = await this.model.findOne({ userId }).exec();
+    if (existAccount) {
+      return this.createEntityFromDocument(existAccount);
+    }
+    return null;
+  }
 }

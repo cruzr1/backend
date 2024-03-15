@@ -20,7 +20,12 @@ export class AccountModel extends Document implements Account {
   @Prop({
     required: true,
   })
-  public trainingsCount: number;
+  public trainingsActive: number;
+
+  @Prop({
+    required: true,
+  })
+  public trainingsInactive: number;
 }
 
 export const AccountSchema = SchemaFactory.createForClass(AccountModel);

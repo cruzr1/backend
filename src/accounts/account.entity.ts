@@ -4,13 +4,15 @@ export class AccountEntity implements Account {
   id?: string;
   userId: string;
   trainingId: string;
-  trainingsCount: number;
+  trainingsActive: number;
+  trainingsInactive: number;
 
   constructor(data: Account) {
     this.id = data.id;
     this.userId = data.userId;
     this.trainingId = data.trainingId;
-    this.trainingsCount = data.trainingsCount;
+    this.trainingsActive = data.trainingsActive;
+    this.trainingsInactive = data.trainingsInactive;
   }
 
   public toPOJO(): Account {
@@ -18,7 +20,8 @@ export class AccountEntity implements Account {
       id: this.id,
       userId: this.userId,
       trainingId: this.trainingId,
-      trainingsCount: this.trainingsCount,
+      trainingsActive: this.trainingsActive,
+      trainingsInactive: this.trainingsInactive,
     };
   }
 

@@ -24,5 +24,5 @@ export class CreateAccountDto {
   })
   @IsNotEmpty()
   @IsNumber()
-  public trainingsCount: number;
+  public trainingsActive: number;
 }

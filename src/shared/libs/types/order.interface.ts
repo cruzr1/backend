@@ -5,8 +5,6 @@ export interface Order {
   id?: string;
   orderType: OrderType;
   trainingId: string;
-  price: number;
-  quantity: number;
-  sum: number;
+  trainingsCount: number;
   payment: Payment;
 }

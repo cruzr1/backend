@@ -30,7 +30,7 @@ export class OrderModel extends Document implements Order {
   @Prop({
     required: true,
   })
-  public quantity: number;
+  public trainingsCount: number;
 
   @Prop({
     required: true,
@@ -43,4 +43,4 @@ export class OrderModel extends Document implements Order {
   public payment: Payment;
 }
 
-export const ApplicationSchema = SchemaFactory.createForClass(OrderModel);
+export const OrderSchema = SchemaFactory.createForClass(OrderModel);

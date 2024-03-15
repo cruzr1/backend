@@ -5,18 +5,14 @@ export class OrderEntity implements Order {
   orderType: OrderType;
   userId: string;
   trainingId: string;
-  price: number;
-  quantity: number;
-  sum: number;
+  trainingsCount: number;
   payment: Payment;
 
   constructor(data: Order) {
     this.id = data.id;
     this.orderType = data.orderType;
     this.trainingId = data.trainingId;
-    this.price = data.price;
-    this.quantity = data.quantity;
-    this.sum = data.sum;
+    this.trainingsCount = data.trainingsCount;
     this.payment = data.payment;
   }
 
@@ -25,9 +21,7 @@ export class OrderEntity implements Order {
       id: this.id,
       orderType: this.orderType,
       trainingId: this.trainingId,
-      price: this.price,
-      quantity: this.quantity,
-      sum: this.sum,
+      trainingsCount: this.trainingsCount,
       payment: this.payment,
     };
   }

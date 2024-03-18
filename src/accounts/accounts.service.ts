@@ -1,10 +1,11 @@
-import { NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { AccountEntity } from './account.entity';
 import { AccountsRepository } from './accounts.repository';
 import { ACCOUNT_NOT_FOUND } from './accounts.constant';
 import { UpdateAccountDto } from './dto/update-account.dto';
 
+@Injectable()
 export class AccountsService {
   constructor(private readonly accountsRepository: AccountsRepository) {}
 

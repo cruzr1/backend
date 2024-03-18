@@ -5,7 +5,7 @@ import { ApplicationsRepository } from './applications.repository';
 import { Status } from 'src/shared/libs/types';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { APPLICATION_NOT_FOUND } from './applications.constant';
-import { AccountsService } from 'src/accounts/account.service';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 export class ApplicationsService {
   constructor(

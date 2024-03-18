@@ -8,7 +8,8 @@ import { AccountModel, AccountSchema } from './account.model';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { AccountsRepository } from './accounts.repository';
-import { AccountsService } from './account.service';
+import { AccountsService } from './accounts.service';
+import { AccountsController } from './accounts.controller';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { AccountsService } from './account.service';
       { name: AccountModel.name, schema: AccountSchema },
     ]),
   ],
-  controllers: [],
+  controllers: [AccountsController],
   providers: [AccountsService, JwtAccessStrategy, AccountsRepository],
+  exports: [AccountsRepository],
 })
 export class AccountsModule {}

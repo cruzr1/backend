@@ -1,4 +1,4 @@
-import { AccountsService } from 'src/accounts/account.service';
+import { AccountsService } from 'src/accounts/accounts.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderEntity } from './order.entity';
 import { OrdersRepository } from './orders.repository';

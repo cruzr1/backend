@@ -1,7 +1,11 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { MongoRepository, Account } from 'src/shared/libs/types';
+import {
+  MongoRepository,
+  Account,
+  TrainingAggregated,
+} from 'src/shared/libs/types';
 import { AccountEntity } from './account.entity';
 import { AccountModel } from './account.model';
 
@@ -25,5 +29,33 @@ export class AccountsRepository extends MongoRepository<
       return this.createEntityFromDocument(existAccount);
     }
     return null;
+  }
+
+  public async findMany(trainingIds: string[]): Promise<TrainingAggregated[]> {
+    const trainingsAggregated: TrainingAggregated[] = await this.model
+      .aggregate([
+        {
+          $match: {
+            trainingId: { $in: [...trainingIds] },
+          },
+        },
+        {
+          $project: {
+            trainingId: 1,
+            trainingsActive: 1,
+          },
+        },
+        {
+          $group: {
+            _id: '$trainingId',
+            trainingsActive: {
+              $sum: '$trainingsActive',
+            },
+          },
+        },
+      ])
+
+      .exec();
+    return trainingsAggregated;
   }
 }

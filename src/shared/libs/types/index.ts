@@ -31,3 +31,5 @@ export { PaginationResult } from './pagination-result.interface';
 export { SortByOrder } from './sort-by-order.type';
 export { File } from './file.interface';
 export { StoredFile } from './stored-file.interface';
+export { TrainingAggregated } from './training-aggregated.type';
+export { TrainingOrdered } from './training-ordered.type';

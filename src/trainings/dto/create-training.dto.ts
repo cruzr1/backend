@@ -7,7 +7,6 @@ import {
   Matches,
   Min,
   Max,
-  IsMongoId,
   IsBoolean,
 } from 'class-validator';
 import { Level, TrainType, Duration, Gender } from 'src/shared/libs/types';
@@ -102,14 +101,6 @@ export class CreateTrainingDto {
   @IsNotEmpty()
   @Matches(TrainingValidationParams.Video.Regex)
   public videoURL: string;
-
-  @ApiProperty({
-    description: 'Trainer Id',
-    example: '1234-5678-1234',
-  })
-  @IsNotEmpty()
-  @IsMongoId()
-  public trainerId: string;
 
   @ApiProperty({
     description: 'Training is special offer',

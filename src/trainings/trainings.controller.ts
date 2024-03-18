@@ -25,6 +25,8 @@ import {
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateTrainingDto } from './dto/update-training.dto';
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
+import { TrainingsOrderedRdo } from './rdo/trainings-ordered.rdo';
+import { IndexAccountsQuery } from 'src/shared/query';
 
 @ApiTags('trainings')
 @Controller('trainings')
@@ -55,14 +57,42 @@ export class TrainingsController {
   }
 
   @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The following ordered trainings have been found.',
+  })
+  @UseGuards(CheckAuthGuard)
+  @UseGuards(RoleGuard(UserRole.Trainer))
+  @Get('myOrders')
+  public async indexOrders(
+    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Query() query?: IndexAccountsQuery,
+  ): Promise<TrainingsOrderedRdo[]> {
+    const trainingsOrdered = await this.trainingsService.indexOrderedTrainings(
+      sub!,
+      query ?? {},
+    );
+    return trainingsOrdered.map<TrainingsOrderedRdo>(
+      ({ training, trainingsOrderedCount, trainingsOrderedSum }) =>
+        fillDTO(TrainingsOrderedRdo, {
+          trainings: fillDTO(TrainingRdo, training.toPOJO()),
+          trainingsCount: trainingsOrderedCount,
+          trainingsSum: trainingsOrderedSum,
+        }),
+    );
+  }
+
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new training has been created.',
   })
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.Trainer))
   @Post('/')
-  public async create(@Body() dto: CreateTrainingDto): Promise<TrainingRdo> {
-    const newTraining = await this.trainingsService.createNewTraining(dto);
+  public async create(
+    @Body() dto: CreateTrainingDto,
+    @Req() { user: { sub } }: RequestWithTokenPayload,
+  ): Promise<TrainingRdo> {
+    const newTraining = await this.trainingsService.createNewTraining(dto, sub);
     return fillDTO(TrainingRdo, newTraining.toPOJO());
   }
 
@@ -73,7 +103,7 @@ export class TrainingsController {
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.Trainer))
   @Patch(':trainingId')
-  public async updateTraining(
+  public async UpdateTrainingDto(
     @Param('trainingId', MongoIdValidationPipe) trainingId: string,
     @Req() { user: { sub } }: RequestWithTokenPayload,
     @Body() dto: UpdateTrainingDto,

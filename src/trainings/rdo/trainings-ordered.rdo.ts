@@ -2,12 +2,12 @@ import { Expose } from 'class-transformer';
 import { TrainingRdo } from './training.rdo';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class TrainingList {
+export class TrainingsOrderedRdo {
   @Expose()
   @ApiProperty({
     description: 'List of training objects',
   })
-  public trainings: TrainingRdo[];
+  public trainings: TrainingRdo;
 
   @Expose()
   @ApiProperty({

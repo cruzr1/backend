@@ -10,6 +10,7 @@ import { TrainingsService } from './trainings.service';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { TrainingsRepository } from './trainings.repository';
+import { AccountsModule } from 'src/accounts/accounts.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { TrainingsRepository } from './trainings.repository';
     MongooseModule.forFeature([
       { name: TrainingModel.name, schema: TrainingSchema },
     ]),
+    AccountsModule,
   ],
   controllers: [TrainingsController],
   providers: [TrainingsService, JwtAccessStrategy, TrainingsRepository],

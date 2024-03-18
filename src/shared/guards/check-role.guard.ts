@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, mixin } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+  mixin,
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { UserRole } from 'src/shared/libs/types';
 
@@ -13,29 +18,33 @@ export const RoleGuard = (userRole: UserRole) => {
 
     public async canActivate(context: ExecutionContext): Promise<boolean> {
       const request = context.switchToHttp().getRequest();
-      const { data: user } = await this.httpService.axiosRef.post(
-        `${AUTHORIZATION_URL}/check`,
-        {},
-        {
-          headers: {
-            Authorization: request.headers['authorization'],
+      try {
+        const { data: user } = await this.httpService.axiosRef.post(
+          `${AUTHORIZATION_URL}/check`,
+          {},
+          {
+            headers: {
+              Authorization: request.headers['authorization'],
+            },
           },
-        },
-      );
-      const {
-        data: { role },
-      } = await this.httpService.axiosRef.get(
-        `${AUTHORIZATION_URL}/${user.sub}`,
-        {
-          headers: {
-            Authorization: request.headers['authorization'],
+        );
+        const {
+          data: { role },
+        } = await this.httpService.axiosRef.get(
+          `${AUTHORIZATION_URL}/${user.sub}`,
+          {
+            headers: {
+              Authorization: request.headers['authorization'],
+            },
           },
-        },
-      );
-      if (role !== userRole) {
-        return false;
+        );
+        if (role !== userRole) {
+          return false;
+        }
+        return true;
+      } catch (err) {
+        throw new UnauthorizedException(err.message);
       }
-      return true;
     }
   }
 

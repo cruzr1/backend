@@ -15,6 +15,7 @@ import { UploaderModule } from './uploader/uploader.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { OrdersModule } from './orders/orders.module';
 import { MailModule } from './mail/mail.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { MailModule } from './mail/mail.module';
     ApplicationsModule,
     OrdersModule,
     MailModule,
+    NotificationsModule,
   ],
   controllers: [],
   providers: [],

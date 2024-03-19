@@ -27,5 +27,6 @@ import { NotificationsRepository } from './notifications.repository';
   ],
   controllers: [NotificationsController],
   providers: [NotificationsService, JwtAccessStrategy, NotificationsRepository],
+  exports: [NotificationsService],
 })
-export class notificationsModule {}
+export class NotificationsModule {}

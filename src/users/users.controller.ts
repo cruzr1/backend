@@ -38,6 +38,8 @@ import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { UserEntity } from './user.entity';
 import { AddFriendsInterceptor } from 'src/shared/interceptors/add-friends.interceptor';
 import { MailService } from '../mail/mail.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { ADD_FRIEND } from './users.constant';
 
 @ApiTags('users')
 @Controller('users')
@@ -45,6 +47,7 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly mailService: MailService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   @ApiResponse({
@@ -100,6 +103,12 @@ export class UsersController {
     const newFriendsList: string[] = friends!.includes(friendId)
       ? friends!.filter((friend) => friend !== friendId)
       : friends!.concat(friendId);
+    if (newFriendsList.length > friends!.length) {
+      await this.notificationsService.createNewNotification({
+        userId: sub!,
+        description: ADD_FRIEND,
+      });
+    }
     const updatedUser = await this.usersService.updateUser(sub!, {
       friends: newFriendsList,
     });

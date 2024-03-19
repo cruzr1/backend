@@ -4,13 +4,18 @@ import { ApplicationEntity } from './application.entity';
 import { ApplicationsRepository } from './applications.repository';
 import { Status } from 'src/shared/libs/types';
 import { UpdateApplicationDto } from './dto/update-application.dto';
-import { APPLICATION_NOT_FOUND } from './applications.constant';
+import {
+  APPLICATION_NOT_FOUND,
+  APPLICATION_ACCEPTED,
+} from './applications.constant';
 import { AccountsService } from 'src/accounts/accounts.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 export class ApplicationsService {
   constructor(
     private readonly applicationsRepository: ApplicationsRepository,
     private readonly accountsService: AccountsService,
+    private readonly notificaitonsService: NotificationsService,
   ) {}
 
   public async createNewApplication(
@@ -19,6 +24,10 @@ export class ApplicationsService {
     const newApplication = new ApplicationEntity({
       ...dto,
       status: Status.Reviewing,
+    });
+    this.notificaitonsService.createNewNotification({
+      userId: dto.authorId,
+      description: APPLICATION_ACCEPTED,
     });
     return await this.applicationsRepository.save(newApplication);
   }
@@ -49,6 +58,10 @@ export class ApplicationsService {
     if (dto.status === Status.Accepted) {
       this.accountsService.useActiveTrainings(existApplication.authorId, {
         trainingsCount: 1,
+      });
+      this.notificaitonsService.createNewNotification({
+        userId: existApplication.authorId,
+        description: APPLICATION_ACCEPTED,
       });
     }
     return await this.applicationsRepository.update(

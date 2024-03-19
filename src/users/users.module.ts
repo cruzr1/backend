@@ -16,6 +16,7 @@ import {
 } from 'src/shared/strategies';
 import { UsersRepository } from './users.repository';
 import { MailModule } from 'src/mail/mail.module';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { MailModule } from 'src/mail/mail.module';
     LocalStrategy,
     JwtRefreshStrategy,
     UsersRepository,
+    NotificationsService,
   ],
 })
 export class UsersModule {}

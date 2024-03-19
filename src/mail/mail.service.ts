@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { MailerService } from '@nestjs-modules/mailer';
-import { EMAIL_ADD_USER_SUBJECT } from './mail.constant';
+import { EMAIL_ADD_USER_SUBJECT, USER_TEMPLATE_PATH } from './mail.constant';
 import { ConfigType } from '@nestjs/config';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { MailerConfig } from 'src/shared/libs/config';
@@ -18,7 +18,7 @@ export class MailService {
       from: this.mailerConfig.mailFrom,
       to: email,
       subject: EMAIL_ADD_USER_SUBJECT,
-      template: './add-user',
+      template: USER_TEMPLATE_PATH,
       context: {
         email: `${email}`,
         name: `${name}`,

@@ -3,12 +3,12 @@ POST http://localhost:3000/api/users/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new30@user.com",
+  "email": "new37@user.com",
   "name": "Alex",
   "password": "123456",
   "avatar": "avarar.jpg",
   "gender": "Male",
-  "role": "Trainer",
+  "role": "User",
   "description": "lorem ipsum dolor sit amet",
   "location": "Pionerskaya",
   "backgroundImage": "background.png",

@@ -14,6 +14,7 @@ import { AccountsModule } from './accounts/accounts.module';
 import { UploaderModule } from './uploader/uploader.module';
 import { ApplicationsModule } from './applications/applications.module';
 import { OrdersModule } from './orders/orders.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { OrdersModule } from './orders/orders.module';
     UploaderModule,
     ApplicationsModule,
     OrdersModule,
+    MailModule,
   ],
   controllers: [],
   providers: [],

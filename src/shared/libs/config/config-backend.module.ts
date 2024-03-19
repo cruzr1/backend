@@ -4,6 +4,7 @@ import applicationConfig from './application/application.config';
 import mongoConfig from './mongodb/mongodb.config';
 import jwtConfig from './jwt/jwt.config';
 import uploadConfig from './upload/upload.config';
+import mailerConfig from './mailer/mailer.config';
 
 const ENV_BACKEND_FILE_PATH = '.backend.env';
 
@@ -12,7 +13,13 @@ const ENV_BACKEND_FILE_PATH = '.backend.env';
     ConfigModule.forRoot({
       isGlobal: true,
       cache: true,
-      load: [applicationConfig, mongoConfig, jwtConfig, uploadConfig],
+      load: [
+        applicationConfig,
+        mongoConfig,
+        jwtConfig,
+        uploadConfig,
+        mailerConfig,
+      ],
       envFilePath: ENV_BACKEND_FILE_PATH,
     }),
   ],

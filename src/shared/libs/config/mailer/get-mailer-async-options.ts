@@ -1,12 +1,11 @@
 import { MailerAsyncOptions } from '@nestjs-modules/mailer/dist/interfaces/mailer-async-options.interface';
 import { ConfigService } from '@nestjs/config';
-import * as path from 'node:path';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
 
 export function getMailerAsyncOptions(): MailerAsyncOptions {
   return {
     useFactory: async (configService: ConfigService) => {
-      return {
+      const config = {
         transport: {
           host: configService.get<string>('mailer.mailHost'),
           port: configService.get<number>('mailer.mailPort'),
@@ -20,13 +19,14 @@ export function getMailerAsyncOptions(): MailerAsyncOptions {
           from: configService.get<string>('mailer.mailFrom'),
         },
         template: {
-          dir: path.resolve(__dirname, 'assets'),
+          dir: 'src/mail/assets',
           adapter: new HandlebarsAdapter(),
           options: {
             strict: true,
           },
         },
       };
+      return config;
     },
     inject: [ConfigService],
   };

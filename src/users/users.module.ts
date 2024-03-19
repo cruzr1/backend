@@ -15,6 +15,7 @@ import {
   LocalStrategy,
 } from 'src/shared/strategies';
 import { UsersRepository } from './users.repository';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UsersRepository } from './users.repository';
     }),
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
     RefreshTokenModule,
+    MailModule,
   ],
   controllers: [UsersController],
   providers: [

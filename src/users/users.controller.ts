@@ -37,14 +37,14 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { UserEntity } from './user.entity';
 import { AddFriendsInterceptor } from 'src/shared/interceptors/add-friends.interceptor';
-// import { MailService } from '../mail/mail.service';
+import { MailService } from '../mail/mail.service';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    // private readonly mailService: MailService
+    private readonly mailService: MailService,
   ) {}
 
   @ApiResponse({
@@ -114,7 +114,7 @@ export class UsersController {
   @Post('signin')
   public async create(@Body() dto: CreateUserDto): Promise<UserRdo> {
     const newUser = await this.usersService.registerNewUser(dto);
-    // await this.mailService.sendNotifyNewUser(dto);
+    await this.mailService.sendNotifyNewUser(dto);
     return fillDTO(UserRdo, newUser.toPOJO());
   }
 

@@ -6,3 +6,7 @@ export const NotificationValidationParams = {
     },
   },
 };
+
+export const NOTIFICATION_NOT_FOUND = 'Notificaiton not found';
+
+export const USER_FORBIDDEN = 'User may delete only own notificaitons';

@@ -1,16 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsMongoId, IsNotEmpty, Length } from 'class-validator';
+import { IsMongoId, IsNotEmpty, Length } from 'class-validator';
 import { NotificationValidationParams } from '../notifications.constant';
 
-export class CreateNotificaiton {
-  @ApiProperty({
-    description: 'Notification date',
-    example: '01.01.2024',
-  })
-  @IsNotEmpty()
-  @IsDate()
-  public notifyDate: Date;
-
+export class CreateNotificationDto {
   @ApiProperty({
     description: 'Notified User Id',
     example: '1234-5678-1234',

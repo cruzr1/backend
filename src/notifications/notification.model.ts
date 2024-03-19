@@ -23,5 +23,5 @@ export class NotificationModel extends Document implements Notification {
   public description: string;
 }
 
-export const ApplicationSchema =
+export const NotificationSchema =
   SchemaFactory.createForClass(NotificationModel);

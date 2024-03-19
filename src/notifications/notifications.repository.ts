@@ -6,7 +6,7 @@ import { NotificationEntity } from './notification.entity';
 import { NotificationModel } from './notification.model';
 
 @Injectable()
-export class ApplicationsRepository extends MongoRepository<
+export class NotificationsRepository extends MongoRepository<
   NotificationEntity,
   Notification
 > {
@@ -15,5 +15,12 @@ export class ApplicationsRepository extends MongoRepository<
     notificationModel: Model<NotificationModel>,
   ) {
     super(notificationModel, NotificationEntity.fromObject);
+  }
+
+  public async findMany(userId: string): Promise<NotificationEntity[]> {
+    const notificaitonsList = await this.model.find({ userId }).exec();
+    return notificaitonsList.map((notificaiton) =>
+      this.createEntityFromDocument(notificaiton),
+    );
   }
 }

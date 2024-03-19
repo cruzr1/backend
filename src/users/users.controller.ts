@@ -10,6 +10,7 @@ import {
   HttpCode,
   Patch,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -26,6 +27,7 @@ import {
   TokenPayload,
   EntitiesWithPaginationRdo,
   UserRole,
+  User,
 } from 'src/shared/libs/types';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import { JwtRefreshGuard } from '../shared/guards/jwt-refresh.guard';
@@ -33,6 +35,8 @@ import { MongoIdValidationPipe } from '../shared/pipes/mongo-id-validation.pipe'
 import { CheckUnAuthGuard } from 'src/shared/guards/check-unauth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
+import { UserEntity } from './user.entity';
+import { AddFriendsInterceptor } from 'src/shared/interceptors/add-friends.interceptor';
 // import { MailService } from '../mail/mail.service';
 
 @ApiTags('users')
@@ -60,6 +64,46 @@ export class UsersController {
         fillDTO(UserRdo, user.toPOJO()),
       ),
     };
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The following friends have been found.',
+  })
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard(UserRole.User))
+  @UseInterceptors(AddFriendsInterceptor)
+  @Get('friends')
+  public async indexFriends(
+    @Req() { user: { friends } }: RequestWithTokenPayload,
+  ): Promise<UserRdo[]> {
+    const friendsList: UserEntity[] =
+      await this.usersService.indexUserFriends(friends);
+    return fillDTO<UserRdo, User>(
+      UserRdo,
+      friendsList.map((friend) => friend.toPOJO()),
+    );
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The friend has been added.',
+  })
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard(UserRole.User))
+  @UseInterceptors(AddFriendsInterceptor)
+  @Get('friends/:friendId')
+  public async addRemoveFriends(
+    @Param('friendId', MongoIdValidationPipe) friendId: string,
+    @Req() { user: { friends, sub } }: RequestWithTokenPayload,
+  ): Promise<UserRdo> {
+    const newFriendsList: string[] = friends!.includes(friendId)
+      ? friends!.filter((friend) => friend !== friendId)
+      : friends!.concat(friendId);
+    const updatedUser = await this.usersService.updateUser(sub!, {
+      friends: newFriendsList,
+    });
+    return fillDTO(UserRdo, updatedUser?.toPOJO());
   }
 
   @ApiResponse({

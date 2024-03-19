@@ -137,6 +137,13 @@ export class LoggedUserRdo {
 
   @Expose()
   @ApiProperty({
+    description: 'User/Trainer friends',
+    example: ['1234-5678-1234', '1234-5678-2345'],
+  })
+  public friends: string[];
+
+  @Expose()
+  @ApiProperty({
     description: 'Access token',
     example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
   })

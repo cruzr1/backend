@@ -18,6 +18,7 @@ export interface User {
   location: Location;
   backgroundImage: string;
   level: Level;
+  friends: string[];
   trainType: TrainType[];
   isReadyTrain: boolean;
   duration?: Duration;

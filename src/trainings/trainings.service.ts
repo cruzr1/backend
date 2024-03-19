@@ -83,7 +83,7 @@ export class TrainingsService {
     ): TrainingEntity =>
       trainings.find((training) => training.id! === id) as TrainingEntity;
     const { sortByField, sortByOrder } = query;
-    const trainingsOrdered = trainingsAggregated.map(
+    const trainingsOrdered: TrainingOrdered[] = trainingsAggregated.map(
       ({ _id, trainingsActive }) => {
         const training: TrainingEntity = findTrainingById(_id, trainings);
         return {

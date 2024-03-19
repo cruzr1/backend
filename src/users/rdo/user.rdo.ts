@@ -134,4 +134,11 @@ export class UserRdo {
     example: 'Lorem ipsum',
   })
   public achievements: boolean;
+
+  @Expose()
+  @ApiProperty({
+    description: 'User/Trainer friends',
+    example: ['1234-5678-1234', '1234-5678-2345'],
+  })
+  public friends: string[];
 }

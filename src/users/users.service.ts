@@ -47,6 +47,7 @@ export class UsersService {
     const user = {
       ...dto,
       passwordHash: '',
+      friends: [],
     };
     const userEntity = await new UserEntity(user).setPassword(password);
     return await this.usersRepository.save(userEntity);
@@ -113,5 +114,14 @@ export class UsersService {
     query?: IndexUsersQuery,
   ): Promise<PaginationResult<UserEntity>> {
     return await this.usersRepository.findMany(query ?? {});
+  }
+
+  public async indexUserFriends(
+    userFriends?: string[] | undefined,
+  ): Promise<UserEntity[]> {
+    const friendsFound: UserEntity[] = await this.usersRepository.indexFriends(
+      userFriends ?? [],
+    );
+    return friendsFound;
   }
 }

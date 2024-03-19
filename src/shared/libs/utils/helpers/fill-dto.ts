@@ -7,7 +7,7 @@ export function fillDTO<T, V>(
 ): T;
 export function fillDTO<T, V>(
   DtoClass: new () => T,
-  plainObject: V,
+  plainObject: V[],
   options?: ClassTransformOptions,
 ): T[];
 export function fillDTO<T, V>(

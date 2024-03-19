@@ -47,7 +47,7 @@ export class UserEntity implements User {
     this.level = data.level;
     this.trainType = data.trainType;
     this.isReadyTrain = data.isReadyTrain;
-    this.friends = [];
+    this.friends = data.friends;
     this.certificates = data.certificates || '';
     this.achievements = data.achievements || '';
     this.duration = data.duration || Duration.From10to30min;
@@ -69,6 +69,7 @@ export class UserEntity implements User {
         description: this.description,
         location: this.location,
         backgroundImage: this.backgroundImage,
+        friends: this.friends,
         level: this.level,
         trainType: this.trainType,
         isReadyTrain: this.isReadyTrain,
@@ -86,6 +87,7 @@ export class UserEntity implements User {
       gender: this.gender,
       birthDate: this.birthDate,
       role: this.role,
+      friends: this.friends,
       description: this.description,
       location: this.location,
       backgroundImage: this.backgroundImage,

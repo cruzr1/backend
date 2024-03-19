@@ -1,4 +1,4 @@
-import { Model, FilterQuery } from 'mongoose';
+import mongoose, { Model, FilterQuery } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
@@ -42,7 +42,6 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
     if (queryParams.trainType) {
       query.trainType = { $in: [...queryParams.trainType] };
     }
-    console.log(query);
     const skip = (page - DEFAULT_PAGE_NUMBER) * DEFAULT_LIST_REQUEST_COUNT;
     const orderBy = { [sortByField]: sortByOrder };
     const [usersList, totalUsers] = await Promise.all([
@@ -61,5 +60,17 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
       currentPage: page,
       totalPages: Math.ceil(totalUsers / DEFAULT_LIST_REQUEST_COUNT),
     };
+  }
+
+  public async indexFriends(friendsIds: string[]): Promise<UserEntity[]> {
+    const friendsObjectIds = friendsIds.map(
+      (friendId) => new mongoose.Types.ObjectId(friendId),
+    );
+    const userDocuments = await this.model
+      .find({ _id: { $in: [...friendsObjectIds] } })
+      .exec();
+    return userDocuments.map(
+      (user) => this.createEntityFromDocument(user) as UserEntity,
+    );
   }
 }

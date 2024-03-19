@@ -28,14 +28,6 @@ import {
 
 export class UpdateUserDto {
   @ApiProperty({
-    description: 'User role',
-    example: 'Trainer',
-  })
-  @IsOptional()
-  @IsEnum(UserRole)
-  public role: UserRole;
-
-  @ApiProperty({
     description: 'User first name',
     example: 'Alex',
   })
@@ -44,7 +36,7 @@ export class UpdateUserDto {
     UserValidationParams.Name.Length.Minimal,
     UserValidationParams.Name.Length.Maximal,
   )
-  public name: string;
+  public name?: string;
 
   @ApiProperty({
     description: 'User avatar',
@@ -174,4 +166,11 @@ export class UpdateUserDto {
     UserValidationParams.Description.Length.Maximal,
   )
   public achievements?: string;
+
+  @ApiProperty({
+    description: 'User friends',
+    example: ['1234-5678-1234', '1234-5678-2345'],
+  })
+  @IsOptional()
+  public friends?: string[];
 }

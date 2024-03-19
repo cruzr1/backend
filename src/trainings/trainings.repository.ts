@@ -74,8 +74,8 @@ export class TrainingsRepository extends MongoRepository<
       this.model.countDocuments(query).exec(),
     ]);
     return {
-      entities: trainingsList.map(
-        (training) => this.createEntityFromDocument(training) as TrainingEntity,
+      entities: trainingsList.map((training) =>
+        this.createEntityFromDocument(training),
       ),
       currentPage: page,
       totalPages: Math.ceil(totalTrainings / DEFAULT_LIST_REQUEST_COUNT),

@@ -15,12 +15,7 @@ export abstract class MongoRepository<
     private readonly createEntity: (document: DocumentType) => EntityType,
   ) {}
 
-  protected createEntityFromDocument(
-    document: DocumentType,
-  ): EntityType | null {
-    if (!document) {
-      return null;
-    }
+  protected createEntityFromDocument(document: DocumentType): EntityType {
     return this.createEntity(document);
   }
 

@@ -29,8 +29,8 @@ export class ReviewsRepository extends MongoRepository<ReviewEntity, Review> {
       this.model.countDocuments().exec(),
     ]);
     return {
-      entities: reviewsList.map(
-        (review) => this.createEntityFromDocument(review) as ReviewEntity,
+      entities: reviewsList.map((review) =>
+        this.createEntityFromDocument(review),
       ),
       currentPage: page,
       totalPages: Math.ceil(totalReviews / DEFAULT_LIST_REQUEST_COUNT),

@@ -54,9 +54,7 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
       this.model.countDocuments(query).exec(),
     ]);
     return {
-      entities: usersList.map(
-        (user) => this.createEntityFromDocument(user) as UserEntity,
-      ),
+      entities: usersList.map((user) => this.createEntityFromDocument(user)),
       currentPage: page,
       totalPages: Math.ceil(totalUsers / DEFAULT_LIST_REQUEST_COUNT),
     };

@@ -12,6 +12,7 @@ import {
   ValidateIf,
   IsArray,
   ArrayMaxSize,
+  IsMongoId,
 } from 'class-validator';
 import {
   UserValidationParams,
@@ -115,6 +116,16 @@ export class UpdateUserDto {
   @ValidateIf((obj) => obj.role === UserRole.User)
   @IsEnum(Duration)
   public duration?: Duration;
+
+  @ApiProperty({
+    description: 'User subscribed for trainer',
+    example: '1234-5678-1234',
+  })
+  @IsOptional()
+  @ValidateIf((obj) => obj.role === UserRole.User)
+  @IsArray()
+  @IsMongoId({ each: true })
+  public subscribedFor?: string[];
 
   @ApiProperty({
     description: 'User calories target',

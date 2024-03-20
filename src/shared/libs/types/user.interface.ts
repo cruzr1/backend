@@ -21,6 +21,7 @@ export interface User {
   friends: string[];
   trainType: TrainType[];
   isReadyTrain: boolean;
+  subscribedFor?: string[];
   duration?: Duration;
   caloriesTarget?: number;
   caloriesDaily?: number;

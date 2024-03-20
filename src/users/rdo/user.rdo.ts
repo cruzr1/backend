@@ -102,6 +102,13 @@ export class UserRdo {
 
   @Expose()
   @ApiProperty({
+    description: 'User subscribed for trainers array',
+    example: ['1234-5678-1234', '1234-5678-2345'],
+  })
+  public subscribedFor: string[];
+
+  @Expose()
+  @ApiProperty({
     description: 'User calories target',
     example: '3500',
   })

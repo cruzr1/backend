@@ -92,7 +92,10 @@ export class TrainingsController {
     @Body() dto: CreateTrainingDto,
     @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<TrainingRdo> {
-    const newTraining = await this.trainingsService.createNewTraining(dto, sub);
+    const newTraining = await this.trainingsService.createNewTraining(
+      dto,
+      sub!,
+    );
     return fillDTO(TrainingRdo, newTraining.toPOJO());
   }
 

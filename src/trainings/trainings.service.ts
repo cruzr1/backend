@@ -19,22 +19,40 @@ import {
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { IndexAccountsQuery } from 'src/shared/query';
+import { MailService } from 'src/mail/mail.service';
+import { UsersService } from 'src/users/users.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Injectable()
 export class TrainingsService {
   constructor(
     private readonly trainingsRepository: TrainingsRepository,
     private readonly accountsRepository: AccountsRepository,
+    private readonly mailService: MailService,
+    private readonly usersService: UsersService,
+    private readonly notificationService: NotificationsService,
   ) {}
 
   public async createNewTraining(
     dto: CreateTrainingDto,
-    trainerId?: string,
+    trainerId: string,
   ): Promise<TrainingEntity> {
     const newTraining = new TrainingEntity({
       ...dto,
-      trainerId: trainerId ?? '',
+      trainerId,
       rating: 0,
+    });
+    const subscribersList = await this.usersService.indexSubscribers(trainerId);
+    subscribersList.forEach(async ({ id, name, email }) => {
+      await this.notificationService.createNewNotification({
+        userId: id!,
+        description: newTraining.description,
+      });
+      await this.mailService.sendNotifyNewTraining(
+        newTraining.toPOJO(),
+        name,
+        email,
+      );
     });
     return await this.trainingsRepository.save(newTraining);
   }

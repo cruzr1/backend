@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Notification } from 'src/shared/libs/types';
+import { Notification, NotifyStatus } from 'src/shared/libs/types';
 
 @Schema({
   collection: 'notifications',
@@ -21,6 +21,11 @@ export class NotificationModel extends Document implements Notification {
     required: true,
   })
   public description: string;
+
+  @Prop({
+    required: true,
+  })
+  public notifyStatus: NotifyStatus;
 }
 
 export const NotificationSchema =

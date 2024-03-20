@@ -14,23 +14,22 @@ import {
 import {
   PaginationResult,
   TrainingAggregated,
+  TrainingJob,
   TrainingOrdered,
 } from 'src/shared/libs/types';
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { IndexAccountsQuery } from 'src/shared/query';
-import { MailService } from 'src/mail/mail.service';
-import { UsersService } from 'src/users/users.service';
-import { NotificationsService } from 'src/notifications/notifications.service';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class TrainingsService {
   constructor(
     private readonly trainingsRepository: TrainingsRepository,
     private readonly accountsRepository: AccountsRepository,
-    private readonly mailService: MailService,
-    private readonly usersService: UsersService,
-    private readonly notificationService: NotificationsService,
+    @InjectQueue('trainings')
+    private trainingsQueue: Queue<TrainingJob>,
   ) {}
 
   public async createNewTraining(
@@ -42,18 +41,11 @@ export class TrainingsService {
       trainerId,
       rating: 0,
     });
-    const subscribersList = await this.usersService.indexSubscribers(trainerId);
-    subscribersList.forEach(async ({ id, name, email }) => {
-      await this.notificationService.createNewNotification({
-        userId: id!,
-        description: newTraining.description,
-      });
-      await this.mailService.sendNotifyNewTraining(
-        newTraining.toPOJO(),
-        name,
-        email,
-      );
-    });
+    const newTrainingJob: TrainingJob = {
+      ...newTraining.toPOJO(),
+      notificationId: '',
+    };
+    await this.trainingsQueue.add(newTrainingJob, { removeOnComplete: true });
     return await this.trainingsRepository.save(newTraining);
   }
 

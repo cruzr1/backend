@@ -51,4 +51,19 @@ export class NotificationsService {
   ): Promise<NotificationEntity[]> {
     return await this.notificationsRepository.findMany(userId);
   }
+
+  public async changeNotificationStatus(
+    notificationId: string,
+    notifyStatus: NotifyStatus,
+  ): Promise<NotificationEntity | null> {
+    const existNotification = await this.getNotificationEntity(notificationId);
+    const updatedNotificaiton = new NotificationEntity({
+      ...existNotification,
+      notifyStatus,
+    });
+    return await this.notificationsRepository.update(
+      notificationId,
+      updatedNotificaiton,
+    );
+  }
 }

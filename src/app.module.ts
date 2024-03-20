@@ -3,10 +3,11 @@ import {
   ConfigBackendModule,
   getMongoOptions,
   getJwtOptions,
+  getBullOptions,
 } from './shared/libs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { TrainingsModule } from './trainings/trainings.module';
 import { ReviewsModule } from './reviews/reviews.module';
@@ -16,6 +17,7 @@ import { ApplicationsModule } from './applications/applications.module';
 import { OrdersModule } from './orders/orders.module';
 import { MailModule } from './mail/mail.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -34,6 +36,11 @@ import { NotificationsModule } from './notifications/notifications.module';
     OrdersModule,
     MailModule,
     NotificationsModule,
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: getBullOptions,
+      inject: [ConfigService],
+    }),
   ],
   controllers: [],
   providers: [],

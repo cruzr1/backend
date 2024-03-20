@@ -36,7 +36,7 @@ export class MailService {
 
   public async sendNotifyNewTraining(
     {
-      name: trainName,
+      name,
       level,
       trainType,
       duration,
@@ -49,7 +49,7 @@ export class MailService {
       isSpecial,
       videoURL,
     }: Training,
-    name: string,
+    userName: string,
     email: string,
   ) {
     await this.mailerService.sendMail({
@@ -58,7 +58,7 @@ export class MailService {
       subject: NEW_TRAINING_SUBJECT,
       template: NEW_TRAINING_TEMPLATE_PATH,
       context: {
-        trainName: `${trainName}`,
+        name: `${name}`,
         level: `${level}`,
         trainType: `${trainType}`,
         duration: `${duration}`,
@@ -70,7 +70,7 @@ export class MailService {
         trainerId: `${trainerId}`,
         isSpecial: `${isSpecial}`,
         videoURL: `${videoURL}`,
-        name: `${name}`,
+        userName: `${userName}`,
       },
     });
   }

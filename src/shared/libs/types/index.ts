@@ -34,3 +34,4 @@ export { StoredFile } from './stored-file.interface';
 export { TrainingAggregated } from './training-aggregated.type';
 export { TrainingOrdered } from './training-ordered.type';
 export { NotifyStatus } from './notify-status.type';
+export { TrainingJob } from './training-job.interface';

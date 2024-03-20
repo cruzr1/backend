@@ -6,6 +6,7 @@ import {
   NOTIFICATION_NOT_FOUND,
   USER_FORBIDDEN,
 } from './notifications.constant';
+import { NotifyStatus } from 'src/shared/libs/types';
 
 export class NotificationsService {
   constructor(
@@ -18,6 +19,7 @@ export class NotificationsService {
     const newNotification = new NotificationEntity({
       ...dto,
       notifyDate: new Date(),
+      notifyStatus: NotifyStatus.Created,
     });
     return await this.notificationsRepository.save(newNotification);
   }

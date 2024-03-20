@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { NotifyStatus } from 'src/shared/libs/types';
 
 export class NotificationRdo {
   @Expose()
@@ -14,6 +15,7 @@ export class NotificationRdo {
     description: 'Notification date',
     example: '01.01.2024',
   })
+  @Type(() => Date)
   public notifyDate: Date;
 
   @Expose()
@@ -29,4 +31,11 @@ export class NotificationRdo {
     example: 'Lorem ipsum',
   })
   public description: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Notification status',
+    example: 'Sent',
+  })
+  public notifyStatus: NotifyStatus;
 }

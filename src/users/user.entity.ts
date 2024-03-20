@@ -26,6 +26,7 @@ export class UserEntity implements User {
   trainType: TrainType[];
   isReadyTrain: boolean;
   friends: string[];
+  subscribedFor: string[];
   certificates: string;
   achievements: string;
   duration: Duration;
@@ -48,6 +49,7 @@ export class UserEntity implements User {
     this.trainType = data.trainType;
     this.isReadyTrain = data.isReadyTrain;
     this.friends = data.friends;
+    this.subscribedFor = data.subscribedFor || [];
     this.certificates = data.certificates || '';
     this.achievements = data.achievements || '';
     this.duration = data.duration || Duration.From10to30min;
@@ -70,6 +72,7 @@ export class UserEntity implements User {
         location: this.location,
         backgroundImage: this.backgroundImage,
         friends: this.friends,
+        subscribedFor: this.subscribedFor,
         level: this.level,
         trainType: this.trainType,
         isReadyTrain: this.isReadyTrain,

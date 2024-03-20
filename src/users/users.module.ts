@@ -41,5 +41,6 @@ import { NotificationsService } from 'src/notifications/notifications.service';
     UsersRepository,
     NotificationsService,
   ],
+  exports: [UsersService],
 })
 export class UsersModule {}

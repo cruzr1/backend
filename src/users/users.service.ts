@@ -22,10 +22,12 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from 'src/shared/libs/config';
 import { ConfigType } from '@nestjs/config';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
-import { createJWTPayload } from 'src/shared/libs/utils/helpers';
+import { createJWTPayload, updateArray } from 'src/shared/libs/utils/helpers';
 import * as crypto from 'node:crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { ADD_FRIEND } from './users.constant';
 
 @Injectable()
 export class UsersService {
@@ -36,6 +38,7 @@ export class UsersService {
     @Inject(jwtConfig.KEY)
     private readonly jwtOptions: ConfigType<typeof jwtConfig>,
     private readonly refreshTokenService: RefreshTokenService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   public async registerNewUser(dto: CreateUserDto): Promise<UserEntity> {
@@ -88,6 +91,21 @@ export class UsersService {
     }
   }
 
+  public async notifyNewFriend(
+    friends: string[],
+    friendId: string,
+    userId: string,
+  ): Promise<string[]> {
+    const newFriendsList: string[] = updateArray<string>(friends!, friendId);
+    if (newFriendsList.length > friends!.length) {
+      await this.notificationsService.createNewNotification({
+        userId,
+        description: ADD_FRIEND,
+      });
+    }
+    return newFriendsList;
+  }
+
   public async getUserEntity(id: string): Promise<UserEntity> {
     const existUser = await this.usersRepository.findById(id);
     if (!existUser) {
@@ -123,5 +141,9 @@ export class UsersService {
       userFriends ?? [],
     );
     return friendsFound;
+  }
+
+  public async indexSubscribers(trainerId: string): Promise<UserEntity[]> {
+    return await this.usersRepository.indexSubscribers(trainerId);
   }
 }

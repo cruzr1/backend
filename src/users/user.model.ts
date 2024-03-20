@@ -93,6 +93,11 @@ export class UserModel extends Document implements User {
   @Prop({
     required: false,
   })
+  public subscribedFor: string[];
+
+  @Prop({
+    required: false,
+  })
   public caloriesTarget: number;
 
   @Prop({

@@ -15,7 +15,7 @@ import {
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { fillDTO } from 'src/shared/libs/utils/helpers';
+import { fillDTO, updateArray } from 'src/shared/libs/utils/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { JwtAuthGuard } from '../shared/guards/jwt-auth.guard';
@@ -36,10 +36,8 @@ import { CheckUnAuthGuard } from 'src/shared/guards/check-unauth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { UserEntity } from './user.entity';
-import { AddFriendsInterceptor } from 'src/shared/interceptors/add-friends.interceptor';
+import { AddUserInterceptor } from 'src/shared/interceptors/add-user.interceptor';
 import { MailService } from '../mail/mail.service';
-import { NotificationsService } from 'src/notifications/notifications.service';
-import { ADD_FRIEND } from './users.constant';
 
 @ApiTags('users')
 @Controller('users')
@@ -47,7 +45,6 @@ export class UsersController {
   constructor(
     private readonly usersService: UsersService,
     private readonly mailService: MailService,
-    private readonly notificationsService: NotificationsService,
   ) {}
 
   @ApiResponse({
@@ -75,10 +72,10 @@ export class UsersController {
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @UseInterceptors(AddFriendsInterceptor)
+  @UseInterceptors(AddUserInterceptor)
   @Get('friends')
   public async indexFriends(
-    @Req() { user: { friends } }: RequestWithTokenPayload,
+    @Req() { user: { friends } }: RequestWithUser,
   ): Promise<UserRdo[]> {
     const friendsList: UserEntity[] =
       await this.usersService.indexUserFriends(friends);
@@ -94,23 +91,38 @@ export class UsersController {
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @UseInterceptors(AddFriendsInterceptor)
+  @UseInterceptors(AddUserInterceptor)
   @Get('friends/:friendId')
   public async addRemoveFriends(
     @Param('friendId', MongoIdValidationPipe) friendId: string,
-    @Req() { user: { friends, sub } }: RequestWithTokenPayload,
+    @Req() { user: { friends, id: userId } }: RequestWithUser,
   ): Promise<UserRdo> {
-    const newFriendsList: string[] = friends!.includes(friendId)
-      ? friends!.filter((friend) => friend !== friendId)
-      : friends!.concat(friendId);
-    if (newFriendsList.length > friends!.length) {
-      await this.notificationsService.createNewNotification({
-        userId: sub!,
-        description: ADD_FRIEND,
-      });
-    }
-    const updatedUser = await this.usersService.updateUser(sub!, {
+    const newFriendsList = await this.usersService.notifyNewFriend(
+      friends,
+      friendId,
+      userId!,
+    );
+    const updatedUser = await this.usersService.updateUser(userId!, {
       friends: newFriendsList,
+    });
+    return fillDTO(UserRdo, updatedUser?.toPOJO());
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user has been subscribed/unsubscribed.',
+  })
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard(UserRole.User))
+  @UseInterceptors(AddUserInterceptor)
+  @Get('subscribe/:trainerId')
+  public async addRemoveSubscription(
+    @Param('trainerId', MongoIdValidationPipe) trainerId: string,
+    @Req() { user: { id, subscribedFor } }: RequestWithUser,
+  ): Promise<UserRdo> {
+    const newSubscriptionList = updateArray<string>(subscribedFor!, trainerId);
+    const updatedUser = await this.usersService.updateUser(id!, {
+      subscribedFor: newSubscriptionList,
     });
     return fillDTO(UserRdo, updatedUser?.toPOJO());
   }

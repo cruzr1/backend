@@ -3,7 +3,7 @@ import { Job } from 'bull';
 import { MailService } from 'src/mail/mail.service';
 import { UsersService } from 'src/users/users.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
-import { NotifyStatus, TrainingJob } from 'src/shared/libs/types';
+import { NotifyStatus, JobEntityType, Training } from 'src/shared/libs/types';
 
 const JOB_PROGRESS_COMPLETE = 100;
 const JOB_PROGRESS_INITIAL_VALUE = 0;
@@ -16,7 +16,7 @@ export class TrainingsProcessor {
     private readonly notificaitonsService: NotificationsService,
   ) {}
   @Process()
-  async transcode(job: Job<TrainingJob>): Promise<void> {
+  async transcode(job: Job<JobEntityType<Training>>): Promise<void> {
     job.progress(JOB_PROGRESS_INITIAL_VALUE);
     const subscribersList = await this.usersService.indexSubscribers(
       job.data.trainerId,
@@ -34,9 +34,11 @@ export class TrainingsProcessor {
   }
 
   @OnQueueCompleted()
-  async OnQueueCompleted({ data: { notificationId } }: Job<TrainingJob>) {
+  async OnQueueCompleted({
+    data: { notificationId },
+  }: Job<JobEntityType<Training>>) {
     await this.notificaitonsService.changeNotificationStatus(
-      notificationId!,
+      notificationId,
       NotifyStatus.Sent,
     );
   }

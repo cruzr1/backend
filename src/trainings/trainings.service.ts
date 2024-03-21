@@ -14,7 +14,8 @@ import {
 import {
   PaginationResult,
   TrainingAggregated,
-  TrainingJob,
+  JobEntityType,
+  Training,
   TrainingOrdered,
 } from 'src/shared/libs/types';
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
@@ -29,7 +30,7 @@ export class TrainingsService {
     private readonly trainingsRepository: TrainingsRepository,
     private readonly accountsRepository: AccountsRepository,
     @InjectQueue('trainings')
-    private trainingsQueue: Queue<TrainingJob>,
+    private trainingsQueue: Queue<JobEntityType<Training>>,
   ) {}
 
   public async createNewTraining(
@@ -41,7 +42,7 @@ export class TrainingsService {
       trainerId,
       rating: 0,
     });
-    const newTrainingJob: TrainingJob = {
+    const newTrainingJob: JobEntityType<Training> = {
       ...newTraining.toPOJO(),
       notificationId: '',
     };

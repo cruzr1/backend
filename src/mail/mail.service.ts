@@ -5,11 +5,15 @@ import {
   USER_TEMPLATE_PATH,
   NEW_TRAINING_SUBJECT,
   NEW_TRAINING_TEMPLATE_PATH,
+  APPLICATION_CREATED_SUBJECT,
+  APPLICATION_CREATED_TEMPLATE_PATH,
+  APPLICATION_ACCEPTED_SUBJECT,
+  APPLICATION_ACCEPTED_TEMPLATE_PATH,
 } from './mail.constant';
 import { ConfigType } from '@nestjs/config';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { MailerConfig } from 'src/shared/libs/config';
-import { Training } from 'src/shared/libs/types';
+import { Training, User } from 'src/shared/libs/types';
 
 @Injectable()
 export class MailService {
@@ -19,7 +23,20 @@ export class MailService {
     private readonly mailerConfig: ConfigType<typeof MailerConfig>,
   ) {}
 
-  public async sendNotifyNewUser({ name, email, password }: CreateUserDto) {
+  public async sendCommonMail(
+    mailData: Record<string, unknown>,
+  ): Promise<void> {
+    await this.mailerService.sendMail({
+      from: this.mailerConfig.mailFrom,
+      ...mailData,
+    });
+  }
+
+  public async sendNotifyNewUser({
+    name,
+    email,
+    password,
+  }: CreateUserDto): Promise<void> {
     await this.mailerService.sendMail({
       from: this.mailerConfig.mailFrom,
       to: email,
@@ -51,7 +68,7 @@ export class MailService {
     }: Training,
     userName: string,
     email: string,
-  ) {
+  ): Promise<void> {
     await this.mailerService.sendMail({
       from: this.mailerConfig.mailFrom,
       to: email,
@@ -70,6 +87,69 @@ export class MailService {
         trainerId: `${trainerId}`,
         isSpecial: `${isSpecial}`,
         videoURL: `${videoURL}`,
+        userName: `${userName}`,
+      },
+    });
+  }
+
+  public async sendNotifyApplicationCreated(
+    {
+      name: authorName,
+      description,
+      level,
+      trainType,
+      duration,
+      caloriesTarget,
+      caloriesDaily,
+    }: User,
+    name: string,
+    email: string,
+  ): Promise<void> {
+    await this.mailerService.sendMail({
+      from: this.mailerConfig.mailFrom,
+      to: email,
+      subject: APPLICATION_CREATED_SUBJECT,
+      template: APPLICATION_CREATED_TEMPLATE_PATH,
+      context: {
+        name: `${name}`,
+        authorName: `${authorName}`,
+        description: `${description}`,
+        level: `${level}`,
+        trainType: `${trainType}`,
+        duration: `${duration}`,
+        caloriesTarget: `${caloriesTarget}`,
+        caloriesDaily: `${caloriesDaily}`,
+      },
+    });
+  }
+
+  public async sendNotifyApplicationAccepted(
+    name: string,
+    email: string,
+  ): Promise<void> {
+    await this.mailerService.sendMail({
+      from: this.mailerConfig.mailFrom,
+      to: email,
+      subject: APPLICATION_ACCEPTED_SUBJECT,
+      template: APPLICATION_ACCEPTED_TEMPLATE_PATH,
+      context: {
+        name: `${name}`,
+      },
+    });
+  }
+
+  public async sendNotifyAddedToFriends(
+    name: string,
+    email: string,
+    userName: string,
+  ): Promise<void> {
+    await this.mailerService.sendMail({
+      from: this.mailerConfig.mailFrom,
+      to: email,
+      subject: APPLICATION_ACCEPTED_SUBJECT,
+      template: APPLICATION_ACCEPTED_TEMPLATE_PATH,
+      context: {
+        name: `${name}`,
         userName: `${userName}`,
       },
     });

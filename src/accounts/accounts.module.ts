@@ -27,6 +27,6 @@ import { AccountsController } from './accounts.controller';
   ],
   controllers: [AccountsController],
   providers: [AccountsService, JwtAccessStrategy, AccountsRepository],
-  exports: [AccountsRepository],
+  exports: [AccountsRepository, AccountsService],
 })
 export class AccountsModule {}

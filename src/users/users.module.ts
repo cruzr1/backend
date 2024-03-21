@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { getJwtOptions } from 'src/shared/libs/config';
+import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema, UserModel } from './user.model';
 import { RefreshTokenModule } from 'src/refresh-token/refresh-token.module';
@@ -31,6 +32,9 @@ import { NotificationsService } from 'src/notifications/notifications.service';
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
     RefreshTokenModule,
     MailModule,
+    BullModule.registerQueue({
+      name: 'users',
+    }),
   ],
   controllers: [UsersController],
   providers: [

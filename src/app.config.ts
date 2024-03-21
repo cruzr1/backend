@@ -1,2 +1,4 @@
 export const HTTP_CLIENT_MAX_REDIRECTS = 5;
 export const HTTP_CLIENT_TIMEOUT = 5000;
+export const JOB_PROGRESS_COMPLETE = 100;
+export const JOB_PROGRESS_INITIAL_VALUE = 0;

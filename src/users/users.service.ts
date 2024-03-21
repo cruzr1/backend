@@ -17,7 +17,12 @@ import {
 import { UserEntity } from './user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UsersRepository } from './users.repository';
-import { PaginationResult, Token, User } from 'src/shared/libs/types';
+import {
+  PaginationResult,
+  Token,
+  User,
+  JobEntityType,
+} from 'src/shared/libs/types';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from 'src/shared/libs/config';
 import { ConfigType } from '@nestjs/config';
@@ -27,7 +32,15 @@ import * as crypto from 'node:crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import { NotificationsService } from 'src/notifications/notifications.service';
-import { ADD_FRIEND } from './users.constant';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
+
+export type UsersJobType = {
+  userId: string;
+  friendId: string;
+  addFriend: boolean;
+  userName: string;
+};
 
 @Injectable()
 export class UsersService {
@@ -39,6 +52,8 @@ export class UsersService {
     private readonly jwtOptions: ConfigType<typeof jwtConfig>,
     private readonly refreshTokenService: RefreshTokenService,
     private readonly notificationsService: NotificationsService,
+    @InjectQueue('users')
+    private usersQueue: Queue<JobEntityType<UsersJobType>>,
   ) {}
 
   public async registerNewUser(dto: CreateUserDto): Promise<UserEntity> {
@@ -92,18 +107,35 @@ export class UsersService {
   }
 
   public async notifyNewFriend(
-    friends: string[],
-    friendId: string,
     userId: string,
-  ): Promise<string[]> {
-    const newFriendsList: string[] = updateArray<string>(friends!, friendId);
-    if (newFriendsList.length > friends!.length) {
-      await this.notificationsService.createNewNotification({
-        userId,
-        description: ADD_FRIEND,
-      });
-    }
-    return newFriendsList;
+    friendId: string,
+  ): Promise<UserEntity | null> {
+    const { friends, name: userName } = await this.getUserEntity(userId);
+    const newFriendsList: string[] = updateArray<string>(friends, friendId);
+    const newUsersJob: JobEntityType<UsersJobType> = {
+      addFriend: newFriendsList > friends,
+      friendId,
+      userId,
+      userName,
+      notificationId: '',
+    };
+    await this.usersQueue.add(newUsersJob, { removeOnComplete: true });
+    const updatedUser = await this.updateUser(userId!, {
+      friends: newFriendsList,
+    });
+    return updatedUser;
+  }
+
+  public async changeUserSubscription(
+    userId: string,
+    trainerId: string,
+  ): Promise<UserEntity | null> {
+    const { subscribedFor } = await this.getUserEntity(userId);
+    const newSubscriptionList = updateArray<string>(subscribedFor, trainerId);
+    const updatedUser = await this.updateUser(userId, {
+      subscribedFor: newSubscriptionList,
+    });
+    return updatedUser;
   }
 
   public async getUserEntity(id: string): Promise<UserEntity> {
@@ -134,12 +166,9 @@ export class UsersService {
     return await this.usersRepository.findMany(query ?? {});
   }
 
-  public async indexUserFriends(
-    userFriends?: string[] | undefined,
-  ): Promise<UserEntity[]> {
-    const friendsFound: UserEntity[] = await this.usersRepository.indexFriends(
-      userFriends ?? [],
-    );
+  public async indexUserFriends(userId: string): Promise<UserEntity[]> {
+    const { friends } = await this.getUserEntity(userId);
+    const friendsFound = await this.usersRepository.indexFriends(friends);
     return friendsFound;
   }
 

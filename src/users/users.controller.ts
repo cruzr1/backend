@@ -15,7 +15,7 @@ import {
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { fillDTO, updateArray } from 'src/shared/libs/utils/helpers';
+import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { JwtAuthGuard } from '../shared/guards/jwt-auth.guard';
@@ -35,7 +35,6 @@ import { MongoIdValidationPipe } from '../shared/pipes/mongo-id-validation.pipe'
 import { CheckUnAuthGuard } from 'src/shared/guards/check-unauth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
-import { UserEntity } from './user.entity';
 import { AddUserInterceptor } from 'src/shared/interceptors/add-user.interceptor';
 import { MailService } from '../mail/mail.service';
 
@@ -72,13 +71,11 @@ export class UsersController {
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @UseInterceptors(AddUserInterceptor)
   @Get('friends')
   public async indexFriends(
-    @Req() { user: { friends } }: RequestWithUser,
+    @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<UserRdo[]> {
-    const friendsList: UserEntity[] =
-      await this.usersService.indexUserFriends(friends);
+    const friendsList = await this.usersService.indexUserFriends(sub!);
     return fillDTO<UserRdo, User>(
       UserRdo,
       friendsList.map((friend) => friend.toPOJO()),
@@ -95,16 +92,9 @@ export class UsersController {
   @Get('friends/:friendId')
   public async addRemoveFriends(
     @Param('friendId', MongoIdValidationPipe) friendId: string,
-    @Req() { user: { friends, id: userId } }: RequestWithUser,
+    @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<UserRdo> {
-    const newFriendsList = await this.usersService.notifyNewFriend(
-      friends,
-      friendId,
-      userId!,
-    );
-    const updatedUser = await this.usersService.updateUser(userId!, {
-      friends: newFriendsList,
-    });
+    const updatedUser = await this.usersService.notifyNewFriend(sub!, friendId);
     return fillDTO(UserRdo, updatedUser?.toPOJO());
   }
 
@@ -114,16 +104,15 @@ export class UsersController {
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @UseInterceptors(AddUserInterceptor)
   @Get('subscribe/:trainerId')
   public async addRemoveSubscription(
     @Param('trainerId', MongoIdValidationPipe) trainerId: string,
-    @Req() { user: { id, subscribedFor } }: RequestWithUser,
+    @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<UserRdo> {
-    const newSubscriptionList = updateArray<string>(subscribedFor!, trainerId);
-    const updatedUser = await this.usersService.updateUser(id!, {
-      subscribedFor: newSubscriptionList,
-    });
+    const updatedUser = await this.usersService.changeUserSubscription(
+      sub!,
+      trainerId,
+    );
     return fillDTO(UserRdo, updatedUser?.toPOJO());
   }
 

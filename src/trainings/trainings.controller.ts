@@ -24,9 +24,8 @@ import {
 } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateTrainingDto } from './dto/update-training.dto';
-import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 import { TrainingsOrderedRdo } from './rdo/trainings-ordered.rdo';
-import { IndexAccountsQuery } from 'src/shared/query';
+import { IndexAccountsQuery, IndexTrainingsQuery } from 'src/shared/query';
 
 @ApiTags('trainings')
 @Controller('trainings')

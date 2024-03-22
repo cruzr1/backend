@@ -1,7 +1,7 @@
 # Создание тренировки
 POST http://localhost:3000/api/trainings HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDc2NTE3NywiZXhwIjoxNzEwNzY2MDc3fQ.AjDYBJL6eOfXZ6fmfN9I8a4h8A5DtD6zCMjZlCDPKsY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAxNDgwOCwiZXhwIjoxNzExMDE1NzA4fQ.0z6Pz709eYFwpXGpOfaLsaKCvHPY-1XzmsU-v33mPe0
 
 {
   "name": "Yoga training",
@@ -21,13 +21,25 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Y
 
 # Редактирование тренировки
 
+PATCH http://localhost:3000/api/trainings/65f7ffb015ef515772b1365f HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAxNTUyOSwiZXhwIjoxNzExMDE2NDI5fQ.QW4ZmfQLGfH-qyGnx0QqJBkaYzd1r6dUBIMCuAL9iVw
+
+{
+    "name": "Yoga YOGA1"
+}
+
 ###
 
 # Детальная информация о тренировке
+GET  http://localhost:3000/api/trainings/65f7ffb015ef515772b1365f HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAxNTUyOSwiZXhwIjoxNzExMDE2NDI5fQ.QW4ZmfQLGfH-qyGnx0QqJBkaYzd1r6dUBIMCuAL9iVw
 
 ###
 
 # Список тренировок
+GET  http://localhost:3000/api/trainings?priceFilter=1000,3000&caloriesFilter=6000,5000&ratingFilter=0 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAzMTA5MCwiZXhwIjoxNzExMDMxOTkwfQ.UhnM_VKsKamwed8-Kcpu5HO2rXgEFhateWkZS7eiASE
 
 ###
 

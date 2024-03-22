@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import {
   IsOptional,
   IsIn,
@@ -15,10 +15,12 @@ import {
   DEFAULT_SORT_BY_FIELD,
   TrainingValidationParams,
 } from '../../trainings/trainings.constant';
-
-const TRAININGS_SORT_BY_ORDERS = ['asc', 'desc'];
-const DEFAULT_PAGE_NUMBER = 1;
-const DEFAULT_SORT_BY_ORDER = 'asc';
+import {
+  SORT_BY_ORDERS,
+  DEFAULT_PAGE_NUMBER,
+  DEFAULT_SORT_BY_ORDER,
+  DEFAULT_LIST_REQUEST_COUNT,
+} from 'src/app.config';
 
 export class IndexTrainingsQuery {
   @ApiProperty({
@@ -26,9 +28,7 @@ export class IndexTrainingsQuery {
     example: '[1000, 3000]',
   })
   @IsOptional()
-  @IsArray()
-  @IsNumber({}, { each: true })
-  @Min(TrainingValidationParams.Price.Value.Minimum, { each: true })
+  @Transform((params) => params.value.split(','))
   public priceFilter?: number[];
 
   @ApiProperty({
@@ -36,10 +36,7 @@ export class IndexTrainingsQuery {
     example: '[1000, 3000]',
   })
   @IsOptional()
-  @IsArray()
-  @IsNumber({}, { each: true })
-  @Min(TrainingValidationParams.Calories.Value.Minimum, { each: true })
-  @Max(TrainingValidationParams.Calories.Value.Maximum, { each: true })
+  @Transform((params) => params.value.split(','))
   public caloriesFilter?: number[];
 
   @ApiProperty({
@@ -50,6 +47,7 @@ export class IndexTrainingsQuery {
   @IsNumber()
   @Min(TrainingValidationParams.Rating.Value.Minimum)
   @Max(TrainingValidationParams.Rating.Value.Maximum)
+  @Type(() => Number)
   public ratingFilter?: number;
 
   @ApiProperty({
@@ -59,6 +57,7 @@ export class IndexTrainingsQuery {
   @IsOptional()
   @IsArray()
   @IsEnum(Duration, { each: true })
+  @Transform((params) => params.value.split(','))
   public durationFilter?: Duration[];
 
   @ApiProperty({
@@ -90,6 +89,16 @@ export class IndexTrainingsQuery {
     example: 'desc',
   })
   @IsOptional()
-  @IsIn(TRAININGS_SORT_BY_ORDERS)
+  @IsIn(SORT_BY_ORDERS)
   public sortByOrder?: SortByOrder = DEFAULT_SORT_BY_ORDER;
+
+  @ApiProperty({
+    description: 'List request count',
+    example: '50',
+  })
+  @IsOptional()
+  @IsNumber()
+  @Max(DEFAULT_LIST_REQUEST_COUNT)
+  @Type(() => Number)
+  public take?: number = DEFAULT_LIST_REQUEST_COUNT;
 }

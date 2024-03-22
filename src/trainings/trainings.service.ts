@@ -42,11 +42,11 @@ export class TrainingsService {
       trainerId,
       rating: 0,
     });
-    const newTrainingJob: JobEntityType<Training> = {
-      ...newTraining.toPOJO(),
-      notificationId: '',
-    };
-    await this.trainingsQueue.add(newTrainingJob, { removeOnComplete: true });
+    // const newTrainingJob: JobEntityType<Training> = {
+    //   ...newTraining.toPOJO(),
+    //   notificationId: '',
+    // };
+    // await this.trainingsQueue.add(newTrainingJob, { removeOnComplete: true });
     return await this.trainingsRepository.save(newTraining);
   }
 

@@ -6,6 +6,8 @@ import {
   MongoRepository,
   Training,
   PaginationResult,
+  Duration,
+  TrainType,
 } from 'src/shared/libs/types';
 import { TrainingModel } from './training.model';
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
@@ -15,6 +17,13 @@ import {
   DEFAULT_SORT_BY_FIELD,
   DEFAULT_SORT_BY_ORDER,
 } from './trainings.constant';
+
+type QueryTrainingsType = {
+  rating: number;
+  duration: Duration;
+  trainType: TrainType;
+  trainerId: string;
+};
 
 @Injectable()
 export class TrainingsRepository extends MongoRepository<
@@ -32,26 +41,28 @@ export class TrainingsRepository extends MongoRepository<
       page = DEFAULT_PAGE_NUMBER,
       sortByField = DEFAULT_SORT_BY_FIELD,
       sortByOrder = DEFAULT_SORT_BY_ORDER,
+      take = DEFAULT_LIST_REQUEST_COUNT,
       ...queryParams
     }: IndexTrainingsQuery,
     trainerId: string,
   ): Promise<PaginationResult<TrainingEntity>> {
-    const query: FilterQuery<IndexTrainingsQuery> = { trainerId };
+    const query: FilterQuery<QueryTrainingsType> = { trainerId };
     if (queryParams.priceFilter) {
-      query.price = {
-        $and: [
-          { $gte: Math.min(...queryParams.priceFilter) },
-          { $lte: Math.max(...queryParams.priceFilter) },
-        ],
-      };
+      const { priceFilter } = queryParams;
+      query.$and = [
+        { price: { $gte: Math.min(...priceFilter) } },
+        { price: { $lte: Math.max(...priceFilter) } },
+      ];
     }
     if (queryParams.caloriesFilter) {
-      query.calories = {
-        $and: [
-          { $gte: Math.min(...queryParams.caloriesFilter) },
-          { $lte: Math.max(...queryParams.caloriesFilter) },
-        ],
-      };
+      const { caloriesFilter } = queryParams;
+      if (!query.$and) {
+        query.$and = [];
+      }
+      query.$and.push(
+        { calories: { $gte: Math.min(...caloriesFilter) } },
+        { calories: { $lte: Math.max(...caloriesFilter) } },
+      );
     }
     if (queryParams.ratingFilter) {
       query.rating = queryParams.ratingFilter;
@@ -60,17 +71,12 @@ export class TrainingsRepository extends MongoRepository<
       query.duration = { $in: [...queryParams.durationFilter] };
     }
     if (queryParams.trainTypeFilter) {
-      query.trainTypeFilter = queryParams.trainTypeFilter;
+      query.trainType = queryParams.trainTypeFilter;
     }
-    const skip = (page - DEFAULT_PAGE_NUMBER) * DEFAULT_LIST_REQUEST_COUNT;
+    const skip = (page - DEFAULT_PAGE_NUMBER) * take;
     const orderBy = { [sortByField]: sortByOrder };
     const [trainingsList, totalTrainings] = await Promise.all([
-      this.model
-        .find(query)
-        .sort(orderBy)
-        .skip(skip)
-        .limit(DEFAULT_LIST_REQUEST_COUNT)
-        .exec(),
+      this.model.find(query).sort(orderBy).skip(skip).limit(take).exec(),
       this.model.countDocuments(query).exec(),
     ]);
     return {
@@ -78,7 +84,8 @@ export class TrainingsRepository extends MongoRepository<
         this.createEntityFromDocument(training),
       ),
       currentPage: page,
-      totalPages: Math.ceil(totalTrainings / DEFAULT_LIST_REQUEST_COUNT),
+      totalPages: Math.ceil(totalTrainings / take),
+      totalItems: totalTrainings,
     };
   }
 }

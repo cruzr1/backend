@@ -93,4 +93,11 @@ export class TrainingRdo {
     example: 'true',
   })
   public isSpecial: boolean;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Training rating',
+    example: '3',
+  })
+  public rating: number;
 }

@@ -30,6 +30,7 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
     page = DEFAULT_PAGE_NUMBER,
     sortByField = DEFAULT_SORT_BY_FIELD,
     sortByOrder = DEFAULT_SORT_BY_ORDER,
+    take = DEFAULT_LIST_REQUEST_COUNT,
     ...queryParams
   }: IndexUsersQuery): Promise<PaginationResult<UserEntity>> {
     const query: FilterQuery<IndexUsersQuery> = {};
@@ -42,21 +43,17 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
     if (queryParams.trainType) {
       query.trainType = { $in: [...queryParams.trainType] };
     }
-    const skip = (page - DEFAULT_PAGE_NUMBER) * DEFAULT_LIST_REQUEST_COUNT;
+    const skip = (page - DEFAULT_PAGE_NUMBER) * take;
     const orderBy = { [sortByField]: sortByOrder };
     const [usersList, totalUsers] = await Promise.all([
-      this.model
-        .find(query)
-        .sort(orderBy)
-        .skip(skip)
-        .limit(DEFAULT_LIST_REQUEST_COUNT)
-        .exec(),
+      this.model.find(query).sort(orderBy).skip(skip).limit(take).exec(),
       this.model.countDocuments(query).exec(),
     ]);
     return {
       entities: usersList.map((user) => this.createEntityFromDocument(user)),
       currentPage: page,
-      totalPages: Math.ceil(totalUsers / DEFAULT_LIST_REQUEST_COUNT),
+      totalPages: Math.ceil(totalUsers / take),
+      totalItems: totalUsers,
     };
   }
 

@@ -1,9 +1,9 @@
-# Register new user
+# Регистрация пользователя
 POST http://localhost:3000/api/users/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new37@user.com",
+  "email": "new39@user.com",
   "name": "Alex",
   "password": "123456",
   "avatar": "avarar.jpg",
@@ -25,44 +25,48 @@ Content-Type: application/json
 
 ###
 
-
-
-# Login user
+# Вход в систему
 POST http://localhost:3000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new4@user.com",
+  "email": "new7@user.com",
   "password": "123456"
 }
 
 ###
 
-# Update user profile
+# Cценарий отзыва Refresh Token
+POST http://localhost:3000/api/users/refresh HTTP/1.1
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWRiNWM3N2JiZTA2MTYwNDY0NzAiLCJlbWFpbCI6Im5ldzRAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsInRva2VuSWQiOiI0OWY2OTI2Ny01MWQ2LTRjM2YtODJjYy02MGViNzljZTE4NTQiLCJpYXQiOjE3MTEwMDQ4NTUsImV4cCI6MTcxMTYwOTY1NX0.4GHXdkpyqqcMkg1ElurNWZQ-8vuGwED2m_ZzZG_Kbd4
 
+
+###
+
+# Детальная информация о пользователе
+GET http://localhost:3000/api/users/65f198e9a2d67afd0e6db7bd HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAwNTExNywiZXhwIjoxNzExMDA2MDE3fQ.kiOeta_7CYD5HSMtIW6Knaq-Zmh90CE8VTUcLpgGieE
+
+###
+
+# Редактирование информации о пользователе
 PATCH http://localhost:3000/api/users/update HTTP/1.1
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxYTJlMWRhODZjOGE2NDc2MjhkMmUiLCJlbWFpbCI6Im5ldzlAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDM0MDI1NywiZXhwIjoxNzEwMzQxMTU3fQ.G40_oye4epsQMpjtZKSbgRP0SiXzrV-SJaNsUO4aLc0
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ld2VtYWlsQHVzZXIuY29tIiwibmFtZSI6IlNhbSIsImlhdCI6MTcxMTAwNjIyMiwiZXhwIjoxNzExMDA3MTIyfQ.Xz72Z1_WcxNcvU-llow7K_hat9GPsu1IBmoZVFqD8Po
 Content-Type: application/json
 
 {
-  "name": "Sam"
+  "name": "Alex"
 }
 
+###
+
+# Список (каталог) пользователей
+GET http://localhost:3000/api/users?location=Pionerskaya&trainType=Yoga,Running&level=Newby&page=1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAxNDU1NSwiZXhwIjoxNzExMDE1NDU1fQ.It3-zZ1OiymNQyBMy2p6J-iKV1p_2U5r-rZrpaiiDSg
 
 ###
 
-# Get new JWT pair
-POST http://localhost:3000/api/users/refresh HTTP/1.1
-Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxYTJlMWRhODZjOGE2NDc2MjhkMmUiLCJlbWFpbCI6Im5ldzlAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsInRva2VuSWQiOiJhYjM1NzYwMS01YmZmLTQ1Y2YtOGIyNC05MTQyMWNkM2E0MWYiLCJpYXQiOjE3MTAzMzQ3ODMsImV4cCI6MTcxMDkzOTU4M30.pDwFoU82PiikLME-0rpFeBrkprBBneNDXO5E5EjP68I
 
-
-###
-
-# Get user by Id
-GET http://localhost:3000/api/users/65f19e4b854f792f77f0fe4c HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxYTJlMWRhODZjOGE2NDc2MjhkMmUiLCJlbWFpbCI6Im5ldzlAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDMzNDgzOCwiZXhwIjoxNzEwMzM1NzM4fQ.bK9kyItvhPbemH45aKt_QQgw6mqEG_1adO7H8VQV4k8
-
-###
 
 # Authorize user by accessToken
 

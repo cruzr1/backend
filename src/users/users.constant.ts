@@ -11,6 +11,7 @@ export const DEFAULT_LIST_REQUEST_COUNT = 50;
 export const MAX_TRAIN_TYPE_ARRAY_SIZE = 3;
 export const ADD_FRIEND = 'You have been added to friends';
 export const REMOVE_FRIEND = 'You have been removed from friends';
+export const USER_FORBIDDEN_CHANGE = 'User may not change field';
 
 export const UserValidationParams = {
   Name: {

@@ -54,7 +54,8 @@ export class UsersController {
   @UseGuards(RoleGuard(UserRole.User))
   @Get('/')
   public async index(
-    @Query() query?: IndexUsersQuery,
+    @Query()
+    query?: IndexUsersQuery,
   ): Promise<EntitiesWithPaginationRdo<UserRdo>> {
     const UsersWithPagination = await this.usersService.indexUsers(query);
     return {
@@ -192,6 +193,7 @@ export class UsersController {
     status: HttpStatus.OK,
     description: 'User found',
   })
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async showById(
     @Param('id', MongoIdValidationPipe) userId: string,

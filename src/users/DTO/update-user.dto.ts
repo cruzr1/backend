@@ -13,10 +13,12 @@ import {
   IsArray,
   ArrayMaxSize,
   IsMongoId,
+  IsEmpty,
 } from 'class-validator';
 import {
   UserValidationParams,
   MAX_TRAIN_TYPE_ARRAY_SIZE,
+  USER_FORBIDDEN_CHANGE,
 } from '../users.constant';
 import {
   Gender,
@@ -38,6 +40,30 @@ export class UpdateUserDto {
     UserValidationParams.Name.Length.Maximal,
   )
   public name?: string;
+
+  @ApiProperty({
+    description: 'User unique email address',
+    example: 'user@user.com',
+  })
+  @IsOptional()
+  @IsEmpty({ message: `${USER_FORBIDDEN_CHANGE} email` })
+  public email?: string;
+
+  @ApiProperty({
+    description: 'User password',
+    example: '123456',
+  })
+  @IsOptional()
+  @IsEmpty({ message: `${USER_FORBIDDEN_CHANGE} password` })
+  public password?: string;
+
+  @ApiProperty({
+    description: 'User role',
+    example: 'Trainer',
+  })
+  @IsOptional()
+  @IsEmpty({ message: `${USER_FORBIDDEN_CHANGE} role` })
+  public role?: UserRole;
 
   @ApiProperty({
     description: 'User avatar',

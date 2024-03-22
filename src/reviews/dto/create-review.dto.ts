@@ -1,31 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsMongoId,
-  IsNotEmpty,
-  IsNumber,
-  Length,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, Length, Max, Min } from 'class-validator';
 import { ReviewValidationParams } from '../reviews.constant';
+import { Transform } from 'class-transformer';
 
 export class CreateReviewDto {
-  @ApiProperty({
-    description: 'Review author id',
-    example: '1234-5678-1234',
-  })
-  @IsNotEmpty()
-  @IsMongoId()
-  public authorId: string;
-
-  @ApiProperty({
-    description: 'Review training id',
-    example: '1234-5678-1234',
-  })
-  @IsNotEmpty()
-  @IsMongoId()
-  public trainingId: string;
-
   @ApiProperty({
     description: 'Review rating value',
     example: '3',
@@ -34,6 +12,7 @@ export class CreateReviewDto {
   @IsNumber()
   @Min(ReviewValidationParams.Rating.Value.Minimum)
   @Max(ReviewValidationParams.Rating.Value.Maximum)
+  @Transform(({ value }) => +value)
   public rating: number;
 
   @ApiProperty({

@@ -6,6 +6,8 @@ import {
   HttpStatus,
   Get,
   Query,
+  Req,
+  Param,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
@@ -15,7 +17,12 @@ import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { IndexReviewsQuery } from 'src/shared/query/index-reviews.query';
-import { UserRole, EntitiesWithPaginationRdo } from 'src/shared/libs/types';
+import {
+  UserRole,
+  EntitiesWithPaginationRdo,
+  RequestWithTokenPayload,
+} from 'src/shared/libs/types';
+import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 
 @ApiTags('reviews')
 @Controller('reviews')
@@ -46,9 +53,17 @@ export class ReviewsController {
   })
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @Post('/')
-  public async create(@Body() dto: CreateReviewDto): Promise<ReviewRdo> {
-    const newReview = await this.reviewsService.createNewReview(dto);
+  @Post(':trainingId')
+  public async create(
+    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Param('trainingId', MongoIdValidationPipe) trainingId: string,
+    @Body() dto: CreateReviewDto,
+  ): Promise<ReviewRdo> {
+    const newReview = await this.reviewsService.createNewReview(
+      sub!,
+      trainingId,
+      dto,
+    );
     return fillDTO(ReviewRdo, newReview.toPOJO());
   }
 }

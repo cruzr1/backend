@@ -11,6 +11,13 @@ export class ReviewRdo {
 
   @Expose()
   @ApiProperty({
+    description: '2024-03-22T08:28:11.013Z',
+    example: '1234-5678-1234',
+  })
+  public createdAt: Date;
+
+  @Expose()
+  @ApiProperty({
     description: 'Review author id',
     example: '1234-5678-1234',
   })

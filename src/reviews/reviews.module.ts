@@ -10,6 +10,7 @@ import { ReviewsService } from './reviews.service';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { ReviewsRepository } from './reviews.repository';
+import { TrainingsModule } from 'src/trainings/trainings.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ReviewsRepository } from './reviews.repository';
     MongooseModule.forFeature([
       { name: ReviewModel.name, schema: ReviewSchema },
     ]),
+    TrainingsModule,
   ],
   controllers: [ReviewsController],
   providers: [ReviewsService, JwtAccessStrategy, ReviewsRepository],

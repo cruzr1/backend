@@ -9,4 +9,7 @@ export class EntitiesWithPaginationRdo<T> {
 
   @Expose()
   public currentPage: number;
+
+  @Expose()
+  public totalItems: number;
 }

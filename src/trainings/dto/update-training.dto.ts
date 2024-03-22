@@ -118,4 +118,14 @@ export class UpdateTrainingDto {
   @IsOptional()
   @IsBoolean()
   public isSpecial?: boolean;
+
+  @ApiProperty({
+    description: 'Training rating',
+    example: '4',
+  })
+  @IsOptional()
+  @IsNumber()
+  @Min(TrainingValidationParams.Rating.Value.Minimum)
+  @Max(TrainingValidationParams.Rating.Value.Maximum)
+  public rating: number;
 }

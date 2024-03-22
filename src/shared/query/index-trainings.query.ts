@@ -4,23 +4,22 @@ import {
   IsOptional,
   IsIn,
   IsEnum,
-  Equals,
   IsNumber,
   Min,
   Max,
   IsArray,
 } from 'class-validator';
 import { Duration, SortByOrder, TrainType } from 'src/shared/libs/types';
-import {
-  DEFAULT_SORT_BY_FIELD,
-  TrainingValidationParams,
-} from '../../trainings/trainings.constant';
+import { TrainingValidationParams } from '../../trainings/trainings.constant';
 import {
   SORT_BY_ORDERS,
   DEFAULT_PAGE_NUMBER,
   DEFAULT_SORT_BY_ORDER,
   DEFAULT_LIST_REQUEST_COUNT,
+  DEFAULT_SORT_BY_FIELD,
 } from 'src/app.config';
+
+const TRAININGS_SORT_BY_FIELDS = [DEFAULT_SORT_BY_FIELD, 'price'];
 
 export class IndexTrainingsQuery {
   @ApiProperty({
@@ -81,7 +80,7 @@ export class IndexTrainingsQuery {
     example: 'price',
   })
   @IsOptional()
-  @Equals(DEFAULT_SORT_BY_FIELD)
+  @IsIn(TRAININGS_SORT_BY_FIELDS)
   public sortByField?: typeof DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({

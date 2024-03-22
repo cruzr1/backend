@@ -16,7 +16,7 @@ import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_SORT_BY_FIELD,
   DEFAULT_SORT_BY_ORDER,
-} from './trainings.constant';
+} from 'src/app.config';
 
 type QueryTrainingsType = {
   rating: number;

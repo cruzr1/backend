@@ -39,5 +39,6 @@ import { BullModule } from '@nestjs/bull';
   ],
   controllers: [TrainingsController],
   providers: [TrainingsService, JwtAccessStrategy, TrainingsRepository],
+  exports: [TrainingsService],
 })
 export class TrainingsModule {}

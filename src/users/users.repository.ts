@@ -10,7 +10,7 @@ import {
   DEFAULT_PAGE_NUMBER,
   DEFAULT_SORT_BY_FIELD,
   DEFAULT_SORT_BY_ORDER,
-} from './users.constant';
+} from 'src/app.config';
 
 @Injectable()
 export class UsersRepository extends MongoRepository<UserEntity, User> {

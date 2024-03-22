@@ -36,10 +36,6 @@ export const TrainingValidationParams = {
   },
 } as const;
 
-export const DEFAULT_SORT_BY_FIELD = 'price';
-export const DEFAULT_LIST_REQUEST_COUNT = 50;
-export const DEFAULT_PAGE_NUMBER = 1;
-export const DEFAULT_SORT_BY_ORDER = 'asc';
 export const TRAINING_NOT_FOUND = 'Training does not exist';
 export const TRAINER_NOT_AUTHORIZED =
   'Trainer is not authorized to update this training';

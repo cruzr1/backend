@@ -4,19 +4,20 @@ import {
   IsOptional,
   IsIn,
   IsEnum,
-  Equals,
   IsArray,
   IsNumber,
   Max,
 } from 'class-validator';
 import { SortByOrder, Location, Level, TrainType } from 'src/shared/libs/types';
-import { DEFAULT_SORT_BY_FIELD } from '../../users/users.constant';
 import {
   DEFAULT_SORT_BY_ORDER,
   DEFAULT_PAGE_NUMBER,
   SORT_BY_ORDERS,
   DEFAULT_LIST_REQUEST_COUNT,
+  DEFAULT_SORT_BY_FIELD,
 } from 'src/app.config';
+
+const USERS_SORT_BY_FIELDS = [DEFAULT_SORT_BY_FIELD, 'role'];
 
 export class IndexUsersQuery {
   @ApiProperty({
@@ -58,7 +59,7 @@ export class IndexUsersQuery {
     example: 'price',
   })
   @IsOptional()
-  @Equals(DEFAULT_SORT_BY_FIELD)
+  @IsIn(USERS_SORT_BY_FIELDS)
   public sortByField?: typeof DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({

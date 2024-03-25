@@ -10,7 +10,6 @@ import {
   HttpCode,
   Patch,
   Query,
-  UseInterceptors,
 } from '@nestjs/common';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { UsersService } from './users.service';
@@ -35,7 +34,6 @@ import { MongoIdValidationPipe } from '../shared/pipes/mongo-id-validation.pipe'
 import { CheckUnAuthGuard } from 'src/shared/guards/check-unauth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
-import { AddUserInterceptor } from 'src/shared/interceptors/add-user.interceptor';
 import { MailService } from '../mail/mail.service';
 
 @ApiTags('users')
@@ -89,7 +87,6 @@ export class UsersController {
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @UseInterceptors(AddUserInterceptor)
   @Get('friends/:friendId')
   public async addRemoveFriends(
     @Param('friendId', MongoIdValidationPipe) friendId: string,

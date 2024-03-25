@@ -58,9 +58,10 @@ export class NotificationsService {
       isSpecial,
       videoURL,
     } = training;
-    const subscribersList = await this.usersService.indexSubscribers(
-      training.trainerId,
-    );
+    const [{ name: trainerName }, subscribersList] = await Promise.all([
+      this.usersService.getUserEntity(trainerId),
+      this.usersService.indexSubscribers(training.trainerId),
+    ]);
     subscribersList.forEach(async ({ name: userName, email }) => {
       const payload: NotificationPayloadType = {
         to: email,
@@ -76,7 +77,7 @@ export class NotificationsService {
           calories: `${calories}`,
           gender: `${gender}`,
           rating: `${rating}`,
-          trainerId: `${trainerId}`,
+          trainerName: `${trainerName}`,
           isSpecial: `${isSpecial}`,
           videoURL: `${videoURL}`,
           userName: `${userName}`,

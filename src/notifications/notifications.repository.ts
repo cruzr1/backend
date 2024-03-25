@@ -1,7 +1,11 @@
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
-import { MongoRepository, Notification } from 'src/shared/libs/types';
+import {
+  MongoRepository,
+  Notification,
+  NotifyStatus,
+} from 'src/shared/libs/types';
 import { NotificationEntity } from './notification.entity';
 import { NotificationModel } from './notification.model';
 
@@ -19,6 +23,15 @@ export class NotificationsRepository extends MongoRepository<
 
   public async findMany(userId: string): Promise<NotificationEntity[]> {
     const notificaitonsList = await this.model.find({ userId }).exec();
+    return notificaitonsList.map((notificaiton) =>
+      this.createEntityFromDocument(notificaiton),
+    );
+  }
+
+  public async findCreatedNotifications(): Promise<NotificationEntity[]> {
+    const notificaitonsList = await this.model
+      .find({ notifyStatus: NotifyStatus.Created })
+      .exec();
     return notificaitonsList.map((notificaiton) =>
       this.createEntityFromDocument(notificaiton),
     );

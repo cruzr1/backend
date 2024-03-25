@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, SchemaTypes } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Notification, NotifyStatus } from 'src/shared/libs/types';
 
@@ -8,9 +8,9 @@ import { Notification, NotifyStatus } from 'src/shared/libs/types';
 })
 export class NotificationModel extends Document implements Notification {
   @Prop({
-    required: true,
+    required: false,
   })
-  public notifyDate: Date;
+  public notifyDate?: Date;
 
   @Prop({
     required: true,
@@ -26,6 +26,19 @@ export class NotificationModel extends Document implements Notification {
     required: true,
   })
   public notifyStatus: NotifyStatus;
+
+  @Prop({
+    required: true,
+    type: SchemaTypes.Mixed,
+  })
+  public payload: {
+    to: string;
+    subject: string;
+    template: string;
+    context: {
+      string: string;
+    };
+  };
 }
 
 export const NotificationSchema =

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
@@ -10,6 +10,10 @@ import { NotificationsService } from './notifications.service';
 import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { NotificationsRepository } from './notifications.repository';
+import { MailModule } from 'src/mail/mail.module';
+import { UsersModule } from 'src/users/users.module';
+import { BullModule } from '@nestjs/bull';
+import { NotificationsProcessor } from './notifications.processor';
 
 @Module({
   imports: [
@@ -24,9 +28,19 @@ import { NotificationsRepository } from './notifications.repository';
     MongooseModule.forFeature([
       { name: NotificationModel.name, schema: NotificationSchema },
     ]),
+    MailModule,
+    forwardRef(() => UsersModule),
+    BullModule.registerQueue({
+      name: 'notifications',
+    }),
   ],
   controllers: [NotificationsController],
-  providers: [NotificationsService, JwtAccessStrategy, NotificationsRepository],
+  providers: [
+    NotificationsService,
+    JwtAccessStrategy,
+    NotificationsRepository,
+    NotificationsProcessor,
+  ],
   exports: [NotificationsService],
 })
 export class NotificationsModule {}

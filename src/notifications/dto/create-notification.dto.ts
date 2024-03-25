@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsMongoId, IsNotEmpty, Length } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsObject, Length } from 'class-validator';
 import { NotificationValidationParams } from '../notifications.constant';
 
 export class CreateNotificationDto {
@@ -21,4 +21,12 @@ export class CreateNotificationDto {
     NotificationValidationParams.Description.Length.Maximum,
   )
   public description: string;
+
+  @ApiProperty({
+    description: 'Notification text',
+    example: 'Lorem ipsum',
+  })
+  @IsNotEmpty()
+  @IsObject()
+  public payload: string;
 }

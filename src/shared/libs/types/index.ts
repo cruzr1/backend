@@ -35,3 +35,4 @@ export { TrainingAggregated } from './training-aggregated.type';
 export { TrainingOrdered } from './training-ordered.type';
 export { NotifyStatus } from './notify-status.type';
 export { JobEntityType } from './job-entity.type';
+export { NotificationPayloadType } from './notification-payload.type';

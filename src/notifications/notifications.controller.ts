@@ -38,6 +38,15 @@ export class NotificationsController {
   }
 
   @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The notifications have been sent.',
+  })
+  @Get('send')
+  public async sendNotifications(): Promise<void> {
+    await this.notificationsService.sendNotifications();
+  }
+
+  @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: 'The notifications list provided below.',
   })

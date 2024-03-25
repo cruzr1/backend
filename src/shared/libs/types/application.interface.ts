@@ -5,4 +5,5 @@ export interface Application {
   authorId: string;
   userId: string;
   status: Status;
+  updatedAt?: Date;
 }

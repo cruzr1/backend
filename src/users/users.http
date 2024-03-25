@@ -3,7 +3,7 @@ POST http://localhost:3000/api/users/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new39@user.com",
+  "email": "new42@user.com",
   "name": "Alex",
   "password": "123456",
   "avatar": "avarar.jpg",
@@ -15,7 +15,7 @@ Content-Type: application/json
   "level": "Newby",
   "trainType": ["Running", "Yoga", "Boxing"],
   "isReadyTrain": true,
-  "duration": "10-30 мин",
+  "duration": "10-30мин",
   "caloriesTarget": 3000,
   "caloriesDaily": 1000,
   "certificates": "certificate.pdf",
@@ -66,7 +66,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlO
 
 ###
 
+# Список друзей
+GET http://localhost:3000/api/users/friends HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTEyMTAwNiwiZXhwIjoxNzExMTIxOTA2fQ.L7tkR5vGjkjPaimAyexodwTDtDoFv-dwib1yjmT7Mng
 
+###
+
+# Добавить в друзья, удалить из списка друзей
+GET http://localhost:3000/api/users/friends/65f19e20854f792f77f0fe46 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTEyMTI4NywiZXhwIjoxNzExMTIyMTg3fQ.ZegscIjpUvCeOFy2RZ3MBi9BqaE8RCDAwIzuXpG7YVo
+
+###
 
 # Authorize user by accessToken
 
@@ -81,14 +91,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Y
 
 ###
 
-# Index user friends
-GET http://localhost:3000/api/users/friends HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWRiNWM3N2JiZTA2MTYwNDY0NzAiLCJlbWFpbCI6Im5ldzRAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDc5OTAwOCwiZXhwIjoxNzEwNzk5OTA4fQ.pmIDIAL2Wmi0eLCDjye7YJxdnKgfFP7aJskdpm3XLmY
 
-###
 
-# Edit user friendsList
-GET http://localhost:3000/api/users/friends/65f198e9a2d67afd0e6db7bd HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWRiNWM3N2JiZTA2MTYwNDY0NzAiLCJlbWFpbCI6Im5ldzRAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDc5OTAwOCwiZXhwIjoxNzEwNzk5OTA4fQ.pmIDIAL2Wmi0eLCDjye7YJxdnKgfFP7aJskdpm3XLmY
-
-###

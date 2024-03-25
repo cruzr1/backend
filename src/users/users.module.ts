@@ -1,9 +1,8 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { getJwtOptions } from 'src/shared/libs/config';
-import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema, UserModel } from './user.model';
 import { RefreshTokenModule } from 'src/refresh-token/refresh-token.module';
@@ -16,8 +15,8 @@ import {
   LocalStrategy,
 } from 'src/shared/strategies';
 import { UsersRepository } from './users.repository';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 import { MailModule } from 'src/mail/mail.module';
-import { NotificationsService } from 'src/notifications/notifications.service';
 
 @Module({
   imports: [
@@ -31,10 +30,8 @@ import { NotificationsService } from 'src/notifications/notifications.service';
     }),
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
     RefreshTokenModule,
+    forwardRef(() => NotificationsModule),
     MailModule,
-    BullModule.registerQueue({
-      name: 'users',
-    }),
   ],
   controllers: [UsersController],
   providers: [
@@ -43,7 +40,6 @@ import { NotificationsService } from 'src/notifications/notifications.service';
     LocalStrategy,
     JwtRefreshStrategy,
     UsersRepository,
-    NotificationsService,
   ],
   exports: [UsersService],
 })

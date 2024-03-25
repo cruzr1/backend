@@ -7,6 +7,7 @@ import {
   HttpException,
   HttpStatus,
   Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
@@ -17,12 +18,7 @@ import {
 import { UserEntity } from './user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UsersRepository } from './users.repository';
-import {
-  PaginationResult,
-  Token,
-  User,
-  JobEntityType,
-} from 'src/shared/libs/types';
+import { PaginationResult, Token, User } from 'src/shared/libs/types';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from 'src/shared/libs/config';
 import { ConfigType } from '@nestjs/config';
@@ -32,8 +28,6 @@ import * as crypto from 'node:crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import { NotificationsService } from 'src/notifications/notifications.service';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 
 export type UsersJobType = {
   userId: string;
@@ -51,9 +45,8 @@ export class UsersService {
     @Inject(jwtConfig.KEY)
     private readonly jwtOptions: ConfigType<typeof jwtConfig>,
     private readonly refreshTokenService: RefreshTokenService,
+    @Inject(forwardRef(() => NotificationsService))
     private readonly notificationsService: NotificationsService,
-    @InjectQueue('users')
-    private usersQueue: Queue<JobEntityType<UsersJobType>>,
   ) {}
 
   public async registerNewUser(dto: CreateUserDto): Promise<UserEntity> {
@@ -106,23 +99,23 @@ export class UsersService {
     }
   }
 
-  public async notifyNewFriend(
+  public async changeFriendsList(
     userId: string,
     friendId: string,
   ): Promise<UserEntity | null> {
-    const { friends, name: userName } = await this.getUserEntity(userId);
+    // console.log(userId);
+    const { friends, name } = await this.getUserEntity(userId);
     const newFriendsList: string[] = updateArray<string>(friends, friendId);
-    const newUsersJob: JobEntityType<UsersJobType> = {
-      addFriend: newFriendsList > friends,
-      friendId,
-      userId,
-      userName,
-      notificationId: '',
-    };
-    await this.usersQueue.add(newUsersJob, { removeOnComplete: true });
     const updatedUser = await this.updateUser(userId!, {
       friends: newFriendsList,
     });
+    if (newFriendsList > friends) {
+      await this.notificationsService.createNewFriendNotification(
+        friendId,
+        userId,
+        name,
+      );
+    }
     return updatedUser;
   }
 

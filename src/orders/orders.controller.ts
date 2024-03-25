@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseGuards, HttpStatus } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+  HttpStatus,
+  Req,
+} from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CreateOrderDto } from './dto/create-order.dto';
@@ -6,7 +13,7 @@ import { OrderRdo } from './rdo/order.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
-import { UserRole } from 'src/shared/libs/types';
+import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -20,8 +27,11 @@ export class OrdersController {
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
   @Post('/')
-  public async create(@Body() dto: CreateOrderDto): Promise<OrderRdo> {
-    const newOrder = await this.ordersService.createNewOrder(dto);
+  public async create(
+    @Body() dto: CreateOrderDto,
+    @Req() { user: { sub: userId } }: RequestWithTokenPayload,
+  ): Promise<OrderRdo> {
+    const newOrder = await this.ordersService.createNewOrder(userId!, dto);
     return fillDTO(OrderRdo, newOrder.toPOJO());
   }
 }

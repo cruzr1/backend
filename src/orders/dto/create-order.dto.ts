@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsMongoId, IsNumber, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { OrderType, Payment } from 'src/shared/libs/types';
+import { Type } from 'class-transformer';
 
 export class CreateOrderDto {
   @ApiProperty({
@@ -10,14 +11,6 @@ export class CreateOrderDto {
   @IsNotEmpty()
   @IsEnum(OrderType)
   public orderType: OrderType;
-
-  @ApiProperty({
-    description: 'Order author id',
-    example: '1234-5678-1234',
-  })
-  @IsNotEmpty()
-  @IsMongoId()
-  public userId: string;
 
   @ApiProperty({
     description: 'Training id',
@@ -33,6 +26,7 @@ export class CreateOrderDto {
   })
   @IsNotEmpty()
   @IsNumber()
+  @Type(() => Number)
   public trainingsCount: number;
 
   @ApiProperty({

@@ -7,6 +7,7 @@ import {
   Get,
   Param,
   Patch,
+  Req,
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
@@ -16,6 +17,8 @@ import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateAccountDto } from './dto/update-account.dto';
+import { RoleGuard } from 'src/shared/guards/check-role.guard';
+import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
 
 @ApiTags('accounts')
 @Controller('accounts')
@@ -72,11 +75,12 @@ export class AccountsController {
     description: 'The account details have been provided.',
   })
   @UseGuards(CheckAuthGuard)
-  @Get(':userId')
+  @UseGuards(RoleGuard(UserRole.User))
+  @Get('/')
   public async show(
-    @Param('accountId', MongoIdValidationPipe) userId: string,
+    @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<AccountRdo> {
-    const existAccount = await this.accountsService.findByUserId(userId);
+    const existAccount = await this.accountsService.findByUserId(sub!);
     return fillDTO(AccountRdo, existAccount?.toPOJO());
   }
 }

@@ -1,8 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { AccountEntity } from './account.entity';
 import { AccountsRepository } from './accounts.repository';
-import { ACCOUNT_NOT_FOUND } from './accounts.constant';
+import {
+  ACCOUNT_NOT_FOUND,
+  NO_AVAILABLE_TRAININGS_LEFT,
+} from './accounts.constant';
 import { UpdateAccountDto } from './dto/update-account.dto';
 
 @Injectable()
@@ -23,7 +30,12 @@ export class AccountsService {
   }
 
   public async findByUserId(userId: string): Promise<AccountEntity | null> {
-    return await this.accountsRepository.findAccountByUserId(userId);
+    const existAccount =
+      await this.accountsRepository.findAccountByUserId(userId);
+    if (existAccount) {
+      return existAccount;
+    }
+    return null;
   }
 
   public async addActiveTrainings(
@@ -40,17 +52,26 @@ export class AccountsService {
   }
 
   public async useActiveTrainings(
-    accountId: string,
+    userId: string,
     { trainingsCount }: UpdateAccountDto,
   ): Promise<AccountEntity | null> {
-    const existAccount = await this.getAccountEntity(accountId);
-    const trainingsActive = existAccount.trainingsActive - trainingsCount;
-    const trainingsInactive = existAccount.trainingsInactive + trainingsCount;
-    const updatedAccount = new AccountEntity({
-      ...existAccount,
-      trainingsActive,
-      trainingsInactive,
-    });
-    return await this.accountsRepository.update(accountId, updatedAccount);
+    const existAccount = await this.findByUserId(userId);
+    if (existAccount) {
+      if (existAccount.trainingsActive < trainingsCount) {
+        throw new BadRequestException(NO_AVAILABLE_TRAININGS_LEFT);
+      }
+      const trainingsActive = existAccount.trainingsActive - trainingsCount;
+      const trainingsInactive = existAccount.trainingsInactive + trainingsCount;
+      const updatedAccount = new AccountEntity({
+        ...existAccount,
+        trainingsActive,
+        trainingsInactive,
+      });
+      return await this.accountsRepository.update(
+        existAccount.id,
+        updatedAccount,
+      );
+    }
+    return null;
   }
 }

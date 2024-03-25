@@ -12,6 +12,7 @@ export class OrderEntity implements Order {
 
   constructor(data: Order) {
     this.id = data.id;
+    this.userId = data.userId;
     this.orderType = data.orderType;
     this.trainingId = data.trainingId;
     this.trainingsCount = data.trainingsCount;
@@ -23,6 +24,7 @@ export class OrderEntity implements Order {
   public toPOJO(): Order {
     return {
       id: this.id,
+      userId: this.userId,
       orderType: this.orderType,
       trainingId: this.trainingId,
       trainingsCount: this.trainingsCount,

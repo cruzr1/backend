@@ -1,9 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ApplicationEntity } from './application.entity';
 import { ApplicationsRepository } from './applications.repository';
 import { Status } from 'src/shared/libs/types';
 import { UpdateApplicationDto } from './dto/update-application.dto';
-import { APPLICATION_NOT_FOUND } from './applications.constant';
+import {
+  APPLICATION_NOT_FOUND,
+  APPLICATION_ALREADY_ACCEPTED,
+} from './applications.constant';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
@@ -49,16 +56,16 @@ export class ApplicationsService {
   ): Promise<ApplicationEntity | null> {
     const existApplication = await this.getApplicationEntity(applicationId);
     if (existApplication.status === dto.status) {
-      return existApplication;
+      throw new BadRequestException(APPLICATION_ALREADY_ACCEPTED);
     }
     const updatedApplication = new ApplicationEntity({
       ...existApplication,
       ...dto,
     });
     if (dto.status === Status.Accepted) {
-      // this.accountsService.useActiveTrainings(existApplication.authorId, {
-      //   trainingsCount: 1,
-      // });
+      this.accountsService.useActiveTrainings(existApplication.authorId, {
+        trainingsCount: 1,
+      });
       await this.notificationsService.createNewApplicationAcceptedNotification(
         updatedApplication.authorId,
       );

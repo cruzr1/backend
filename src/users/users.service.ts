@@ -103,7 +103,6 @@ export class UsersService {
     userId: string,
     friendId: string,
   ): Promise<UserEntity | null> {
-    // console.log(userId);
     const { friends, name } = await this.getUserEntity(userId);
     const newFriendsList: string[] = updateArray<string>(friends, friendId);
     const updatedUser = await this.updateUser(userId!, {

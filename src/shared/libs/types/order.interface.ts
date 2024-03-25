@@ -3,6 +3,7 @@ import { Payment } from './payment.enum';
 
 export interface Order {
   id?: string;
+  userId: string;
   orderType: OrderType;
   trainingId: string;
   trainingsCount: number;

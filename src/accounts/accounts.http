@@ -1,13 +1,6 @@
-# create user Account
-
-POST http://localhost:3000/api/accounts HTTP/1.1
+# Получение общего баланса: количество доступных тренировок.
+GET http://localhost:3000/api/accounts/ HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDc2NTE3NywiZXhwIjoxNzEwNzY2MDc3fQ.AjDYBJL6eOfXZ6fmfN9I8a4h8A5DtD6zCMjZlCDPKsY
-
-{
-  "userId": "65f198e9a2d67afd0e6db7bd",
-  "trainingId": "65f8369eda5e61bdd1b23c0e",
-  "trainingsActive": 1
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTM1NjA1MywiZXhwIjoxNzExMzU2OTUzfQ.M21OXBoschqLvEzO7CbINLVSxGczEe8jf3bvGv7rafI
 
 ###

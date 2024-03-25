@@ -95,7 +95,6 @@ export class UsersController {
     @Param('friendId', MongoIdValidationPipe) friendId: string,
     @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<UserRdo> {
-    console.log(sub);
     const updatedUser = await this.usersService.changeFriendsList(
       sub!,
       friendId,

@@ -14,6 +14,7 @@ import { MailModule } from 'src/mail/mail.module';
 import { UsersModule } from 'src/users/users.module';
 import { BullModule } from '@nestjs/bull';
 import { NotificationsProcessor } from './notifications.processor';
+import { NOTIFICATIONS_QUEUE } from './notifications.constant';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { NotificationsProcessor } from './notifications.processor';
     MailModule,
     forwardRef(() => UsersModule),
     BullModule.registerQueue({
-      name: 'notifications',
+      name: NOTIFICATIONS_QUEUE,
     }),
   ],
   controllers: [NotificationsController],

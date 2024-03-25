@@ -1,0 +1,16 @@
+# Список оповещений
+GET http://localhost:3000/api/notifications HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTM2MTM1NSwiZXhwIjoxNzExMzYyMjU1fQ.2Mfgs9j27_BIFGyvbfP1ZioCvXeA8qwr2Rf887rX8lw
+
+###
+
+# Удалить оповещение
+DELETE http://localhost:3000/api/notifications/660135590cc949c190829a80 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTM2MTM1NSwiZXhwIjoxNzExMzYyMjU1fQ.2Mfgs9j27_BIFGyvbfP1ZioCvXeA8qwr2Rf887rX8lw
+
+###
+
+# Рассылка оповещений/уведомлений по почте
+GET http://localhost:3000/api/notifications/send HTTP/1.1
+
+###

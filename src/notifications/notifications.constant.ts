@@ -24,3 +24,4 @@ export const NEW_TRAINING_TEMPLATE_PATH = './new-training';
 export const APPLICATION_CREATED_TEMPLATE_PATH = './application-created';
 export const APPLICATION_ACCEPTED_TEMPLATE_PATH = './application-accepted';
 export const ADDED_TO_FRIENDS_TEMPLATE_PATH = './added-to-friends';
+export const NOTIFICATIONS_QUEUE = 'notifications';

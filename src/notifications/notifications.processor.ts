@@ -4,26 +4,32 @@ import { MailService } from 'src/mail/mail.service';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { NotificationEntity } from './notification.entity';
 import { NotifyStatus } from 'src/shared/libs/types';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { NOTIFICATIONS_QUEUE } from './notifications.constant';
 
 const JOB_PROGRESS_COMPLETE = 100;
 const JOB_PROGRESS_INITIAL_VALUE = 0;
 
 @Injectable()
-@Processor('notifications')
+@Processor(NOTIFICATIONS_QUEUE)
 export class NotificationsProcessor {
+  private readonly logger = new Logger(NotificationsProcessor.name);
+
   constructor(
     private readonly mailService: MailService,
     private readonly notificaitonsService: NotificationsService,
   ) {}
+
   @Process()
   async transcode(job: Job<NotificationEntity>): Promise<void> {
     job.progress(JOB_PROGRESS_INITIAL_VALUE);
+    this.logger.log(`Processing job : ${job.id}`);
     const {
       data: { payload },
     } = job;
     await this.mailService.sendNotification(payload);
     job.progress(JOB_PROGRESS_COMPLETE);
+    this.logger.log(`Processing completed for job : ${job.id}`);
   }
 
   @OnQueueCompleted()

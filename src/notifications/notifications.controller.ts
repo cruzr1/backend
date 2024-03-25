@@ -6,6 +6,7 @@ import {
   Req,
   Delete,
   Param,
+  HttpCode,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
@@ -48,8 +49,9 @@ export class NotificationsController {
 
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
-    description: 'The notifications list provided below.',
+    description: 'The notifications has been deleted.',
   })
+  @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(CheckAuthGuard)
   @Delete(':notificationId')
   public async delete(

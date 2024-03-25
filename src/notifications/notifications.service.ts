@@ -22,6 +22,7 @@ import {
   APPLICATION_ACCEPTED_TEMPLATE_PATH,
   APPLICATION_CREATED_SUBJECT,
   APPLICATION_CREATED_TEMPLATE_PATH,
+  NOTIFICATIONS_QUEUE,
 } from './notifications.constant';
 import {
   NotificationPayloadType,
@@ -36,8 +37,8 @@ export class NotificationsService {
     private readonly notificationsRepository: NotificationsRepository,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
-    @InjectQueue('notifications')
-    private notificationsQueue: Queue<NotificationEntity>,
+    @InjectQueue(NOTIFICATIONS_QUEUE)
+    private readonly notificationsQueue: Queue<NotificationEntity>,
   ) {}
 
   public async createNewTrainingNotification(

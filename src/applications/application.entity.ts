@@ -5,6 +5,7 @@ export class ApplicationEntity implements Application {
   authorId: string;
   userId: string;
   status: Status;
+  updatedAt?: Date;
 
   constructor(data: Application) {
     this.id = data.id;
@@ -19,6 +20,7 @@ export class ApplicationEntity implements Application {
       authorId: this.authorId,
       userId: this.userId,
       status: this.status,
+      updatedAt: this.updatedAt,
     };
   }
 

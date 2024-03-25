@@ -1,0 +1,14 @@
+# Создание заявки на персональную/совместную тренировку
+POST http://localhost:3000/api/applications/65f19d4bc77bbe0616046468 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTExODQyNSwiZXhwIjoxNzExMTE5MzI1fQ.sVVGXCFTQV9CItyfrq3kzyl5hSWpT8Swgq62gnaPQok
+
+###
+
+# Изменение статуса заявки
+PATCH http://localhost:3000/api/applications/65fd98f16dd0ed60784278f7 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTExODQyNSwiZXhwIjoxNzExMTE5MzI1fQ.sVVGXCFTQV9CItyfrq3kzyl5hSWpT8Swgq62gnaPQok
+
+{
+  "status": "Accepted"
+}

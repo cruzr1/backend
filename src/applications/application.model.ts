@@ -18,9 +18,9 @@ export class ApplicationModel extends Document implements Application {
   public userId: string;
 
   @Prop({
-    required: true,
+    required: false,
   })
-  public updatedAt: string;
+  public updatedAt?: Date;
 
   @Prop({
     required: true,

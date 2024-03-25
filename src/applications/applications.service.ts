@@ -1,35 +1,33 @@
-import { NotFoundException } from '@nestjs/common';
-import { CreateApplicationDto } from './dto/create-application.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ApplicationEntity } from './application.entity';
 import { ApplicationsRepository } from './applications.repository';
-import { Application, JobEntityType, Status } from 'src/shared/libs/types';
+import { Status } from 'src/shared/libs/types';
 import { UpdateApplicationDto } from './dto/update-application.dto';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
 import { APPLICATION_NOT_FOUND } from './applications.constant';
 import { AccountsService } from 'src/accounts/accounts.service';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { CreateApplicationDto } from './dto/create-application.dto';
 
+@Injectable()
 export class ApplicationsService {
   constructor(
     private readonly applicationsRepository: ApplicationsRepository,
     private readonly accountsService: AccountsService,
-    @InjectQueue('applications')
-    private applicationsQueue: Queue<JobEntityType<Application>>,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
-  public async createNewApplication(
-    dto: CreateApplicationDto,
-  ): Promise<ApplicationEntity> {
+  public async createNewApplication({
+    authorId,
+    userId,
+  }: CreateApplicationDto): Promise<ApplicationEntity> {
     const newApplication = new ApplicationEntity({
-      ...dto,
+      userId,
+      authorId,
       status: Status.Reviewing,
     });
-    const newApplicationJob: JobEntityType<Application> = {
-      ...newApplication.toPOJO(),
-      notificationId: '',
-    };
-    await this.applicationsQueue.add(newApplicationJob, {
-      removeOnComplete: true,
+    await this.notificationsService.createNewApplicationNotification({
+      authorId,
+      userId,
     });
     return await this.applicationsRepository.save(newApplication);
   }
@@ -58,20 +56,17 @@ export class ApplicationsService {
       ...dto,
     });
     if (dto.status === Status.Accepted) {
-      this.accountsService.useActiveTrainings(existApplication.authorId, {
-        trainingsCount: 1,
-      });
-      const newApplicationJob: JobEntityType<Application> = {
-        ...updatedApplication.toPOJO(),
-        notificationId: '',
-      };
-      await this.applicationsQueue.add(newApplicationJob, {
-        removeOnComplete: true,
-      });
+      // this.accountsService.useActiveTrainings(existApplication.authorId, {
+      //   trainingsCount: 1,
+      // });
+      await this.notificationsService.createNewApplicationAcceptedNotification(
+        updatedApplication.authorId,
+      );
+      return await this.applicationsRepository.update(
+        applicationId,
+        updatedApplication,
+      );
     }
-    return await this.applicationsRepository.update(
-      applicationId,
-      updatedApplication,
-    );
+    return existApplication;
   }
 }

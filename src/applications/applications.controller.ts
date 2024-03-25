@@ -7,15 +7,15 @@ import {
   Get,
   Param,
   Patch,
+  Req,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
-import { CreateApplicationDto } from './dto/create-application.dto';
 import { ApplicationRdo } from './rdo/application.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
-import { UserRole } from 'src/shared/libs/types';
+import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 
@@ -30,12 +30,15 @@ export class ApplicationsController {
   })
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @Post('/')
+  @Post(':userId')
   public async create(
-    @Body() dto: CreateApplicationDto,
+    @Param('userId', MongoIdValidationPipe) userId: string,
+    @Req() { user: { sub: authorId } }: RequestWithTokenPayload,
   ): Promise<ApplicationRdo> {
-    const newApplication =
-      await this.applicationsService.createNewApplication(dto);
+    const newApplication = await this.applicationsService.createNewApplication({
+      authorId: authorId!,
+      userId,
+    });
     return fillDTO(ApplicationRdo, newApplication.toPOJO());
   }
 

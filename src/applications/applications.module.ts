@@ -12,7 +12,6 @@ import { JwtAccessStrategy } from 'src/shared/strategies';
 import { ApplicationsRepository } from './applications.repository';
 import { AccountsModule } from 'src/accounts/accounts.module';
 import { NotificationsModule } from 'src/notifications/notifications.module';
-import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -29,9 +28,6 @@ import { BullModule } from '@nestjs/bull';
     ]),
     AccountsModule,
     NotificationsModule,
-    BullModule.registerQueue({
-      name: 'applications',
-    }),
   ],
   controllers: [ApplicationsController],
   providers: [ApplicationsService, JwtAccessStrategy, ApplicationsRepository],

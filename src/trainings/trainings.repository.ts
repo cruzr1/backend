@@ -44,9 +44,12 @@ export class TrainingsRepository extends MongoRepository<
       take = DEFAULT_LIST_REQUEST_COUNT,
       ...queryParams
     }: IndexTrainingsQuery,
-    trainerId: string,
+    trainerId?: string,
   ): Promise<PaginationResult<TrainingEntity>> {
-    const query: FilterQuery<QueryTrainingsType> = { trainerId };
+    const query: FilterQuery<QueryTrainingsType> = {};
+    if (trainerId) {
+      query.trainerId = trainerId;
+    }
     if (queryParams.priceFilter) {
       const { priceFilter } = queryParams;
       query.$and = [

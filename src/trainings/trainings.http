@@ -39,14 +39,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlO
 
 # Список тренировок
 GET  http://localhost:3000/api/trainings?priceFilter=1000,3000&caloriesFilter=6000,5000&ratingFilter=0 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAzMTA5MCwiZXhwIjoxNzExMDMxOTkwfQ.UhnM_VKsKamwed8-Kcpu5HO2rXgEFhateWkZS7eiASE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWY5M2M5MmZhZGMyN2VlYjJkOTdmZTQiLCJlbWFpbCI6Im5ldzE0QHVzZXIuY29tIiwibmFtZSI6IkFsZXgiLCJpYXQiOjE3MTExMjAwNDksImV4cCI6MTcxMTEyMDk0OX0.ZGwt1nJL0u9h3qVi0zg_7wju419mBpoZUN0AEM0k_tY
 
 ###
 
 # Мои заказы
 
-GET http://localhost:3000/api/trainings/myOrders?sortByField=trainingsOrderedCount&sortByOrder=1 HTTP/1.1
+GET http://localhost:3000/api/trainings/myOrders?sortByField=trainingsOrderedCount&sortByOrder=-1 HTTP/1.1
 Content-Type: application/json
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTEyMDU3OCwiZXhwIjoxNzExMTIxNDc4fQ.MS5albtP7Ry-qeVJij8Foi7oCMNqN3hlRFt3oW9DyWA
 
 ###

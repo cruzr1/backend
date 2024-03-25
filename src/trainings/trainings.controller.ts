@@ -37,7 +37,6 @@ export class TrainingsController {
     description: 'The following trainings have been found.',
   })
   @UseGuards(CheckAuthGuard)
-  @UseGuards(RoleGuard(UserRole.Trainer))
   @Get('/')
   public async index(
     @Req() { user: { sub } }: RequestWithTokenPayload,

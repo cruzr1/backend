@@ -11,10 +11,8 @@ import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { TrainingsRepository } from './trainings.repository';
 import { AccountsModule } from 'src/accounts/accounts.module';
-import { MailModule } from 'src/mail/mail.module';
 import { UsersModule } from 'src/users/users.module';
 import { NotificationsModule } from 'src/notifications/notifications.module';
-import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
@@ -30,12 +28,8 @@ import { BullModule } from '@nestjs/bull';
       { name: TrainingModel.name, schema: TrainingSchema },
     ]),
     AccountsModule,
-    MailModule,
     UsersModule,
     NotificationsModule,
-    BullModule.registerQueue({
-      name: 'trainings',
-    }),
   ],
   controllers: [TrainingsController],
   providers: [TrainingsService, JwtAccessStrategy, TrainingsRepository],

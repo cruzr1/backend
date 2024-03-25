@@ -14,23 +14,22 @@ import {
 import {
   PaginationResult,
   TrainingAggregated,
-  JobEntityType,
-  Training,
   TrainingOrdered,
+  UserRole,
 } from 'src/shared/libs/types';
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
 import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { IndexAccountsQuery } from 'src/shared/query';
-import { InjectQueue } from '@nestjs/bull';
-import { Queue } from 'bull';
+import { NotificationsService } from 'src/notifications/notifications.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class TrainingsService {
   constructor(
     private readonly trainingsRepository: TrainingsRepository,
     private readonly accountsRepository: AccountsRepository,
-    @InjectQueue('trainings')
-    private trainingsQueue: Queue<JobEntityType<Training>>,
+    private readonly notificationsService: NotificationsService,
+    private readonly usersService: UsersService,
   ) {}
 
   public async createNewTraining(
@@ -42,11 +41,9 @@ export class TrainingsService {
       trainerId,
       rating: 0,
     });
-    // const newTrainingJob: JobEntityType<Training> = {
-    //   ...newTraining.toPOJO(),
-    //   notificationId: '',
-    // };
-    // await this.trainingsQueue.add(newTrainingJob, { removeOnComplete: true });
+    await this.notificationsService.createNewTrainingNotification(
+      newTraining.toPOJO(),
+    );
     return await this.trainingsRepository.save(newTraining);
   }
 
@@ -72,9 +69,11 @@ export class TrainingsService {
   }
 
   public async indexTrainings(
-    trainerId: string,
+    userId?: string,
     query?: IndexTrainingsQuery | undefined,
   ): Promise<PaginationResult<TrainingEntity>> {
+    const { role } = await this.usersService.getUserEntity(userId!);
+    const trainerId = role === UserRole.Trainer ? userId : undefined;
     return await this.trainingsRepository.findMany(query ?? {}, trainerId);
   }
 
@@ -82,7 +81,10 @@ export class TrainingsService {
     trainerId: string,
     query: IndexAccountsQuery,
   ): Promise<TrainingOrdered[]> {
-    const { entities: trainings } = await this.indexTrainings(trainerId);
+    const { entities: trainings } = await this.trainingsRepository.findMany(
+      {},
+      trainerId,
+    );
     const trainingIds = trainings.map<string>(
       (training) => training.id as string,
     );

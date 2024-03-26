@@ -11,6 +11,7 @@ import { HTTP_CLIENT_MAX_REDIRECTS, HTTP_CLIENT_TIMEOUT } from 'src/app.config';
 import { JwtAccessStrategy } from 'src/shared/strategies';
 import { ReviewsRepository } from './reviews.repository';
 import { TrainingsModule } from 'src/trainings/trainings.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TrainingsModule } from 'src/trainings/trainings.module';
       { name: ReviewModel.name, schema: ReviewSchema },
     ]),
     TrainingsModule,
+    UsersModule,
   ],
   controllers: [ReviewsController],
   providers: [ReviewsService, JwtAccessStrategy, ReviewsRepository],

@@ -39,3 +39,4 @@ export const TrainingValidationParams = {
 export const TRAINING_NOT_FOUND = 'Training does not exist';
 export const TRAINER_NOT_AUTHORIZED =
   'Trainer is not authorized to update this training';
+export const INITIAL_RATING = 0;

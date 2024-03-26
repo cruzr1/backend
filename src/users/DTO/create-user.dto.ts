@@ -143,7 +143,7 @@ export class CreateUserDto {
   @ValidateIf((obj) => obj.role === UserRole.User)
   @IsNotEmpty()
   @IsEnum(Duration)
-  public duration: Duration;
+  public duration?: Duration;
 
   @ApiProperty({
     description: 'User calories target',
@@ -154,7 +154,7 @@ export class CreateUserDto {
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
-  public caloriesTarget: number;
+  public caloriesTarget?: number;
 
   @ApiProperty({
     description: 'User calories daily target',
@@ -165,7 +165,7 @@ export class CreateUserDto {
   @IsNumber()
   @Min(UserValidationParams.Calories.Value.Minimal)
   @Max(UserValidationParams.Calories.Value.Maximal)
-  public caloriesDaily: number;
+  public caloriesDaily?: number;
 
   @ApiProperty({
     description: 'User ready/not ready to train',
@@ -182,7 +182,7 @@ export class CreateUserDto {
   @ValidateIf((obj) => obj.role === UserRole.Trainer)
   @IsNotEmpty()
   @Matches(UserValidationParams.Certificates.Regex)
-  public certificates: string;
+  public certificates?: string;
 
   @ApiProperty({
     description: 'Trainer achievements',
@@ -194,5 +194,5 @@ export class CreateUserDto {
     UserValidationParams.Description.Length.Minimal,
     UserValidationParams.Description.Length.Maximal,
   )
-  public achievements: string;
+  public achievements?: string;
 }

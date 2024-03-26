@@ -22,6 +22,8 @@ import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { IndexAccountsQuery } from 'src/shared/query';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { UsersService } from 'src/users/users.service';
+import { INITIAL_RATING } from './trainings.constant';
+import { generateTrainingEntities } from 'src/shared/libs/utils/database/generate-training';
 
 @Injectable()
 export class TrainingsService {
@@ -39,12 +41,18 @@ export class TrainingsService {
     const newTraining = new TrainingEntity({
       ...dto,
       trainerId,
-      rating: 0,
+      rating: INITIAL_RATING,
     });
     await this.notificationsService.createNewTrainingNotification(
       newTraining.toPOJO(),
     );
     return await this.trainingsRepository.save(newTraining);
+  }
+
+  public async seedTrainingsDatabase(count: number): Promise<void> {
+    const trainersList = await this.usersService.getUsersList(UserRole.Trainer);
+    const trainingsEntities = generateTrainingEntities(count, trainersList);
+    await this.trainingsRepository.insertManyTrainings(trainingsEntities);
   }
 
   public async getTrainingEntity(trainingId: string): Promise<TrainingEntity> {
@@ -114,5 +122,9 @@ export class TrainingsService {
       );
     }
     return trainingsOrdered;
+  }
+
+  public async getTrainingsList(): Promise<TrainingEntity[]> {
+    return await this.trainingsRepository.find();
   }
 }

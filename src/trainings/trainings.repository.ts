@@ -91,4 +91,16 @@ export class TrainingsRepository extends MongoRepository<
       totalItems: totalTrainings,
     };
   }
+
+  public async insertManyTrainings(entities: TrainingEntity[]): Promise<void> {
+    const trainingsDocuments = entities.map((entity) => entity.toPOJO());
+    await this.model.insertMany(trainingsDocuments);
+  }
+
+  public async find(): Promise<TrainingEntity[]> {
+    const trainingsList = await this.model.find().exec();
+    return trainingsList.map((training) =>
+      this.createEntityFromDocument(training),
+    );
+  }
 }

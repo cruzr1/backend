@@ -10,7 +10,7 @@ export interface User {
   name: string;
   email: string;
   avatar: string;
-  passwordHash: string;
+  passwordHash?: string;
   gender: Gender;
   birthDate?: Date;
   role: UserRole;
@@ -18,7 +18,7 @@ export interface User {
   location: Location;
   backgroundImage: string;
   level: Level;
-  friends: string[];
+  friends?: string[];
   trainType: TrainType[];
   isReadyTrain: boolean;
   subscribedFor?: string[];

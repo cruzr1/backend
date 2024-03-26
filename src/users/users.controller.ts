@@ -118,6 +118,15 @@ export class UsersController {
   }
 
   @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The user data have been seeded.',
+  })
+  @Get('seed/:count')
+  public async seedDatabase(@Param('count') count: number): Promise<void> {
+    await this.usersService.seedDatabase(count);
+  }
+
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new user has been created.',
   })

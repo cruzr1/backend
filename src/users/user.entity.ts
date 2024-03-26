@@ -38,7 +38,7 @@ export class UserEntity implements User {
     this.name = data.name;
     this.email = data.email;
     this.avatar = data.avatar;
-    this.passwordHash = data.passwordHash;
+    this.passwordHash = data.passwordHash || '';
     this.gender = data.gender;
     this.birthDate = data.birthDate;
     this.role = data.role;
@@ -48,7 +48,7 @@ export class UserEntity implements User {
     this.level = data.level;
     this.trainType = data.trainType;
     this.isReadyTrain = data.isReadyTrain;
-    this.friends = data.friends;
+    this.friends = data.friends || [];
     this.subscribedFor = data.subscribedFor || [];
     this.certificates = data.certificates || '';
     this.achievements = data.achievements || '';

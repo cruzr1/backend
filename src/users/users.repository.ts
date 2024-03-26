@@ -2,7 +2,12 @@ import mongoose, { Model, FilterQuery } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { UserEntity } from './user.entity';
-import { MongoRepository, User, PaginationResult } from 'src/shared/libs/types';
+import {
+  MongoRepository,
+  User,
+  PaginationResult,
+  UserRole,
+} from 'src/shared/libs/types';
 import { UserModel } from './user.model';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import {
@@ -24,6 +29,11 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
       return this.createEntityFromDocument(document);
     }
     return null;
+  }
+
+  public async insertMany(entities: UserEntity[]): Promise<void> {
+    const userDocuments = entities.map((entity) => entity.toPOJO());
+    await this.model.insertMany(userDocuments);
   }
 
   public async findMany({
@@ -72,5 +82,10 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
       .find({ subscribedFor: trainerId })
       .exec();
     return userDocuments.map((user) => this.createEntityFromDocument(user));
+  }
+
+  public async indexUsers(role: UserRole): Promise<UserEntity[]> {
+    const usersList = await this.model.find({ role }).exec();
+    return usersList.map((user) => this.createEntityFromDocument(user));
   }
 }

@@ -80,6 +80,15 @@ export class TrainingsController {
   }
 
   @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The training data have been seeded.',
+  })
+  @Get('seed/:count')
+  public async seedDatabase(@Param('count') count: number): Promise<void> {
+    await this.trainingsService.seedTrainingsDatabase(count);
+  }
+
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new training has been created.',
   })

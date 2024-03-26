@@ -18,7 +18,7 @@ import {
 import { UserEntity } from './user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import { UsersRepository } from './users.repository';
-import { PaginationResult, Token, User } from 'src/shared/libs/types';
+import { PaginationResult, Token, User, UserRole } from 'src/shared/libs/types';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConfig } from 'src/shared/libs/config';
 import { ConfigType } from '@nestjs/config';
@@ -28,6 +28,7 @@ import * as crypto from 'node:crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import { NotificationsService } from 'src/notifications/notifications.service';
+import { generateUserEntities } from 'src/shared/libs/utils/database/generate-user';
 
 export type UsersJobType = {
   userId: string;
@@ -57,8 +58,6 @@ export class UsersService {
     }
     const user = {
       ...dto,
-      passwordHash: '',
-      friends: [],
     };
     const userEntity = await new UserEntity(user).setPassword(password);
     return await this.usersRepository.save(userEntity);
@@ -116,6 +115,16 @@ export class UsersService {
       );
     }
     return updatedUser;
+  }
+
+  public async seedDatabase(count: number): Promise<void> {
+    const usersEntities = generateUserEntities(count);
+    console.log(usersEntities);
+    await this.usersRepository.insertMany(usersEntities);
+  }
+
+  public async getUsersList(role: UserRole): Promise<UserEntity[]> {
+    return await this.usersRepository.indexUsers(role);
   }
 
   public async changeUserSubscription(

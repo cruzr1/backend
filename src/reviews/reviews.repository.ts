@@ -72,4 +72,9 @@ export class ReviewsRepository extends MongoRepository<ReviewEntity, Review> {
       .exec();
     return averageRating[0].averageRating;
   }
+
+  public async insertMany(entities: ReviewEntity[]): Promise<void> {
+    const reviewDocuments = entities.map((review) => review.toPOJO());
+    await this.model.insertMany(reviewDocuments);
+  }
 }

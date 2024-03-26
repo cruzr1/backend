@@ -48,6 +48,15 @@ export class ReviewsController {
   }
 
   @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The reviews data have been seeded.',
+  })
+  @Get('seed/:count')
+  public async seedDatabase(@Param('count') count: number): Promise<void> {
+    await this.reviewsService.seedReviewsDatabase(count);
+  }
+
+  @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new review has been created.',
   })

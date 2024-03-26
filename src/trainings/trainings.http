@@ -50,3 +50,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTEyMDU3OCwiZXhwIjoxNzExMTIxNDc4fQ.MS5albtP7Ry-qeVJij8Foi7oCMNqN3hlRFt3oW9DyWA
 
 ###
+
+# Заполнить базу данных начальными значениями
+
+GET http://localhost:3000/api/trainings/seed/2
+
+###

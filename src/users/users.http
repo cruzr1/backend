@@ -3,7 +3,7 @@ POST http://localhost:3000/api/users/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new42@user.com",
+  "email": "new44@user.com",
   "name": "Alex",
   "password": "123456",
   "avatar": "avarar.jpg",
@@ -89,6 +89,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWZiZGMzZ
 
 POST http://localhost:3000/api/users/check HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxYTJlMWRhODZjOGE2NDc2MjhkMmUiLCJlbWFpbCI6Im5ldzlAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMDMzNjY0NCwiZXhwIjoxNzEwMzM3NTQ0fQ.4KzjWoQIdKD-x6_DGdIr0u8ezLRIRf-jcyp-HsmNqaM
+
+###
+
+# Заполнить базу данных начальными значениями
+
+GET http://localhost:3000/api/users/seed/2 HTTP/1.1
 
 ###
 

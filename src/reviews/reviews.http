@@ -15,3 +15,9 @@ GET  http://localhost:3000/api/reviews?sortByOrder=desc HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTA5ODY3NywiZXhwIjoxNzExMDk5NTc3fQ.PkcR2x_i0bkqTLOLeHa7i9c5qiyjKZxalJ_gajjmwAo
 
 ###
+
+# Заполнить базу данных начальными значениями
+
+GET http://localhost:3000/api/reviews/seed/2
+
+###

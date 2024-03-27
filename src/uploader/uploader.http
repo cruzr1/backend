@@ -1,34 +1,48 @@
-# Upload Avatar
-POST http://localhost:3000/api/upload/avatar HTTP/1.1
+# Загрузить аватар пользователя
+POST http://localhost:3000/api/upload/image HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="avatar_new.jpg"
+Content-Disposition: form-data; name="file"; filename="800.jpeg"
 Content-Type: image/jpeg
 
 
-< ./avatar_new.jpg
+< ./800.jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
 
-# Upload Photo
-POST http://localhost:3000/api/upload/photo HTTP/1.1
+# Загрузить видео пользователя
+POST http://localhost:3000/api/upload/file HTTP/1.1
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="file"; filename="avatar.png"
-Content-Type: image/png
+Content-Disposition: form-data; name="file"; filename="video1.mov"
+Content-Type: video/quicktime
 
 
-< ./avatar.png
+< ./video1.mov
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
 
+# Загрузить сертификат тренера
+POST http://localhost:3000/api/upload/file HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="file.pdf"
+Content-Type: application/pdf
 
 
-# Get file by ID
-GET http://localhost:3000/api/upload/65f41b10b4b1c0490ef2ed75 HTTP/1.1
+< ./file.pdf
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
+
+# Получить данные файла по ID
+GET http://localhost:3000/api/upload/6602c2d9abf1682d62b13403 HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/uploads/file.pdf

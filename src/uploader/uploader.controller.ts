@@ -22,18 +22,18 @@ import { FileValidationParams } from './uploader.constant';
 export class UploadController {
   constructor(private readonly uploaderService: UploaderService) {}
 
-  @Post('avatar')
+  @Post('image')
   @UseInterceptors(
     FileInterceptor('file', {
-      limits: { fileSize: FileValidationParams.AvatarSize },
+      limits: { fileSize: FileValidationParams.ImageSize },
     }),
   )
-  public async uploadAvatarFile(
+  public async uploadImageFile(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({
-            maxSize: FileValidationParams.AvatarSize,
+            maxSize: FileValidationParams.ImageSize,
           }),
           new FileTypeValidator({
             fileType: FileValidationParams.MimeTypeRegex,
@@ -47,17 +47,12 @@ export class UploadController {
     return fillDTO(UploadedFileRdo, fileEntity.toPOJO());
   }
 
-  @Post('photo')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      limits: { fileSize: FileValidationParams.PhotoSize },
-    }),
-  )
-  public async uploadPhotoFile(
+  @Post('file')
+  @UseInterceptors(FileInterceptor('file'))
+  public async uploadFile(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new MaxFileSizeValidator({ maxSize: FileValidationParams.PhotoSize }),
           new FileTypeValidator({
             fileType: FileValidationParams.MimeTypeRegex,
           }),

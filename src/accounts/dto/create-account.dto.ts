@@ -4,7 +4,7 @@ import { IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
 export class CreateAccountDto {
   @ApiProperty({
     description: 'Account owner Id',
-    example: '1234-5678-1234',
+    example: '65f198e9a2d67afd0e6db7bd',
   })
   @IsNotEmpty()
   @IsMongoId()
@@ -12,7 +12,7 @@ export class CreateAccountDto {
 
   @ApiProperty({
     description: 'Account training Id',
-    example: '1234-5678-1234',
+    example: '65f7ffb015ef515772b1365f',
   })
   @IsNotEmpty()
   @IsMongoId()

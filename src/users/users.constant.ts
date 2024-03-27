@@ -8,8 +8,12 @@ export const MAX_TRAIN_TYPE_ARRAY_SIZE = 3;
 export const ADD_FRIEND = 'You have been added to friends';
 export const REMOVE_FRIEND = 'You have been removed from friends';
 export const USER_FORBIDDEN_CHANGE = 'User may not change field';
+export const USER_NOT_FRIEND = 'User is not a friend';
 
 export const UserValidationParams = {
+  Email: {
+    Regex: RegExp(/.+@.+\.\D{2,3}$/),
+  },
   Name: {
     Length: {
       Minimal: 1,

@@ -6,6 +6,7 @@ export class UpdateApplicationDto {
   @ApiProperty({
     description: 'Application status',
     example: 'Accepted',
+    enum: Status,
   })
   @IsNotEmpty()
   @IsEnum(Status)

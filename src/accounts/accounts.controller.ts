@@ -10,7 +10,13 @@ import {
   Req,
 } from '@nestjs/common';
 import { AccountsService } from './accounts.service';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+} from '@nestjs/swagger';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { AccountRdo } from './rdo/account.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
@@ -20,11 +26,13 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
 
-@ApiTags('accounts')
+@ApiBearerAuth()
+@ApiTags('Сервис балансов пользователей')
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
+  @ApiOperation({ description: 'Создание баланса' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new account has been created.',
@@ -36,9 +44,14 @@ export class AccountsController {
     return fillDTO(AccountRdo, newAccount.toPOJO());
   }
 
+  @ApiOperation({ description: 'Пополнение баланса' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The account has been updated.',
+  })
+  @ApiParam({
+    name: 'accountId',
+    description: 'Id баланса',
   })
   @UseGuards(CheckAuthGuard)
   @Patch('add/:accountId')
@@ -53,9 +66,14 @@ export class AccountsController {
     return fillDTO(AccountRdo, updatedAccount?.toPOJO());
   }
 
+  @ApiOperation({ description: 'Списание тренировок' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The account has been updated.',
+  })
+  @ApiParam({
+    name: 'accountId',
+    description: 'Id баланса',
   })
   @UseGuards(CheckAuthGuard)
   @Patch('use/:accountId')
@@ -70,6 +88,9 @@ export class AccountsController {
     return fillDTO(AccountRdo, updatedAccount?.toPOJO());
   }
 
+  @ApiOperation({
+    description: 'Получение баланса: количество доступных тренировок.',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The account details have been provided.',

@@ -6,6 +6,7 @@ export class TrainingsOrderedRdo {
   @Expose()
   @ApiProperty({
     description: 'List of training objects',
+    type: TrainingRdo,
   })
   public trainings: TrainingRdo;
 

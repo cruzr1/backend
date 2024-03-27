@@ -10,7 +10,13 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+} from '@nestjs/swagger';
 import { ApplicationRdo } from './rdo/application.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
@@ -19,14 +25,22 @@ import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 
-@ApiTags('applications')
+@ApiBearerAuth()
+@ApiTags('Сервис заявок на персональные тренировки')
 @Controller('applications')
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
 
+  @ApiOperation({
+    description: 'Создание заявки на персональную/совместную тренировки',
+  })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new application has been created.',
+  })
+  @ApiParam({
+    name: 'userId',
+    description: 'Id пользователя, с кем проводится тренировка',
   })
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
@@ -42,9 +56,14 @@ export class ApplicationsController {
     return fillDTO(ApplicationRdo, newApplication.toPOJO());
   }
 
+  @ApiOperation({ description: 'Изменение статуса заявки' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The application has been updated.',
+  })
+  @ApiParam({
+    name: 'applicationId',
+    description: 'Id заявки',
   })
   @UseGuards(CheckAuthGuard)
   @Patch(':applicationId')
@@ -60,9 +79,14 @@ export class ApplicationsController {
     return fillDTO(ApplicationRdo, updatedApplication?.toPOJO());
   }
 
+  @ApiOperation({ description: 'Детальная информация о заявке' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The application details have been provided.',
+  })
+  @ApiParam({
+    name: 'applicationId',
+    description: 'Id заявки',
   })
   @UseGuards(CheckAuthGuard)
   @Get(':applicationId')

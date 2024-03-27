@@ -21,58 +21,70 @@ const USERS_SORT_BY_FIELDS = [DEFAULT_SORT_BY_FIELD, 'role'];
 
 export class IndexUsersQuery {
   @ApiProperty({
-    description: 'User Location',
+    description: 'Локация пользователя',
     example: 'Pionerskaya',
+    enum: Location,
   })
   @IsOptional()
   @IsEnum(Location)
   public location?: Location;
 
   @ApiProperty({
-    description: 'User Level',
+    description: 'Уровень пользователя',
     example: 'Newby',
+    enum: Level,
   })
   @IsOptional()
   @IsEnum(Level)
   public level?: Level;
 
   @ApiProperty({
-    description: 'User TrainType',
+    description: 'Типы тренировки пользователя',
     example: 'Running',
+    isArray: true,
+    enum: TrainType,
   })
   @IsOptional()
   @IsArray()
   @IsEnum(TrainType, { each: true })
-  @Transform((params) => params.value.split(','))
+  @Transform(({ value }) => {
+    if (value.includes(',')) {
+      return value.split(',');
+    }
+  })
   public trainType?: TrainType[];
 
   @ApiProperty({
-    description: 'Page number',
+    description: 'Номер страницы',
     example: '2',
+    default: DEFAULT_PAGE_NUMBER,
   })
   @IsOptional()
   @Transform(({ value }) => +value || DEFAULT_PAGE_NUMBER)
   public page?: number = DEFAULT_PAGE_NUMBER;
 
   @ApiProperty({
-    description: 'SortBy field',
+    description: 'Поле сортировки',
     example: 'price',
+    default: DEFAULT_SORT_BY_FIELD,
   })
   @IsOptional()
   @IsIn(USERS_SORT_BY_FIELDS)
-  public sortByField?: typeof DEFAULT_SORT_BY_FIELD;
+  public sortByField?: typeof DEFAULT_SORT_BY_FIELD = DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({
-    description: 'SortBy order',
+    description: 'Порядок сортировки',
     example: 'desc',
+    default: DEFAULT_SORT_BY_ORDER,
   })
   @IsOptional()
   @IsIn(SORT_BY_ORDERS)
   public sortByOrder?: SortByOrder = DEFAULT_SORT_BY_ORDER;
 
   @ApiProperty({
-    description: 'List request count',
+    description: 'Лимит количества выдачи',
     example: '50',
+    default: DEFAULT_LIST_REQUEST_COUNT,
   })
   @IsOptional()
   @IsNumber()

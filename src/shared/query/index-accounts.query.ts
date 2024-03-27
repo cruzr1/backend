@@ -12,16 +12,19 @@ const DEFAULT_SORT_BY_ORDER = 1;
 
 export class IndexAccountsQuery {
   @ApiProperty({
-    description: 'SortBy field',
+    description: 'Поле сортировки',
     example: 'price',
+    type: DEFAULT_SORT_BY_FIELD,
+    default: DEFAULT_SORT_BY_FIELD,
   })
   @IsOptional()
   @IsIn(ACCOUNTS_SORT_BY_FIELDS)
   public sortByField?: typeof DEFAULT_SORT_BY_FIELD = DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({
-    description: 'SortBy order',
+    description: 'Порядок сортировки',
     example: 'desc',
+    default: DEFAULT_SORT_BY_ORDER,
   })
   @IsOptional()
   @Type(() => Number)

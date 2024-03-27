@@ -7,7 +7,12 @@ import {
   Req,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { OrderRdo } from './rdo/order.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
@@ -15,11 +20,13 @@ import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
 
-@ApiTags('orders')
+@ApiBearerAuth()
+@ApiTags('Сервис заказов тренировок')
 @Controller('orders')
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
+  @ApiOperation({ description: 'Создание заказа на приобретение тренировок' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new order has been created.',

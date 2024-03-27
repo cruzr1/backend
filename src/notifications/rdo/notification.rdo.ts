@@ -36,6 +36,7 @@ export class NotificationRdo {
   @ApiProperty({
     description: 'Notification status',
     example: 'Sent',
+    enum: NotifyStatus,
   })
   public notifyStatus: NotifyStatus;
 }

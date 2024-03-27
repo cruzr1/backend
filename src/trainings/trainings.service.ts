@@ -4,7 +4,6 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { CreateTrainingDto } from './dto/create-training.dto';
-import { UpdateTrainingDto } from './dto/update-training.dto';
 import { TrainingEntity } from './training.entity';
 import { TrainingsRepository } from './trainings.repository';
 import {
@@ -24,6 +23,7 @@ import { NotificationsService } from 'src/notifications/notifications.service';
 import { UsersService } from 'src/users/users.service';
 import { INITIAL_RATING } from './trainings.constant';
 import { generateTrainingEntities } from 'src/shared/libs/utils/database/generate-training';
+import { UpdatePartialTrainingDto } from './dto/update-partial-training.dto';
 
 @Injectable()
 export class TrainingsService {
@@ -65,7 +65,7 @@ export class TrainingsService {
 
   public async updateTraining(
     trainingId: string,
-    dto: UpdateTrainingDto,
+    dto: UpdatePartialTrainingDto,
     trainerId: string,
   ): Promise<TrainingEntity | null> {
     const existTraining = await this.getTrainingEntity(trainingId);

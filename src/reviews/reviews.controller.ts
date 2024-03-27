@@ -10,7 +10,13 @@ import {
   Param,
 } from '@nestjs/common';
 import { ReviewsService } from './reviews.service';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+} from '@nestjs/swagger';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewRdo } from './rdo/review.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
@@ -24,11 +30,13 @@ import {
 } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 
-@ApiTags('reviews')
+@ApiBearerAuth()
+@ApiTags('Сервис отзывов')
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
+  @ApiOperation({ description: 'Список отзывов к тренировке' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The following reviews have been found.',
@@ -47,18 +55,28 @@ export class ReviewsController {
     };
   }
 
+  @ApiOperation({ description: 'Заполнить базу данных начальными значениями' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The reviews data have been seeded.',
+  })
+  @ApiParam({
+    name: 'count',
+    description: 'Количество записей',
   })
   @Get('seed/:count')
   public async seedDatabase(@Param('count') count: number): Promise<void> {
     await this.reviewsService.seedReviewsDatabase(count);
   }
 
+  @ApiOperation({ description: 'Создание отзыва к тренировке' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new review has been created.',
+  })
+  @ApiParam({
+    name: 'trainingId',
+    description: 'Id тренировки',
   })
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))

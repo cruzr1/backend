@@ -14,31 +14,35 @@ const REVIEWS_SORT_BY_FIELDS = [DEFAULT_SORT_BY_FIELD];
 
 export class IndexReviewsQuery {
   @ApiProperty({
-    description: 'Page number',
+    description: 'Номер страницы',
     example: '2',
+    default: DEFAULT_PAGE_NUMBER,
   })
   @IsOptional()
   @Transform(({ value }) => +value || DEFAULT_PAGE_NUMBER)
   public page?: number = DEFAULT_PAGE_NUMBER;
   @ApiProperty({
-    description: 'SortBy field',
+    description: 'Поле сортировки',
     example: 'createdAt',
+    default: DEFAULT_SORT_BY_FIELD,
   })
   @IsOptional()
   @IsIn(REVIEWS_SORT_BY_FIELDS)
   public sortByField?: typeof DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({
-    description: 'SortBy order',
+    description: 'Порядок сортировки',
     example: 'desc',
+    default: DEFAULT_SORT_BY_ORDER,
   })
   @IsOptional()
   @IsIn(SORT_BY_ORDERS)
   public sortByOrder?: SortByOrder = DEFAULT_SORT_BY_ORDER;
 
   @ApiProperty({
-    description: 'List request count',
+    description: 'Лимит количества выдачи',
     example: '50',
+    default: DEFAULT_LIST_REQUEST_COUNT,
   })
   @IsOptional()
   @IsNumber()

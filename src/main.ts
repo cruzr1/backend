@@ -12,6 +12,7 @@ async function bootstrap() {
     .setTitle('The Fit Friends application service')
     .setDescription('Fit Friends service API')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);

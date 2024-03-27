@@ -9,9 +9,16 @@ import {
   Req,
   Get,
   Query,
+  ParseArrayPipe,
 } from '@nestjs/common';
 import { TrainingsService } from './trainings.service';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+} from '@nestjs/swagger';
 import { CreateTrainingDto } from './dto/create-training.dto';
 import { TrainingRdo } from './rdo/training.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
@@ -23,15 +30,17 @@ import {
   EntitiesWithPaginationRdo,
 } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
-import { UpdateTrainingDto } from './dto/update-training.dto';
 import { TrainingsOrderedRdo } from './rdo/trainings-ordered.rdo';
 import { IndexAccountsQuery, IndexTrainingsQuery } from 'src/shared/query';
+import { UpdatePartialTrainingDto } from './dto/update-partial-training.dto';
 
-@ApiTags('trainings')
+@ApiBearerAuth()
+@ApiTags('Сервис тренировок')
 @Controller('trainings')
 export class TrainingsController {
   constructor(private readonly trainingsService: TrainingsService) {}
 
+  @ApiOperation({ description: 'Список тренировок' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The following trainings have been found.',
@@ -40,11 +49,13 @@ export class TrainingsController {
   @Get('/')
   public async index(
     @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Query('priceFilter', new ParseArrayPipe({ items: Number }))
+    priceFilter: number[],
     @Query() query?: IndexTrainingsQuery,
   ): Promise<EntitiesWithPaginationRdo<TrainingRdo>> {
     const trainingsWithPagination = await this.trainingsService.indexTrainings(
       sub!,
-      query,
+      { ...query, priceFilter },
     );
     return {
       ...trainingsWithPagination,
@@ -54,6 +65,7 @@ export class TrainingsController {
     };
   }
 
+  @ApiOperation({ description: 'Мои заказы' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The following ordered trainings have been found.',
@@ -79,15 +91,21 @@ export class TrainingsController {
     );
   }
 
+  @ApiOperation({ description: 'Заполнить базу данных начальными значениями' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The training data have been seeded.',
+  })
+  @ApiParam({
+    name: 'count',
+    description: 'Количество записей',
   })
   @Get('seed/:count')
   public async seedDatabase(@Param('count') count: number): Promise<void> {
     await this.trainingsService.seedTrainingsDatabase(count);
   }
 
+  @ApiOperation({ description: 'Создание тренировки' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new training has been created.',
@@ -106,9 +124,14 @@ export class TrainingsController {
     return fillDTO(TrainingRdo, newTraining.toPOJO());
   }
 
+  @ApiOperation({ description: 'Редактирование тренировки' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The training has been updated.',
+  })
+  @ApiParam({
+    name: 'trainingId',
+    description: 'Id тренировки',
   })
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.Trainer))
@@ -116,7 +139,7 @@ export class TrainingsController {
   public async UpdateTrainingDto(
     @Param('trainingId', MongoIdValidationPipe) trainingId: string,
     @Req() { user: { sub } }: RequestWithTokenPayload,
-    @Body() dto: UpdateTrainingDto,
+    @Body() dto: UpdatePartialTrainingDto,
   ): Promise<TrainingRdo> {
     const updatedTraining = await this.trainingsService.updateTraining(
       trainingId,
@@ -126,9 +149,14 @@ export class TrainingsController {
     return fillDTO(TrainingRdo, updatedTraining?.toPOJO());
   }
 
+  @ApiOperation({ description: 'Детальная информация о тренировке' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The training details have been provided.',
+  })
+  @ApiParam({
+    name: 'trainingId',
+    description: 'Id тренировки',
   })
   @UseGuards(CheckAuthGuard)
   @Get(':trainingId')

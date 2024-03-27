@@ -14,6 +14,7 @@ export class OrderRdo {
   @ApiProperty({
     description: 'Order type',
     example: 'Subscription',
+    enum: OrderType,
   })
   orderType: OrderType;
 
@@ -56,6 +57,7 @@ export class OrderRdo {
   @ApiProperty({
     description: 'Order payment type',
     example: 'Visa',
+    enum: Payment,
   })
   payment: Payment;
 }

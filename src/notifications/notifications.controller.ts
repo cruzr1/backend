@@ -9,14 +9,15 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { NotificationRdo } from './rdo/notification.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RequestWithTokenPayload } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 
-@ApiTags('notifications')
+@ApiBearerAuth()
+@ApiTags('Сервис уведомлений/оповещений пользователей')
 @Controller('notifications')
 export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}

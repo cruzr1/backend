@@ -11,14 +11,19 @@ import {
   Patch,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { UserRdo } from './rdo/user.rdo';
 import { LoggedUserRdo } from './rdo/logged-user.rdo';
 import { JwtAuthGuard } from '../shared/guards/jwt-auth.guard';
-import { LocalAuthGuard } from '../shared/guards/local-auth.guard';
 import {
   RequestWithUser,
   RequestWithTokenPayload,
@@ -32,11 +37,13 @@ import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import { JwtRefreshGuard } from '../shared/guards/jwt-refresh.guard';
 import { MongoIdValidationPipe } from '../shared/pipes/mongo-id-validation.pipe';
 import { CheckUnAuthGuard } from 'src/shared/guards/check-unauth.guard';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { MailService } from '../mail/mail.service';
+import { LoginUserPickDto } from './dto/login-user-pick.dto';
+import { UpdateUserPartialDto } from './dto/update-user-partial.dto';
 
-@ApiTags('users')
+@ApiBearerAuth()
+@ApiTags('Сервис пользователей')
 @Controller('users')
 export class UsersController {
   constructor(
@@ -44,9 +51,10 @@ export class UsersController {
     private readonly mailService: MailService,
   ) {}
 
+  @ApiOperation({ description: 'Список (каталог) пользователей' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'The following Users have been found.',
+    description: 'The following users have been found.',
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
@@ -64,6 +72,7 @@ export class UsersController {
     };
   }
 
+  @ApiOperation({ description: 'Список друзей' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The following friends have been found.',
@@ -81,9 +90,14 @@ export class UsersController {
     );
   }
 
+  @ApiOperation({ description: 'Добавить в друзья, удалить из списка друзей' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The friend has been added.',
+  })
+  @ApiParam({
+    description: 'Id пользователя-друга',
+    name: 'friendId',
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
@@ -99,9 +113,16 @@ export class UsersController {
     return fillDTO(UserRdo, updatedUser?.toPOJO());
   }
 
+  @ApiOperation({
+    description: 'Подписаться/отписаться от уведомлений о новых тренировках',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The user has been subscribed/unsubscribed.',
+  })
+  @ApiParam({
+    description: 'Id тренера, на чьи тренировки хочет подписаться пользователь',
+    name: 'trainerId',
   })
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
@@ -117,15 +138,23 @@ export class UsersController {
     return fillDTO(UserRdo, updatedUser?.toPOJO());
   }
 
+  @ApiOperation({
+    description: 'Заполнить базу данных начальными значениями',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'The user data have been seeded.',
+  })
+  @ApiParam({
+    description: 'Количество записей',
+    name: 'count',
   })
   @Get('seed/:count')
   public async seedDatabase(@Param('count') count: number): Promise<void> {
     await this.usersService.seedDatabase(count);
   }
 
+  @ApiOperation({ description: 'Регистрация нового пользователя' })
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new user has been created.',
@@ -138,6 +167,7 @@ export class UsersController {
     return fillDTO(UserRdo, newUser.toPOJO());
   }
 
+  @ApiOperation({ description: 'Вход в систему' })
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
@@ -149,13 +179,14 @@ export class UsersController {
   })
   @HttpCode(HttpStatus.OK)
   @UseGuards(CheckUnAuthGuard)
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  public async login(@Req() { user }: RequestWithUser): Promise<UserRdo> {
+  public async login(@Body() dto: LoginUserPickDto): Promise<UserRdo> {
+    const user = (await this.usersService.verifyUser(dto)).toPOJO();
     const userToken = await this.usersService.createUserToken(user);
     return fillDTO(LoggedUserRdo, { ...user, ...userToken });
   }
 
+  @ApiOperation({ description: 'Редактирование информации о пользователе' })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'User has been successfully updated',
@@ -165,7 +196,7 @@ export class UsersController {
   @Patch('update')
   public async update(
     @Req() { user }: RequestWithTokenPayload,
-    @Body() dto: UpdateUserDto,
+    @Body() dto: UpdateUserPartialDto,
   ): Promise<UserRdo> {
     const updatedUser = await this.usersService.updateUser(
       user.sub as string,
@@ -174,9 +205,10 @@ export class UsersController {
     return fillDTO(UserRdo, updatedUser?.toPOJO());
   }
 
+  @ApiOperation({ description: 'Cценарий отзыва Refresh Token' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Get a new pair of JWT Tokens',
+    description: 'The new pair of JWT Tokens provided',
   })
   @HttpCode(HttpStatus.OK)
   @UseGuards(JwtRefreshGuard)
@@ -185,9 +217,10 @@ export class UsersController {
     return this.usersService.createUserToken(user);
   }
 
+  @ApiOperation({ description: 'Проверить авторизацию пользователя' })
   @ApiResponse({
     status: HttpStatus.OK,
-    description: 'Checks if the token payload exists',
+    description: 'The token payload exists',
   })
   @UseGuards(JwtAuthGuard)
   @Post('check')
@@ -197,10 +230,15 @@ export class UsersController {
     return payload;
   }
 
+  @ApiOperation({ description: 'Детальная информация о пользователе' })
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.OK,
     description: 'User found',
+  })
+  @ApiParam({
+    description: 'Id пользователя',
+    name: 'id',
   })
   @UseGuards(JwtAuthGuard)
   @Get(':id')

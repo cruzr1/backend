@@ -28,6 +28,7 @@ export class TrainingRdo {
   @ApiProperty({
     description: 'Training level',
     example: 'Newby',
+    enum: Level,
   })
   public level: Level;
 
@@ -35,13 +36,15 @@ export class TrainingRdo {
   @ApiProperty({
     description: 'Training type',
     example: 'Yoga',
+    enum: TrainType,
   })
   public trainType: TrainType;
 
   @Expose()
   @ApiProperty({
     description: 'Training duration',
-    example: '10-30 мин',
+    example: '10-30min',
+    enum: Duration,
   })
   public duration: Duration;
 
@@ -70,6 +73,7 @@ export class TrainingRdo {
   @ApiProperty({
     description: 'Training gender',
     example: 'male',
+    enum: Gender,
   })
   public gender: Gender;
 

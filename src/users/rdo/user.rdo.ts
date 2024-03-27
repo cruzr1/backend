@@ -42,6 +42,7 @@ export class UserRdo {
   @ApiProperty({
     description: 'User gender',
     example: 'male',
+    enum: Gender,
   })
   public gender: Gender;
 
@@ -56,6 +57,7 @@ export class UserRdo {
   @ApiProperty({
     description: 'User role',
     example: 'Trainer',
+    enum: UserRole,
   })
   public role: UserRole;
 
@@ -70,6 +72,7 @@ export class UserRdo {
   @ApiProperty({
     description: 'User location',
     example: 'Pionerskaya',
+    enum: Location,
   })
   public location: Location;
 
@@ -84,6 +87,7 @@ export class UserRdo {
   @ApiProperty({
     description: 'User level',
     example: 'newby',
+    enum: Level,
   })
   public level: Level;
 
@@ -91,12 +95,15 @@ export class UserRdo {
   @ApiProperty({
     description: 'User train type',
     example: 'running',
+    isArray: true,
+    enum: TrainType,
   })
   public trainType: TrainType[];
 
   @ApiProperty({
     description: 'Desirable training duration',
-    example: '10-30 мин',
+    example: '10-30min',
+    enum: Duration,
   })
   public duration: Duration;
 

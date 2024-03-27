@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
-  IsDate,
   IsEmail,
   IsEnum,
   IsNotEmpty,
@@ -14,9 +13,11 @@ import {
   ValidateIf,
   IsArray,
   ArrayMaxSize,
+  IsISO8601,
 } from 'class-validator';
 import {
   UserValidationParams,
+  UserValidationMessage,
   MAX_TRAIN_TYPE_ARRAY_SIZE,
 } from '../users.constant';
 import {
@@ -45,7 +46,7 @@ export class CreateUserDto {
     example: 'user@user.com',
   })
   @IsNotEmpty()
-  @IsEmail()
+  @IsEmail({}, { message: UserValidationMessage.Email.InvalidFormat })
   public email: string;
 
   @ApiProperty({
@@ -64,12 +65,14 @@ export class CreateUserDto {
   @Length(
     UserValidationParams.Password.Length.Minimal,
     UserValidationParams.Password.Length.Maximal,
+    { message: UserValidationMessage.Password.InvalidLength },
   )
   public password: string;
 
   @ApiProperty({
     description: 'User gender',
-    example: 'male',
+    example: 'Male',
+    enum: Gender,
   })
   @IsNotEmpty()
   @IsEnum(Gender)
@@ -77,15 +80,16 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'User birthday',
-    example: '01.01.2001',
+    example: '1995-04-23T18:25:43.511Z',
   })
   @IsOptional()
-  @IsDate()
+  @IsISO8601()
   public birthDate?: Date;
 
   @ApiProperty({
     description: 'User role',
     example: 'Trainer',
+    enum: UserRole,
   })
   @IsNotEmpty()
   @IsEnum(UserRole)
@@ -105,6 +109,7 @@ export class CreateUserDto {
   @ApiProperty({
     description: 'User location',
     example: 'Pionerskaya',
+    enum: Location,
   })
   @IsNotEmpty()
   @IsEnum(Location)
@@ -120,7 +125,8 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'User level',
-    example: 'newby',
+    example: 'Newby',
+    enum: Level,
   })
   @IsNotEmpty()
   @IsEnum(Level)
@@ -128,7 +134,9 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'User train type',
-    example: 'running',
+    example: ['Running', 'Yoga', 'Boxing'],
+    enum: TrainType,
+    isArray: true,
   })
   @IsNotEmpty()
   @IsArray()
@@ -138,7 +146,9 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Desirable training duration',
-    example: '10-30 мин',
+    example: '10-30min',
+    isArray: true,
+    enum: Duration,
   })
   @ValidateIf((obj) => obj.role === UserRole.User)
   @IsNotEmpty()

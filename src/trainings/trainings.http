@@ -1,14 +1,14 @@
 # Создание тренировки
 POST http://localhost:3000/api/trainings HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTM3NDIyMiwiZXhwIjoxNzExMzc1MTIyfQ.YLXoLIsHj008n8OCg4drcghjEa9ljIMyuJCcGYH6M1M
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTUyNDgyOSwiZXhwIjoxNzExNTI1NzI5fQ.MWMF0AwAjE596U4WiThZi6BfTtRjz0NigJWo1tHsbHY
 
 {
   "name": "Yoga training",
   "backgroundImage": "background.jpg",
   "level": "Newby",
   "trainType": "Yoga",
-  "duration": "10-30мин",
+  "duration": "10-30min",
   "price": 7000,
   "calories": 5000,
   "description": "Lorem ipsum sit dolorem amet",
@@ -23,10 +23,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Y
 
 PATCH http://localhost:3000/api/trainings/65f7ffb015ef515772b1365f HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAxNTUyOSwiZXhwIjoxNzExMDE2NDI5fQ.QW4ZmfQLGfH-qyGnx0QqJBkaYzd1r6dUBIMCuAL9iVw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTUyODAyNiwiZXhwIjoxNzExNTI4OTI2fQ.A5eVKZXzZnN445FxDmHHtSN6yaUbR8qLAE4ZSghjmKk
 
 {
-    "name": "Yoga YOGA1"
+    "name": "Yoga YOGA2",
+    "price": 3500
 }
 
 ###
@@ -39,20 +40,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlO
 
 # Список тренировок
 GET  http://localhost:3000/api/trainings?priceFilter=1000,3000&caloriesFilter=6000,5000&ratingFilter=0 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWY5M2M5MmZhZGMyN2VlYjJkOTdmZTQiLCJlbWFpbCI6Im5ldzE0QHVzZXIuY29tIiwibmFtZSI6IkFsZXgiLCJpYXQiOjE3MTExMjAwNDksImV4cCI6MTcxMTEyMDk0OX0.ZGwt1nJL0u9h3qVi0zg_7wju419mBpoZUN0AEM0k_tY
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTU0NTE3MCwiZXhwIjoxNzExNTQ2MDcwfQ.RpHNzEV6V9cT045wM2ap6yp-ekQ09IO7ejKCg1iaOkU
 ###
 
 # Мои заказы
 
 GET http://localhost:3000/api/trainings/myOrders?sortByField=trainingsOrderedCount&sortByOrder=-1 HTTP/1.1
-Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTEyMDU3OCwiZXhwIjoxNzExMTIxNDc4fQ.MS5albtP7Ry-qeVJij8Foi7oCMNqN3hlRFt3oW9DyWA
 
 ###
 
 # Заполнить базу данных начальными значениями
 
-GET http://localhost:3000/api/trainings/seed/2
+GET http://localhost:3000/api/trainings/seed/2 HTTP/1.1
 
 ###

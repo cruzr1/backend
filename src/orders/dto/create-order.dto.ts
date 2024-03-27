@@ -7,6 +7,7 @@ export class CreateOrderDto {
   @ApiProperty({
     description: 'Order type',
     example: 'Subscription',
+    enum: OrderType,
   })
   @IsNotEmpty()
   @IsEnum(OrderType)
@@ -14,7 +15,7 @@ export class CreateOrderDto {
 
   @ApiProperty({
     description: 'Training id',
-    example: '1234-5678-1234',
+    example: '65f800bfabf2d4bb55beb36b',
   })
   @IsNotEmpty()
   @IsMongoId()
@@ -32,6 +33,7 @@ export class CreateOrderDto {
   @ApiProperty({
     description: 'Order payment type',
     example: 'Visa',
+    enum: Payment,
   })
   @IsNotEmpty()
   @IsEnum(Payment)

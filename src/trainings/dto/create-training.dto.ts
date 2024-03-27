@@ -35,6 +35,7 @@ export class CreateTrainingDto {
   @ApiProperty({
     description: 'Training level',
     example: 'Newby',
+    enum: Level,
   })
   @IsNotEmpty()
   @IsEnum(Level)
@@ -43,6 +44,7 @@ export class CreateTrainingDto {
   @ApiProperty({
     description: 'Training type',
     example: 'Yoga',
+    enum: TrainType,
   })
   @IsNotEmpty()
   @IsEnum(TrainType)
@@ -50,7 +52,8 @@ export class CreateTrainingDto {
 
   @ApiProperty({
     description: 'Training duration',
-    example: '10-30 мин',
+    example: '10-30min',
+    enum: Duration,
   })
   @IsNotEmpty()
   @IsEnum(Duration)
@@ -89,6 +92,7 @@ export class CreateTrainingDto {
   @ApiProperty({
     description: 'Training gender',
     example: 'male',
+    enum: Gender,
   })
   @IsNotEmpty()
   @IsEnum(Gender)

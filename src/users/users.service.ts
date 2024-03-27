@@ -8,15 +8,16 @@ import {
   HttpStatus,
   Inject,
   forwardRef,
+  ForbiddenException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import {
   USER_EXISTS,
   USER_NOT_FOUND,
   USER_PASSWORD_WRONG,
+  USER_NOT_FRIEND,
 } from './users.constant';
 import { UserEntity } from './user.entity';
-import { LoginUserDto } from './dto/login-user.dto';
 import { UsersRepository } from './users.repository';
 import { PaginationResult, Token, User, UserRole } from 'src/shared/libs/types';
 import { JwtService } from '@nestjs/jwt';
@@ -25,10 +26,11 @@ import { ConfigType } from '@nestjs/config';
 import { RefreshTokenService } from '../refresh-token/refresh-token.service';
 import { createJWTPayload, updateArray } from 'src/shared/libs/utils/helpers';
 import * as crypto from 'node:crypto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { generateUserEntities } from 'src/shared/libs/utils/database/generate-user';
+import { LoginUserPickDto } from './dto/login-user-pick.dto';
+import { UpdateUserPartialDto } from './dto/update-user-partial.dto';
 
 export type UsersJobType = {
   userId: string;
@@ -63,7 +65,7 @@ export class UsersService {
     return await this.usersRepository.save(userEntity);
   }
 
-  public async verifyUser(dto: LoginUserDto): Promise<UserEntity> {
+  public async verifyUser(dto: LoginUserPickDto): Promise<UserEntity> {
     const { email, password } = dto;
     const existUser = await this.getUserByEmail(email);
     if (!(await existUser.comparePassword(password))) {
@@ -119,7 +121,6 @@ export class UsersService {
 
   public async seedDatabase(count: number): Promise<void> {
     const usersEntities = generateUserEntities(count);
-    console.log(usersEntities);
     await this.usersRepository.insertMany(usersEntities);
   }
 
@@ -147,6 +148,17 @@ export class UsersService {
     return existUser;
   }
 
+  public async getUserDetails(
+    trainerId: string,
+    findUserId: string,
+  ): Promise<UserEntity> {
+    const existUser = await this.getUserEntity(findUserId);
+    if (existUser.friends.includes(trainerId)) {
+      return existUser;
+    }
+    throw new ForbiddenException(USER_NOT_FRIEND);
+  }
+
   public async getUserByEmail(email: string): Promise<UserEntity> {
     const existUser = await this.usersRepository.findByEmail(email);
     if (!existUser) {
@@ -155,7 +167,7 @@ export class UsersService {
     return existUser;
   }
 
-  public async updateUser(userId: string, dto: UpdateUserDto) {
+  public async updateUser(userId: string, dto: UpdateUserPartialDto) {
     const existUser = await this.getUserEntity(userId);
     const updateUser = new UserEntity({ ...existUser, ...dto });
     return await this.usersRepository.update(userId, updateUser);

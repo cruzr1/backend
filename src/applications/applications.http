@@ -13,3 +13,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlO
 {
   "status": "Accepted"
 }
+
+###
+
+# Информация о заявке на персональную тренировку.
+GET http://localhost:3000/api/applications/660142e7a63134d15f676db9 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTM1ODY3NiwiZXhwIjoxNzExMzU5NTc2fQ.YvTtENEHmfy4VLGY0VZiNmpT2aIYrDsfA1UFlxxKbHg
+
+###

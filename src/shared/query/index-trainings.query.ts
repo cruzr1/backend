@@ -23,23 +23,33 @@ const TRAININGS_SORT_BY_FIELDS = [DEFAULT_SORT_BY_FIELD, 'price'];
 
 export class IndexTrainingsQuery {
   @ApiProperty({
-    description: 'Training price filter',
+    description: 'Фильтр по цене тренировки',
     example: '[1000, 3000]',
+    isArray: true,
   })
   @IsOptional()
-  @Transform((params) => params.value.split(','))
+  @Transform(({ value }) => {
+    if (value.includes(',')) {
+      return value.split(',');
+    }
+  })
   public priceFilter?: number[];
 
   @ApiProperty({
-    description: 'Training calories filter',
+    description: 'Фильтр по затрачиваемым калориям',
     example: '[1000, 3000]',
+    isArray: true,
   })
   @IsOptional()
-  @Transform((params) => params.value.split(','))
+  @Transform(({ value }) => {
+    if (value.includes(',')) {
+      return value.split(',');
+    }
+  })
   public caloriesFilter?: number[];
 
   @ApiProperty({
-    description: 'Training rating filter',
+    description: 'Фильтр по рейтингу тренировки',
     example: '3',
   })
   @IsOptional()
@@ -50,50 +60,61 @@ export class IndexTrainingsQuery {
   public ratingFilter?: number;
 
   @ApiProperty({
-    description: 'Training duration filter',
-    example: '["10-30 мин", "50-80 мин"]',
+    description: 'Фильтр по продолжительности тренировки',
+    example: '["10-30min", "50-80min"]',
+    isArray: true,
+    enum: Duration,
   })
   @IsOptional()
   @IsArray()
   @IsEnum(Duration, { each: true })
-  @Transform((params) => params.value.split(','))
+  @Transform(({ value }) => {
+    if (value.includes(',')) {
+      return value.split(',');
+    }
+  })
   public durationFilter?: Duration[];
 
   @ApiProperty({
-    description: 'Training trainType filter',
+    description: 'Фильтр по типу тренировки',
     example: 'Yoga',
+    enum: TrainType,
   })
   @IsOptional()
   @IsEnum(TrainType)
   public trainTypeFilter?: TrainType;
 
   @ApiProperty({
-    description: 'Page number',
+    description: 'Номер страницы',
     example: '2',
+    default: DEFAULT_PAGE_NUMBER,
   })
   @IsOptional()
   @Transform(({ value }) => +value || DEFAULT_PAGE_NUMBER)
   public page?: number = DEFAULT_PAGE_NUMBER;
 
   @ApiProperty({
-    description: 'SortBy field',
+    description: 'Поле сортировки',
     example: 'price',
+    default: DEFAULT_SORT_BY_FIELD,
   })
   @IsOptional()
   @IsIn(TRAININGS_SORT_BY_FIELDS)
-  public sortByField?: typeof DEFAULT_SORT_BY_FIELD;
+  public sortByField?: typeof DEFAULT_SORT_BY_FIELD = DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({
-    description: 'SortBy order',
+    description: 'Порядок сортировки',
     example: 'desc',
+    default: DEFAULT_SORT_BY_ORDER,
   })
   @IsOptional()
   @IsIn(SORT_BY_ORDERS)
   public sortByOrder?: SortByOrder = DEFAULT_SORT_BY_ORDER;
 
   @ApiProperty({
-    description: 'List request count',
+    description: 'Лимит Количества выдачи',
     example: '50',
+    default: DEFAULT_LIST_REQUEST_COUNT,
   })
   @IsOptional()
   @IsNumber()

@@ -13,7 +13,7 @@ $ npm install
 
 ```
 docker compose \
---file ./docker-compose.dev.yml \
+--file ./docker-compose.yml \
 --env-file ./.backend.env \
 --project-name "fit-friends" up -d
 ```

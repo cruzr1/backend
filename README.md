@@ -1,46 +1,91 @@
+# Информация для запуска проекта
 
-## Description
+## Перед первым запуском проекта необходимо:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+1) в консольном окне терминала запустить команду установки зависимостей
 
 ```bash
 $ npm install
 ```
 
-## Установка образов и запуск контейнеров Docker c базой данных Mongo для бэкенда производится следующей командой:
+2) в корневой папке папке проекта создать файл с переменными окружения по аналогии с образцом (файл .backend.env.example).
 
-```
+3) запустить контейнеры Docker
+
+```bash
 docker compose \
 --file ./docker-compose.yml \
 --env-file ./.backend.env \
 --project-name "fit-friends" up -d
 ```
 
-## Running the app
+## Сценарии запуска проекта:
+
+
+### Запуск в режиме development
 
 ```bash
-# development
 $ npm run start
+```
 
-# watch mode
+### Запуск в режиме watch
+
+```bash
 $ npm run start:dev
+```
 
-# production mode
+### Запуск в режиме production
+
+```bash
 $ npm run start:prod
 ```
 
-## Test
+### Запуск в режиме debug
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ npm run start:prod
 ```
 
+### Запуск линтера
+
+```bash
+$ npm run lint
+```
+
+### Запуск форматтера prettier
+
+```bash
+$ npm run format
+```
+
+### Сборка проекта в папку dist
+
+```bash
+$ npm run build
+```
+
+# Начальное наполнение базы
+
+## Для первоначального наполнения базы данных предусмотрены соответствующие REST запросы к сервисам
+
+### Запрос для наполнения базы данных пользователей:
+
+```
+GET http://localhost:3000/api/users/seed/2 HTTP/1.1
+```
+
+### Запрос для наполнения базы данных тренировок:
+
+```
+GET http://localhost:3000/api/trainings/seed/2 HTTP/1.1
+```
+
+### Запрос для наполнения базы данных отзывов:
+
+```
+GET http://localhost:3000/api/reviews/seed/2 HTTP/1.1
+```
+
+## Документация в формате OpenAPI генерируется автоматически с помощью SwaggerModule и доступна по маршруту:
+
+http://localhost:3000/spec

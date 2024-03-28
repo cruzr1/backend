@@ -13,7 +13,7 @@ const BASE_URL = 'http://localhost:3000/api/users';
 export class AddUserInterceptor implements NestInterceptor {
   constructor(private readonly httpService: HttpService) {}
 
-  public async intercept(context: ExecutionContext, next: CallHandler<any>) {
+  public async intercept(context: ExecutionContext, next: CallHandler) {
     const request = context.switchToHttp().getRequest();
     const { data } = await this.httpService.axiosRef.get<UserEntity>(
       `${BASE_URL}/${request['user'].sub}`,

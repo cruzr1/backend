@@ -45,7 +45,13 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWRiNW
 ###
 
 # Детальная информация о пользователе
-GET http://localhost:3000/api/users/65f198e9a2d67afd0e6db7bd HTTP/1.1
+GET http://localhost:3000/api/users/user/65f198e9a2d67afd0e6db7bd HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAwNTExNywiZXhwIjoxNzExMDA2MDE3fQ.kiOeta_7CYD5HSMtIW6Knaq-Zmh90CE8VTUcLpgGieE
+
+###
+
+# Детальная информация о пользователе для тренера
+GET http://localhost:3000/api/users/trainer/65f198e9a2d67afd0e6db7bd HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTAwNTExNywiZXhwIjoxNzExMDA2MDE3fQ.kiOeta_7CYD5HSMtIW6Knaq-Zmh90CE8VTUcLpgGieE
 
 ###

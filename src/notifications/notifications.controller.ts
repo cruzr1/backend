@@ -32,7 +32,7 @@ export class NotificationsController {
     @Req() { user: { sub: userId } }: RequestWithTokenPayload,
   ): Promise<NotificationRdo> {
     const notificationsList =
-      await this.notificationsService.indexNotificaitons(userId!);
+      await this.notificationsService.indexNotifications(userId!);
     return fillDTO(
       NotificationRdo,
       notificationsList.map((notification) => notification.toPOJO()),

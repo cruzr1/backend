@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { UserRole } from 'src/shared/libs/types';
+import { UserEntity } from 'src/users/user.entity';
 
 const AUTHORIZATION_URL = 'http://localhost:3000/api/users';
 
@@ -30,7 +31,7 @@ export const RoleGuard = (userRole: UserRole) => {
         );
         const {
           data: { role },
-        } = await this.httpService.axiosRef.get(
+        } = await this.httpService.axiosRef.get<UserEntity>(
           `${AUTHORIZATION_URL}/${user.sub}`,
           {
             headers: {
@@ -38,16 +39,12 @@ export const RoleGuard = (userRole: UserRole) => {
             },
           },
         );
-        if (role !== userRole) {
-          return false;
-        }
-        return true;
+        return role === userRole;
       } catch (err) {
         throw new UnauthorizedException(err.message);
       }
     }
   }
 
-  const guard = mixin(RoleGuardMixin);
-  return guard;
+  return mixin(RoleGuardMixin);
 };

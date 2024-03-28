@@ -41,7 +41,7 @@ export class OrderRdo {
 
   @Expose()
   @ApiProperty({
-    description: 'Order trining price',
+    description: 'Order training price',
     example: '2500',
   })
   trainingPrice: number;

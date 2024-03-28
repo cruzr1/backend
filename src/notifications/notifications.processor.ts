@@ -17,24 +17,24 @@ export class NotificationsProcessor {
 
   constructor(
     private readonly mailService: MailService,
-    private readonly notificaitonsService: NotificationsService,
+    private readonly notificationsService: NotificationsService,
   ) {}
 
   @Process()
   async transcode(job: Job<NotificationEntity>): Promise<void> {
-    job.progress(JOB_PROGRESS_INITIAL_VALUE);
+    await job.progress(JOB_PROGRESS_INITIAL_VALUE);
     this.logger.log(`Processing job : ${job.id}`);
     const {
       data: { payload },
     } = job;
     await this.mailService.sendNotification(payload);
-    job.progress(JOB_PROGRESS_COMPLETE);
+    await job.progress(JOB_PROGRESS_COMPLETE);
     this.logger.log(`Processing completed for job : ${job.id}`);
   }
 
   @OnQueueCompleted()
   async OnQueueCompleted({ data: { id } }: Job<NotificationEntity>) {
-    await this.notificaitonsService.changeNotificationStatus(
+    await this.notificationsService.changeNotificationStatus(
       id!,
       NotifyStatus.Sent,
     );

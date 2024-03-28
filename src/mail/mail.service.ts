@@ -14,15 +14,6 @@ export class MailService {
     private readonly mailerConfig: ConfigType<typeof MailerConfig>,
   ) {}
 
-  public async sendCommonMail(
-    mailData: Record<string, unknown>,
-  ): Promise<void> {
-    await this.mailerService.sendMail({
-      from: this.mailerConfig.mailFrom,
-      ...mailData,
-    });
-  }
-
   public async sendNotification(
     payload: NotificationPayloadType,
   ): Promise<void> {

@@ -63,7 +63,7 @@ export class ApplicationsService {
       ...dto,
     });
     if (dto.status === Status.Accepted) {
-      this.accountsService.useActiveTrainings(existApplication.authorId, {
+      await this.accountsService.useActiveTrainings(existApplication.authorId, {
         trainingsCount: 1,
       });
       await this.notificationsService.createNewApplicationAcceptedNotification(

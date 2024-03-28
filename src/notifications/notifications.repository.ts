@@ -22,18 +22,18 @@ export class NotificationsRepository extends MongoRepository<
   }
 
   public async findMany(userId: string): Promise<NotificationEntity[]> {
-    const notificaitonsList = await this.model.find({ userId }).exec();
-    return notificaitonsList.map((notificaiton) =>
-      this.createEntityFromDocument(notificaiton),
+    const notificationsList = await this.model.find({ userId }).exec();
+    return notificationsList.map((notification) =>
+      this.createEntityFromDocument(notification),
     );
   }
 
   public async findCreatedNotifications(): Promise<NotificationEntity[]> {
-    const notificaitonsList = await this.model
+    const notificationsList = await this.model
       .find({ notifyStatus: NotifyStatus.Created })
       .exec();
-    return notificaitonsList.map((notificaiton) =>
-      this.createEntityFromDocument(notificaiton),
+    return notificationsList.map((notification) =>
+      this.createEntityFromDocument(notification),
     );
   }
 }

@@ -86,7 +86,7 @@ export class LoggedUserRdo {
   @Expose()
   @ApiProperty({
     description: 'User level',
-    example: 'newby',
+    example: 'Newby',
     enum: Level,
   })
   public level: Level;

@@ -32,13 +32,6 @@ import { generateUserEntities } from 'src/shared/libs/utils/database/generate-us
 import { LoginUserPickDto } from './dto/login-user-pick.dto';
 import { UpdateUserPartialDto } from './dto/update-user-partial.dto';
 
-export type UsersJobType = {
-  userId: string;
-  friendId: string;
-  addFriend: boolean;
-  userName: string;
-};
-
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger(UsersService.name);
@@ -134,10 +127,9 @@ export class UsersService {
   ): Promise<UserEntity | null> {
     const { subscribedFor } = await this.getUserEntity(userId);
     const newSubscriptionList = updateArray<string>(subscribedFor, trainerId);
-    const updatedUser = await this.updateUser(userId, {
+    return await this.updateUser(userId, {
       subscribedFor: newSubscriptionList,
     });
-    return updatedUser;
   }
 
   public async getUserEntity(id: string): Promise<UserEntity> {
@@ -181,8 +173,7 @@ export class UsersService {
 
   public async indexUserFriends(userId: string): Promise<UserEntity[]> {
     const { friends } = await this.getUserEntity(userId);
-    const friendsFound = await this.usersRepository.indexFriends(friends);
-    return friendsFound;
+    return await this.usersRepository.indexFriends(friends);
   }
 
   public async indexSubscribers(trainerId: string): Promise<UserEntity[]> {

@@ -54,7 +54,6 @@ export class AccountsRepository extends MongoRepository<
           },
         },
       ])
-
       .exec();
     return trainingsAggregated;
   }

@@ -199,7 +199,7 @@ export class NotificationsService {
     await this.notificationsRepository.deleteById(notificationId);
   }
 
-  public async indexNotificaitons(
+  public async indexNotifications(
     userId: string,
   ): Promise<NotificationEntity[]> {
     return await this.notificationsRepository.findMany(userId);
@@ -210,14 +210,14 @@ export class NotificationsService {
     notifyStatus: NotifyStatus,
   ): Promise<NotificationEntity | null> {
     const existNotification = await this.getNotificationEntity(notificationId);
-    const updatedNotificaiton = new NotificationEntity({
+    const updatedNotification = new NotificationEntity({
       ...existNotification,
       notifyStatus,
       notifyDate: new Date(),
     });
     return await this.notificationsRepository.update(
       notificationId,
-      updatedNotificaiton,
+      updatedNotification,
     );
   }
 

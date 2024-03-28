@@ -241,11 +241,38 @@ export class UsersController {
     name: 'id',
   })
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
+  @UseGuards(RoleGuard(UserRole.User))
+  @Get('user/:id')
   public async showById(
     @Param('id', MongoIdValidationPipe) userId: string,
   ): Promise<UserRdo> {
     const existUser = await this.usersService.getUserEntity(userId);
+    return fillDTO(UserRdo, existUser.toPOJO());
+  }
+
+  @ApiOperation({
+    description: 'Детальная информация о пользователе для тренера',
+  })
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'User found',
+  })
+  @ApiParam({
+    description: 'Id пользователя',
+    name: 'id',
+  })
+  @UseGuards(RoleGuard(UserRole.Trainer))
+  @UseGuards(JwtAuthGuard)
+  @Get('trainer/:id')
+  public async showFriend(
+    @Param('id', MongoIdValidationPipe) userId: string,
+    @Req() { user: { sub: trainerId } }: RequestWithTokenPayload,
+  ): Promise<UserRdo> {
+    const existUser = await this.usersService.getUserDetails(
+      trainerId!,
+      userId,
+    );
     return fillDTO(UserRdo, existUser.toPOJO());
   }
 }

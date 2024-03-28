@@ -196,7 +196,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     description: 'Trainer achievements',
-    example: 'Lorem ipsum',
+    example: 'Lorem ipsum dolor sit',
   })
   @ValidateIf((obj) => obj.role === UserRole.Trainer)
   @IsNotEmpty()

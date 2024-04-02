@@ -9,7 +9,6 @@ import {
   Req,
   Get,
   Query,
-  ParseArrayPipe,
 } from '@nestjs/common';
 import { TrainingsService } from './trainings.service';
 import {
@@ -49,13 +48,11 @@ export class TrainingsController {
   @Get('/')
   public async index(
     @Req() { user: { sub } }: RequestWithTokenPayload,
-    @Query('priceFilter', new ParseArrayPipe({ items: Number }))
-    priceFilter: number[],
     @Query() query?: IndexTrainingsQuery,
   ): Promise<EntitiesWithPaginationRdo<TrainingRdo>> {
     const trainingsWithPagination = await this.trainingsService.indexTrainings(
       sub!,
-      { ...query, priceFilter },
+      { ...query },
     );
     return {
       ...trainingsWithPagination,
@@ -70,8 +67,8 @@ export class TrainingsController {
     status: HttpStatus.OK,
     description: 'The following ordered trainings have been found.',
   })
-  @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.Trainer))
+  @UseGuards(CheckAuthGuard)
   @Get('myOrders')
   public async indexOrders(
     @Req() { user: { sub } }: RequestWithTokenPayload,

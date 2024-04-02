@@ -32,7 +32,7 @@ export const RoleGuard = (userRole: UserRole) => {
         const {
           data: { role },
         } = await this.httpService.axiosRef.get<UserEntity>(
-          `${AUTHORIZATION_URL}/${user.sub}`,
+          `${AUTHORIZATION_URL}/old/${user.sub}`,
           {
             headers: {
               Authorization: request.headers['authorization'],

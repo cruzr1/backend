@@ -275,4 +275,23 @@ export class UsersController {
     );
     return fillDTO(UserRdo, existUser.toPOJO());
   }
+
+  @ApiOperation({ description: 'Детальная информация о пользователе' })
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.OK,
+    description: 'User found',
+  })
+  @ApiParam({
+    description: 'Id пользователя',
+    name: 'id',
+  })
+  @UseGuards(JwtAuthGuard)
+  @Get('old/:id')
+  public async showUserById(
+    @Param('id', MongoIdValidationPipe) userId: string,
+  ): Promise<UserRdo> {
+    const existUser = await this.usersService.getUserEntity(userId);
+    return fillDTO(UserRdo, existUser.toPOJO());
+  }
 }

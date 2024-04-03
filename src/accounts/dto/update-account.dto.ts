@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsMongoId, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class UpdateAccountDto {
   @ApiProperty({
@@ -9,4 +9,12 @@ export class UpdateAccountDto {
   @IsNotEmpty()
   @IsNumber()
   public trainingsCount: number;
+
+  @ApiProperty({
+    description: 'Account training count',
+    example: '4',
+  })
+  @IsNotEmpty()
+  @IsMongoId()
+  public trainingId: string;
 }

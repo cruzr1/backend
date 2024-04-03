@@ -8,7 +8,7 @@ export class TrainingsOrderedRdo {
     description: 'List of training objects',
     type: TrainingRdo,
   })
-  public trainings: TrainingRdo;
+  public training: TrainingRdo;
 
   @Expose()
   @ApiProperty({

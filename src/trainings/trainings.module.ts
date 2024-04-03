@@ -13,6 +13,7 @@ import { TrainingsRepository } from './trainings.repository';
 import { AccountsModule } from 'src/accounts/accounts.module';
 import { UsersModule } from 'src/users/users.module';
 import { NotificationsModule } from 'src/notifications/notifications.module';
+import { OrdersModule } from 'src/orders/orders.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
     AccountsModule,
     UsersModule,
     NotificationsModule,
+    OrdersModule,
   ],
   controllers: [TrainingsController],
   providers: [TrainingsService, JwtAccessStrategy, TrainingsRepository],

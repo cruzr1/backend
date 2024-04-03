@@ -29,9 +29,14 @@ export class AccountsService {
     return existAccount;
   }
 
-  public async findByUserId(userId: string): Promise<AccountEntity | null> {
-    const existAccount =
-      await this.accountsRepository.findAccountByUserId(userId);
+  public async findOne(
+    userId: string,
+    trainingId: string,
+  ): Promise<AccountEntity | null> {
+    const existAccount = await this.accountsRepository.findAccount(
+      userId,
+      trainingId,
+    );
     if (existAccount) {
       return existAccount;
     }
@@ -53,9 +58,9 @@ export class AccountsService {
 
   public async useActiveTrainings(
     userId: string,
-    { trainingsCount }: UpdateAccountDto,
+    { trainingsCount, trainingId }: UpdateAccountDto,
   ): Promise<AccountEntity | null> {
-    const existAccount = await this.findByUserId(userId);
+    const existAccount = await this.findOne(userId, trainingId);
     if (existAccount) {
       if (existAccount.trainingsActive < trainingsCount) {
         throw new BadRequestException(NO_AVAILABLE_TRAININGS_LEFT);

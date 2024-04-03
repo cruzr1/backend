@@ -12,24 +12,24 @@ import {
 } from './trainings.constant';
 import {
   PaginationResult,
-  TrainingAggregated,
   TrainingOrdered,
+  TrainingOrderedAggregated,
   UserRole,
 } from 'src/shared/libs/types';
 import { IndexTrainingsQuery } from 'src/shared/query/index-trainings.query';
-import { AccountsRepository } from 'src/accounts/accounts.repository';
 import { IndexAccountsQuery } from 'src/shared/query';
 import { NotificationsService } from 'src/notifications/notifications.service';
 import { UsersService } from 'src/users/users.service';
 import { INITIAL_RATING } from './trainings.constant';
 import { generateTrainingEntities } from 'src/shared/libs/utils/database/generate-training';
 import { UpdatePartialTrainingDto } from './dto/update-partial-training.dto';
+import { OrdersRepository } from 'src/orders/orders.repository';
 
 @Injectable()
 export class TrainingsService {
   constructor(
     private readonly trainingsRepository: TrainingsRepository,
-    private readonly accountsRepository: AccountsRepository,
+    private readonly ordersRepository: OrdersRepository,
     private readonly notificationsService: NotificationsService,
     private readonly usersService: UsersService,
   ) {}
@@ -96,21 +96,21 @@ export class TrainingsService {
     const trainingIds = trainings.map<string>(
       (training) => training.id as string,
     );
-    const trainingsAggregated: TrainingAggregated[] =
-      await this.accountsRepository.findMany(trainingIds);
+    const trainingsOrderedAggregated: TrainingOrderedAggregated[] =
+      await this.ordersRepository.findMany(trainingIds);
     const findTrainingById = (
       id: string,
       trainings: TrainingEntity[],
     ): TrainingEntity =>
       trainings.find((training) => training.id! === id) as TrainingEntity;
     const { sortByField, sortByOrder } = query;
-    const trainingsOrdered: TrainingOrdered[] = trainingsAggregated.map(
-      ({ _id, trainingsActive }) => {
+    const trainingsOrdered: TrainingOrdered[] = trainingsOrderedAggregated.map(
+      ({ _id, trainingsCount, trainingSum }) => {
         const training: TrainingEntity = findTrainingById(_id, trainings);
         return {
           training,
-          trainingsOrderedCount: trainingsActive,
-          trainingsOrderedSum: trainingsActive * training!.price,
+          trainingsOrderedCount: trainingsCount,
+          trainingsOrderedSum: trainingSum,
         };
       },
     );

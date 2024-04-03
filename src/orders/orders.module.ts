@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
@@ -25,9 +25,10 @@ import { TrainingsModule } from 'src/trainings/trainings.module';
     }),
     MongooseModule.forFeature([{ name: OrderModel.name, schema: OrderSchema }]),
     AccountsModule,
-    TrainingsModule,
+    forwardRef(() => TrainingsModule),
   ],
   controllers: [OrdersController],
   providers: [OrdersService, JwtAccessStrategy, OrdersRepository],
+  exports: [OrdersRepository],
 })
 export class OrdersModule {}

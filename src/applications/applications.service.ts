@@ -26,15 +26,18 @@ export class ApplicationsService {
   public async createNewApplication({
     authorId,
     userId,
+    trainingId,
   }: CreateApplicationDto): Promise<ApplicationEntity> {
     const newApplication = new ApplicationEntity({
       userId,
       authorId,
+      trainingId,
       status: Status.Reviewing,
     });
     await this.notificationsService.createNewApplicationNotification({
       authorId,
       userId,
+      trainingId,
     });
     return await this.applicationsRepository.save(newApplication);
   }
@@ -65,6 +68,7 @@ export class ApplicationsService {
     if (dto.status === Status.Accepted) {
       await this.accountsService.useActiveTrainings(existApplication.authorId, {
         trainingsCount: 1,
+        trainingId: existApplication.trainingId!,
       });
       await this.notificationsService.createNewApplicationAcceptedNotification(
         updatedApplication.authorId,

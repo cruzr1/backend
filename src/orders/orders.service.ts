@@ -18,7 +18,7 @@ export class OrdersService {
     dto: CreateOrderDto,
   ): Promise<OrderEntity> {
     const { trainingId, trainingsCount } = dto;
-    const existAccount = await this.accountsService.findByUserId(userId);
+    const existAccount = await this.accountsService.findOne(userId, trainingId);
     if (!existAccount) {
       await this.accountsService.createNewAccount({
         userId,
@@ -27,6 +27,7 @@ export class OrdersService {
       });
     } else {
       await this.accountsService.addActiveTrainings(existAccount.id!, {
+        trainingId,
         trainingsCount,
       });
     }

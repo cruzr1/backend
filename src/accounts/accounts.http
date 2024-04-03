@@ -35,6 +35,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlO
 
 
 {
+  trainingId: "65f8369eda5e61bdd1b23c0e",
   "trainingsCount": "1"
 }
 

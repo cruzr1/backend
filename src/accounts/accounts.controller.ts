@@ -97,11 +97,12 @@ export class AccountsController {
   })
   @UseGuards(CheckAuthGuard)
   @UseGuards(RoleGuard(UserRole.User))
-  @Get('/')
+  @Get('/:trainingId')
   public async show(
+    @Param('trainingId', MongoIdValidationPipe) trainingId: string,
     @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<AccountRdo> {
-    const existAccount = await this.accountsService.findByUserId(sub!);
+    const existAccount = await this.accountsService.findOne(sub!, trainingId);
     return fillDTO(AccountRdo, existAccount?.toPOJO());
   }
 }

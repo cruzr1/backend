@@ -48,10 +48,12 @@ export class ApplicationsController {
   public async create(
     @Param('userId', MongoIdValidationPipe) userId: string,
     @Req() { user: { sub: authorId } }: RequestWithTokenPayload,
+    @Body('trainingId', MongoIdValidationPipe) trainingId: string,
   ): Promise<ApplicationRdo> {
     const newApplication = await this.applicationsService.createNewApplication({
       authorId: authorId!,
       userId,
+      trainingId,
     });
     return fillDTO(ApplicationRdo, newApplication.toPOJO());
   }

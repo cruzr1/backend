@@ -21,10 +21,13 @@ export class AccountsRepository extends MongoRepository<
     super(accountModel, AccountEntity.fromObject);
   }
 
-  public async findAccountByUserId(
+  public async findAccount(
     userId: string,
+    trainingId: string,
   ): Promise<AccountEntity | null> {
-    const existAccount = await this.model.findOne({ userId }).exec();
+    const existAccount = await this.model
+      .findOne({ userId, trainingId })
+      .exec();
     if (existAccount) {
       return this.createEntityFromDocument(existAccount);
     }

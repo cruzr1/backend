@@ -4,6 +4,7 @@ export class ApplicationEntity implements Application {
   id?: string;
   authorId: string;
   userId: string;
+  trainingId?: string;
   status: Status;
   updatedAt?: Date;
 
@@ -11,6 +12,7 @@ export class ApplicationEntity implements Application {
     this.id = data.id;
     this.authorId = data.authorId;
     this.userId = data.userId;
+    this.trainingId = data.trainingId;
     this.status = data.status;
   }
 
@@ -21,6 +23,7 @@ export class ApplicationEntity implements Application {
       userId: this.userId,
       status: this.status,
       updatedAt: this.updatedAt,
+      trainingId: this.trainingId,
     };
   }
 

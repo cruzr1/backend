@@ -81,7 +81,7 @@ export class TrainingsController {
     return trainingsOrdered.map<TrainingsOrderedRdo>(
       ({ training, trainingsOrderedCount, trainingsOrderedSum }) =>
         fillDTO(TrainingsOrderedRdo, {
-          trainings: fillDTO(TrainingRdo, training.toPOJO()),
+          training: fillDTO(TrainingRdo, training.toPOJO()),
           trainingsCount: trainingsOrderedCount,
           trainingsSum: trainingsOrderedSum,
         }),

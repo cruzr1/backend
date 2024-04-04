@@ -36,25 +36,6 @@ import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
-  @ApiOperation({ description: 'Список отзывов к тренировке' })
-  @ApiResponse({
-    status: HttpStatus.OK,
-    description: 'The following reviews have been found.',
-  })
-  @UseGuards(CheckAuthGuard)
-  @Get('/')
-  public async index(
-    @Query() query?: IndexReviewsQuery,
-  ): Promise<EntitiesWithPaginationRdo<ReviewRdo>> {
-    const reviewsWithPagination = await this.reviewsService.indexReviews(query);
-    return {
-      ...reviewsWithPagination,
-      entities: reviewsWithPagination.entities.map((review) =>
-        fillDTO(ReviewRdo, review.toPOJO()),
-      ),
-    };
-  }
-
   @ApiOperation({ description: 'Заполнить базу данных начальными значениями' })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -67,6 +48,29 @@ export class ReviewsController {
   @Get('seed/:count')
   public async seedDatabase(@Param('count') count: number): Promise<void> {
     await this.reviewsService.seedReviewsDatabase(count);
+  }
+
+  @ApiOperation({ description: 'Список отзывов к тренировке' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The following reviews have been found.',
+  })
+  @UseGuards(CheckAuthGuard)
+  @Get(':trainingId')
+  public async index(
+    @Param('trainingId', MongoIdValidationPipe) trainingId: string,
+    @Query() query?: IndexReviewsQuery,
+  ): Promise<EntitiesWithPaginationRdo<ReviewRdo>> {
+    const reviewsWithPagination = await this.reviewsService.indexReviews(
+      trainingId,
+      query,
+    );
+    return {
+      ...reviewsWithPagination,
+      entities: reviewsWithPagination.entities.map((review) =>
+        fillDTO(ReviewRdo, review),
+      ),
+    };
   }
 
   @ApiOperation({ description: 'Создание отзыва к тренировке' })

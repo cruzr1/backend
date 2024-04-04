@@ -68,9 +68,8 @@ Content-Type: application/json
 ###
 
 # Список (каталог) пользователей
-GET http://localhost:3000/api/users?location=Pionerskaya&trainType=Yoga,Running&level=Newby&page=1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTU0MDQ3OSwiZXhwIjoxNzExNTQxMzc5fQ.UrvFsOEH_SaJ7fElSBQgI4r6rJI2ZsBFLmDRJfpOKHE
-
+GET http://localhost:3000/api/users HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMjE1MzM3NiwiZXhwIjoxNzEyMTU0Mjc2fQ.tAtsk3tnJmgZQwzNShHUu5CPZ9KHbNFh6wmBEEmYKIw
 ###
 
 # Список друзей

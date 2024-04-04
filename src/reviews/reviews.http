@@ -11,8 +11,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlO
 ###
 
 # Список отзывов к тренировке
-GET  http://localhost:3000/api/reviews?sortByOrder=desc HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTA5ODY3NywiZXhwIjoxNzExMDk5NTc3fQ.PkcR2x_i0bkqTLOLeHa7i9c5qiyjKZxalJ_gajjmwAo
+GET  http://localhost:3000/api/reviews/65f7ffb015ef515772b1365f?sortByOrder=desc HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMjIyNDk3NSwiZXhwIjoxNzEyMjI1ODc1fQ.svNbjpGAMTnrnEQHSkEPjN_2ne_--t12op6bUrv-DfY
 
 ###
 

@@ -179,4 +179,8 @@ export class UsersService {
   public async indexSubscribers(trainerId: string): Promise<UserEntity[]> {
     return await this.usersRepository.indexSubscribers(trainerId);
   }
+
+  public async indexAuthors(authorIds: string[]): Promise<UserEntity[]> {
+    return await this.usersRepository.findAuthors(authorIds);
+  }
 }

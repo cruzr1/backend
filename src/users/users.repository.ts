@@ -88,4 +88,14 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
     const usersList = await this.model.find({ role }).exec();
     return usersList.map((user) => this.createEntityFromDocument(user));
   }
+
+  public async findAuthors(authorIds: string[]): Promise<UserEntity[]> {
+    const authorsObjectIds = authorIds.map(
+      (authorId) => new mongoose.Types.ObjectId(authorId),
+    );
+    const usersList = await this.model
+      .find({ _id: { $in: authorsObjectIds } })
+      .exec();
+    return usersList.map((user) => this.createEntityFromDocument(user));
+  }
 }

@@ -25,6 +25,20 @@ export class ReviewRdo {
 
   @Expose()
   @ApiProperty({
+    description: 'Review author name',
+    example: 'Alex',
+  })
+  public name: string;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Review author avatar',
+    example: 'avatar.jpg',
+  })
+  public avatar: string;
+
+  @Expose()
+  @ApiProperty({
     description: 'Review training id',
     example: '1234-5678-1234',
   })

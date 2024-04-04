@@ -22,16 +22,24 @@ export class ReviewsRepository extends MongoRepository<ReviewEntity, Review> {
     super(reviewModel, ReviewEntity.fromObject);
   }
 
-  public async findMany({
-    page = DEFAULT_PAGE_NUMBER,
-    sortByField = DEFAULT_SORT_BY_FIELD,
-    sortByOrder = DEFAULT_SORT_BY_ORDER,
-    take = DEFAULT_LIST_REQUEST_COUNT,
-  }: IndexReviewsQuery): Promise<PaginationResult<ReviewEntity>> {
+  public async findMany(
+    trainingId: string,
+    {
+      page = DEFAULT_PAGE_NUMBER,
+      sortByField = DEFAULT_SORT_BY_FIELD,
+      sortByOrder = DEFAULT_SORT_BY_ORDER,
+      take = DEFAULT_LIST_REQUEST_COUNT,
+    }: IndexReviewsQuery,
+  ): Promise<PaginationResult<ReviewEntity>> {
     const skip = (page - DEFAULT_PAGE_NUMBER) * take;
     const orderBy = { [sortByField]: sortByOrder };
     const [reviewsList, totalReviews] = await Promise.all([
-      this.model.find().sort(orderBy).skip(skip).limit(take).exec(),
+      this.model
+        .find({ trainingId })
+        .sort(orderBy)
+        .skip(skip)
+        .limit(take)
+        .exec(),
       this.model.countDocuments().exec(),
     ]);
     return {
@@ -76,5 +84,18 @@ export class ReviewsRepository extends MongoRepository<ReviewEntity, Review> {
   public async insertMany(entities: ReviewEntity[]): Promise<void> {
     const reviewDocuments = entities.map((review) => review.toPOJO());
     await this.model.insertMany(reviewDocuments);
+  }
+
+  public async findByAuthorTraining(
+    authorId: string,
+    trainingId: string,
+  ): Promise<ReviewEntity | null> {
+    const existReview = await this.model
+      .findOne({ authorId, trainingId })
+      .exec();
+    if (existReview) {
+      return this.createEntityFromDocument(existReview);
+    }
+    return null;
   }
 }

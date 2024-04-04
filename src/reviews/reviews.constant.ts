@@ -12,3 +12,6 @@ export const ReviewValidationParams = {
     },
   },
 };
+
+export const REVIEW_ALREADY_EXISTS =
+  'User may not make multiple reviews for one training';

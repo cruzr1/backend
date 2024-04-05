@@ -66,17 +66,17 @@ export class UserModel extends Document implements User {
   public backgroundImage: string;
 
   @Prop({
-    required: true,
+    required: false,
   })
   public level: Level;
 
   @Prop({
-    required: true,
+    required: false,
   })
   public trainType: TrainType[];
 
   @Prop({
-    required: true,
+    required: false,
   })
   public isReadyTrain: boolean;
 

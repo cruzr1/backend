@@ -162,9 +162,10 @@ export class UsersController {
   @UseGuards(CheckUnAuthGuard)
   @Post('signin')
   public async create(@Body() dto: CreateUserDto): Promise<UserRdo> {
-    const newUser = await this.usersService.registerNewUser(dto);
+    const newUser = (await this.usersService.registerNewUser(dto)).toPOJO();
     await this.mailService.sendNotifyNewUser(dto);
-    return fillDTO(UserRdo, newUser.toPOJO());
+    const userToken = await this.usersService.createUserToken(newUser);
+    return fillDTO(LoggedUserRdo, { ...newUser, ...userToken });
   }
 
   @ApiOperation({ description: 'Вход в систему' })
@@ -225,9 +226,9 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Post('check')
   public async checkToken(
-    @Req() { user: payload }: RequestWithTokenPayload,
+    @Req() { user: { sub } }: RequestWithTokenPayload,
   ): Promise<TokenPayload> {
-    return payload;
+    return await this.usersService.getUserEntity(sub!);
   }
 
   @ApiOperation({ description: 'Детальная информация о пользователе' })

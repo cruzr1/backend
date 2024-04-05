@@ -100,6 +100,7 @@ export class LoggedUserRdo {
   })
   public trainType: TrainType[];
 
+  @Expose()
   @ApiProperty({
     description: 'Desirable training duration',
     example: '10-30min',

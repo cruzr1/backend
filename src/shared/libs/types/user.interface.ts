@@ -17,10 +17,10 @@ export interface User {
   description: string;
   location: Location;
   backgroundImage: string;
-  level: Level;
+  level?: Level;
   friends?: string[];
-  trainType: TrainType[];
-  isReadyTrain: boolean;
+  trainType?: TrainType[];
+  isReadyTrain?: boolean;
   subscribedFor?: string[];
   duration?: Duration;
   caloriesTarget?: number;

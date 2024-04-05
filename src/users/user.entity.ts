@@ -22,15 +22,15 @@ export class UserEntity implements User {
   description: string;
   location: Location;
   backgroundImage: string;
-  level: Level;
-  trainType: TrainType[];
+  level?: Level;
+  trainType?: TrainType[];
   isReadyTrain: boolean;
   friends: string[];
   subscribedFor: string[];
-  certificates: string;
-  achievements: string;
-  duration: Duration;
-  caloriesTarget: number;
+  certificates?: string;
+  achievements?: string;
+  duration?: Duration;
+  caloriesTarget?: number;
   caloriesDaily: number;
 
   constructor(data: User) {
@@ -46,8 +46,8 @@ export class UserEntity implements User {
     this.location = data.location;
     this.backgroundImage = data.backgroundImage;
     this.level = data.level;
-    this.trainType = data.trainType;
-    this.isReadyTrain = data.isReadyTrain;
+    this.trainType = data.trainType || [];
+    this.isReadyTrain = data.isReadyTrain || false;
     this.friends = data.friends || [];
     this.subscribedFor = data.subscribedFor || [];
     this.certificates = data.certificates || '';

@@ -26,18 +26,15 @@ export class ApplicationsService {
   public async createNewApplication({
     authorId,
     userId,
-    trainingId,
   }: CreateApplicationDto): Promise<ApplicationEntity> {
     const newApplication = new ApplicationEntity({
       userId,
       authorId,
-      trainingId,
       status: Status.Reviewing,
     });
     await this.notificationsService.createNewApplicationNotification({
       authorId,
       userId,
-      trainingId,
     });
     return await this.applicationsRepository.save(newApplication);
   }

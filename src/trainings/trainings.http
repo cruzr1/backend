@@ -39,8 +39,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlO
 ###
 
 # Список тренировок
-GET  http://localhost:3000/api/trainings? HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Yjg1NGY3OTJmNzdmMGZlNGMiLCJlbWFpbCI6Im5ldzdAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMjEyODMxNywiZXhwIjoxNzEyMTI5MjE3fQ.NpnmfCImtLPUezQt4Tx0nItxDTLYPkmy4MA2MyQWEZw
+GET  http://localhost:3000/api/trainings?isSpecial=false HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMjY2NTE5MCwiZXhwIjoxNzEyNjY2MDkwfQ.nR1FEIw4-W5hNBkJcA6i_4y6sEGAFeNs0IPsAFMHa9o
 ###
 
 # Мои заказы
@@ -51,6 +51,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWU0Y
 
 # Заполнить базу данных начальными значениями
 
-GET http://localhost:3000/api/trainings/seed/2 HTTP/1.1
+GET http://localhost:3000/api/trainings/seed/30 HTTP/1.1
 
 ###

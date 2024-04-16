@@ -12,10 +12,18 @@ export const mockTrainingNames = [
 ];
 
 export const mockTrainingPhoto = [
-  'training1.jpg',
-  'training2.jpg',
-  'training3.jpg',
-  'training4.jpg',
+  'training-01.jpg',
+  'training-02.jpg',
+  'training-03.jpg',
+  'training-04.jpg',
+  'training-05.jpg',
+  'training-06.jpg',
+  'training-07.jpg',
+  'training-08.jpg',
+  'training-09.jpg',
+  'training-10.jpg',
+  'training-11.jpg',
+  'training-12.jpg',
 ];
 
 export const MOCK_DESCRIPTION =

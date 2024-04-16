@@ -21,7 +21,7 @@ import { ApplicationRdo } from './rdo/application.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
-import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
+import { UserRole, RequestWithUser } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 
@@ -47,13 +47,11 @@ export class ApplicationsController {
   @Post(':userId')
   public async create(
     @Param('userId', MongoIdValidationPipe) userId: string,
-    @Req() { user: { sub: authorId } }: RequestWithTokenPayload,
-    @Body('trainingId', MongoIdValidationPipe) trainingId: string,
+    @Req() { user: { id: authorId } }: RequestWithUser,
   ): Promise<ApplicationRdo> {
     const newApplication = await this.applicationsService.createNewApplication({
       authorId: authorId!,
       userId,
-      trainingId,
     });
     return fillDTO(ApplicationRdo, newApplication.toPOJO());
   }

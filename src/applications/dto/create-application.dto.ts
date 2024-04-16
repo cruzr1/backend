@@ -17,12 +17,4 @@ export class CreateApplicationDto {
   @IsNotEmpty()
   @IsMongoId()
   public userId: string;
-
-  @ApiProperty({
-    description: 'Application training id',
-    example: '1234-5678-1234',
-  })
-  @IsNotEmpty()
-  @IsMongoId()
-  public trainingId: string;
 }

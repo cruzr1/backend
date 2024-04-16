@@ -26,7 +26,7 @@ import { IndexReviewsQuery } from 'src/shared/query/index-reviews.query';
 import {
   UserRole,
   EntitiesWithPaginationRdo,
-  RequestWithTokenPayload,
+  RequestWithUser,
 } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 
@@ -86,15 +86,15 @@ export class ReviewsController {
   @UseGuards(RoleGuard(UserRole.User))
   @Post(':trainingId')
   public async create(
-    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Req() { user: { id } }: RequestWithUser,
     @Param('trainingId', MongoIdValidationPipe) trainingId: string,
     @Body() dto: CreateReviewDto,
   ): Promise<ReviewRdo> {
     const newReview = await this.reviewsService.createNewReview(
-      sub!,
+      id!,
       trainingId,
       dto,
     );
-    return fillDTO(ReviewRdo, newReview.toPOJO());
+    return fillDTO(ReviewRdo, newReview);
   }
 }

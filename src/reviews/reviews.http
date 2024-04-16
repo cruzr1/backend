@@ -1,10 +1,10 @@
 # Создание отзыва к тренировке
-POST http://localhost:3000/api/reviews/65f7ffb015ef515772b1365f HTTP/1.1
+POST http://localhost:3000/api/reviews/65f8367dda5e61bdd1b23bd2 HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOThlOWEyZDY3YWZkMGU2ZGI3YmQiLCJlbWFpbCI6Im5ldzFAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMTA5Nzc2NiwiZXhwIjoxNzExMDk4NjY2fQ.21wOIwW7PI1EHI72WWtKBGxMcQOVroQ3kadBokwk5iY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWYxOWQ2MWM3N2JiZTA2MTYwNDY0NmMiLCJlbWFpbCI6Im5ldzNAdXNlci5jb20iLCJuYW1lIjoiQWxleCIsImlhdCI6MTcxMjY3NTIxNCwiZXhwIjoxNzEyNjc2MTE0fQ.XobnDOmvEtbNnG7ZLxJ1fFJNupZ-YHwVQfukCVm79Yw
 
 {
-  "rating": "5",
+  "rating": "4",
   "comment": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
 
 }

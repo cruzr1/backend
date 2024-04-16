@@ -24,7 +24,7 @@ import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
-import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
+import { UserRole, RequestWithUser } from 'src/shared/libs/types';
 
 @ApiBearerAuth()
 @ApiTags('Сервис балансов пользователей')
@@ -71,18 +71,14 @@ export class AccountsController {
     status: HttpStatus.OK,
     description: 'The account has been updated.',
   })
-  @ApiParam({
-    name: 'accountId',
-    description: 'Id баланса',
-  })
   @UseGuards(CheckAuthGuard)
-  @Patch('use/:accountId')
+  @Patch('use')
   public async useTrainings(
-    @Param('accountId', MongoIdValidationPipe) accountId: string,
+    @Req() { user: { id } }: RequestWithUser,
     @Body() dto: UpdateAccountDto,
   ): Promise<AccountRdo> {
     const updatedAccount = await this.accountsService.useActiveTrainings(
-      accountId,
+      id!,
       dto,
     );
     return fillDTO(AccountRdo, updatedAccount?.toPOJO());
@@ -100,9 +96,9 @@ export class AccountsController {
   @Get('/:trainingId')
   public async show(
     @Param('trainingId', MongoIdValidationPipe) trainingId: string,
-    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Req() { user: { id } }: RequestWithUser,
   ): Promise<AccountRdo> {
-    const existAccount = await this.accountsService.findOne(sub!, trainingId);
+    const existAccount = await this.accountsService.findOne(id!, trainingId);
     return fillDTO(AccountRdo, existAccount?.toPOJO());
   }
 }

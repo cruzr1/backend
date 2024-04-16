@@ -1,16 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import {
-  IsOptional,
-  IsIn,
-  IsEnum,
-  IsNumber,
-  Min,
-  Max,
-  IsArray,
-} from 'class-validator';
-import { Duration, SortByOrder, TrainType } from 'src/shared/libs/types';
-import { TrainingValidationParams } from '../../trainings/trainings.constant';
+import { IsOptional, IsIn, IsEnum, IsNumber } from 'class-validator';
+import { Duration, Level, SortByOrder, TrainType } from 'src/shared/libs/types';
 import {
   SORT_BY_ORDERS,
   DEFAULT_PAGE_NUMBER,
@@ -19,7 +10,11 @@ import {
   DEFAULT_SORT_BY_FIELD,
 } from 'src/app.config';
 
-const TRAININGS_SORT_BY_FIELDS = [DEFAULT_SORT_BY_FIELD, 'price'];
+const TRAININGS_SORT_BY_FIELDS = [
+  DEFAULT_SORT_BY_FIELD,
+  'price',
+  'rating',
+] as const;
 
 export class IndexTrainingsQuery {
   @ApiProperty({
@@ -28,11 +23,6 @@ export class IndexTrainingsQuery {
     isArray: true,
   })
   @IsOptional()
-  @Transform(({ value }) => {
-    if (value.includes(',')) {
-      return value.split(',');
-    }
-  })
   public priceFilter?: number[];
 
   @ApiProperty({
@@ -41,23 +31,14 @@ export class IndexTrainingsQuery {
     isArray: true,
   })
   @IsOptional()
-  @Transform(({ value }) => {
-    if (value.includes(',')) {
-      return value.split(',');
-    }
-  })
   public caloriesFilter?: number[];
 
   @ApiProperty({
     description: 'Фильтр по рейтингу тренировки',
-    example: '3',
+    example: '[3, 5]',
   })
   @IsOptional()
-  @IsNumber()
-  @Min(TrainingValidationParams.Rating.Value.Minimum)
-  @Max(TrainingValidationParams.Rating.Value.Maximum)
-  @Type(() => Number)
-  public ratingFilter?: number;
+  public ratingFilter?: number[];
 
   @ApiProperty({
     description: 'Фильтр по продолжительности тренировки',
@@ -66,13 +47,6 @@ export class IndexTrainingsQuery {
     enum: Duration,
   })
   @IsOptional()
-  @IsArray()
-  @IsEnum(Duration, { each: true })
-  @Transform(({ value }) => {
-    if (value.includes(',')) {
-      return value.split(',');
-    }
-  })
   public durationFilter?: Duration[];
 
   @ApiProperty({
@@ -81,8 +55,7 @@ export class IndexTrainingsQuery {
     enum: TrainType,
   })
   @IsOptional()
-  @IsEnum(TrainType)
-  public trainTypeFilter?: TrainType;
+  public trainTypeFilter?: TrainType[];
 
   @ApiProperty({
     description: 'Номер страницы',
@@ -100,7 +73,8 @@ export class IndexTrainingsQuery {
   })
   @IsOptional()
   @IsIn(TRAININGS_SORT_BY_FIELDS)
-  public sortByField?: typeof DEFAULT_SORT_BY_FIELD = DEFAULT_SORT_BY_FIELD;
+  public sortByField?: (typeof TRAININGS_SORT_BY_FIELDS)[number] =
+    DEFAULT_SORT_BY_FIELD;
 
   @ApiProperty({
     description: 'Порядок сортировки',
@@ -118,7 +92,22 @@ export class IndexTrainingsQuery {
   })
   @IsOptional()
   @IsNumber()
-  @Max(DEFAULT_LIST_REQUEST_COUNT)
+  // @Max(DEFAULT_LIST_REQUEST_COUNT)
   @Type(() => Number)
   public take?: number = DEFAULT_LIST_REQUEST_COUNT;
+
+  @ApiProperty({
+    description: 'признак наличия спецпредложения',
+    example: 'true',
+  })
+  @IsOptional()
+  public isSpecial?: boolean;
+
+  @ApiProperty({
+    description: 'признак наличия спецпредложения',
+    example: 'true',
+  })
+  @IsOptional()
+  @IsEnum(Level)
+  public level?: Level;
 }

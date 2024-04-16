@@ -245,9 +245,9 @@ export class UsersController {
   @UseGuards(RoleGuard(UserRole.User))
   @Get('user/:id')
   public async showById(
-    @Param('id', MongoIdValidationPipe) userId: string,
+    @Param('id', MongoIdValidationPipe) id: string,
   ): Promise<UserRdo> {
-    const existUser = await this.usersService.getUserEntity(userId);
+    const existUser = await this.usersService.getUserEntity(id);
     return fillDTO(UserRdo, existUser.toPOJO());
   }
 

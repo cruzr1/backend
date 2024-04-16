@@ -18,7 +18,7 @@ import { OrderRdo } from './rdo/order.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
-import { UserRole, RequestWithTokenPayload } from 'src/shared/libs/types';
+import { UserRole, RequestWithUser } from 'src/shared/libs/types';
 
 @ApiBearerAuth()
 @ApiTags('Сервис заказов тренировок')
@@ -36,7 +36,7 @@ export class OrdersController {
   @Post('/')
   public async create(
     @Body() dto: CreateOrderDto,
-    @Req() { user: { sub: userId } }: RequestWithTokenPayload,
+    @Req() { user: { id: userId } }: RequestWithUser,
   ): Promise<OrderRdo> {
     const newOrder = await this.ordersService.createNewOrder(userId!, dto);
     return fillDTO(OrderRdo, newOrder.toPOJO());

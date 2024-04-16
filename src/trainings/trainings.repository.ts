@@ -23,6 +23,7 @@ type QueryTrainingsType = {
   duration: Duration;
   trainType: TrainType;
   trainerId: string;
+  isSpecial: boolean;
 };
 
 @Injectable()
@@ -68,13 +69,26 @@ export class TrainingsRepository extends MongoRepository<
       );
     }
     if (queryParams.ratingFilter) {
-      query.rating = queryParams.ratingFilter;
+      const { ratingFilter } = queryParams;
+      if (!query.$and) {
+        query.$and = [];
+      }
+      query.$and.push(
+        { rating: { $gte: Math.min(...ratingFilter) } },
+        { rating: { $lte: Math.max(...ratingFilter) } },
+      );
     }
     if (queryParams.durationFilter) {
       query.duration = { $in: [...queryParams.durationFilter] };
     }
     if (queryParams.trainTypeFilter) {
-      query.trainType = queryParams.trainTypeFilter;
+      query.trainType = { $in: [...queryParams.trainTypeFilter] };
+    }
+    if (queryParams.isSpecial) {
+      query.isSpecial = queryParams.isSpecial;
+    }
+    if (queryParams.level) {
+      query.level = queryParams.level;
     }
     const skip = (page - DEFAULT_PAGE_NUMBER) * take;
     const orderBy = { [sortByField]: sortByOrder };

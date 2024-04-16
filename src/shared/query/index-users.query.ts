@@ -1,14 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
+import { IsOptional, IsIn, IsEnum, IsNumber, Max } from 'class-validator';
 import {
-  IsOptional,
-  IsIn,
-  IsEnum,
-  IsArray,
-  IsNumber,
-  Max,
-} from 'class-validator';
-import { SortByOrder, Location, Level, TrainType } from 'src/shared/libs/types';
+  SortByOrder,
+  Location,
+  Level,
+  TrainType,
+  UserRole,
+} from 'src/shared/libs/types';
 import {
   DEFAULT_SORT_BY_ORDER,
   DEFAULT_PAGE_NUMBER,
@@ -23,11 +22,9 @@ export class IndexUsersQuery {
   @ApiProperty({
     description: 'Локация пользователя',
     example: 'Pionerskaya',
-    enum: Location,
   })
   @IsOptional()
-  @IsEnum(Location)
-  public location?: Location;
+  public location?: Location[];
 
   @ApiProperty({
     description: 'Уровень пользователя',
@@ -41,17 +38,8 @@ export class IndexUsersQuery {
   @ApiProperty({
     description: 'Типы тренировки пользователя',
     example: 'Running',
-    isArray: true,
-    enum: TrainType,
   })
   @IsOptional()
-  @IsArray()
-  @IsEnum(TrainType, { each: true })
-  @Transform(({ value }) => {
-    if (value.includes(',')) {
-      return value.split(',');
-    }
-  })
   public trainType?: TrainType[];
 
   @ApiProperty({
@@ -91,4 +79,19 @@ export class IndexUsersQuery {
   @Max(DEFAULT_LIST_REQUEST_COUNT)
   @Type(() => Number)
   public take?: number = DEFAULT_LIST_REQUEST_COUNT;
+
+  @ApiProperty({
+    description: 'признак готовности к тренировке',
+    example: 'true',
+  })
+  @IsOptional()
+  public isReadyTrain?: boolean;
+
+  @ApiProperty({
+    description: 'роль пользователя',
+    example: 'User',
+  })
+  @IsOptional()
+  @IsEnum(UserRole)
+  public role?: UserRole;
 }

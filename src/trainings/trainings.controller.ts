@@ -27,6 +27,7 @@ import {
   UserRole,
   RequestWithTokenPayload,
   EntitiesWithPaginationRdo,
+  RequestWithUser,
 } from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 import { TrainingsOrderedRdo } from './rdo/trainings-ordered.rdo';
@@ -47,13 +48,36 @@ export class TrainingsController {
   @UseGuards(CheckAuthGuard)
   @Get('/')
   public async index(
-    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Req() { user: { id } }: RequestWithUser,
     @Query() query?: IndexTrainingsQuery,
   ): Promise<EntitiesWithPaginationRdo<TrainingRdo>> {
     const trainingsWithPagination = await this.trainingsService.indexTrainings(
-      sub!,
+      id!,
       { ...query },
     );
+    return {
+      ...trainingsWithPagination,
+      entities: trainingsWithPagination.entities.map((training) =>
+        fillDTO(TrainingRdo, training.toPOJO()),
+      ),
+    };
+  }
+
+  @ApiOperation({ description: 'Список тренировок определенного тренера' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The following trainings have been found.',
+  })
+  @UseGuards(CheckAuthGuard)
+  @Get('trainer/:trainerId')
+  public async indexTrainings(
+    @Param('trainerId', MongoIdValidationPipe) trainerId: string,
+    @Query() query?: IndexTrainingsQuery,
+  ): Promise<EntitiesWithPaginationRdo<TrainingRdo>> {
+    const trainingsWithPagination =
+      await this.trainingsService.indexTrainerTrainings(trainerId!, {
+        ...query,
+      });
     return {
       ...trainingsWithPagination,
       entities: trainingsWithPagination.entities.map((training) =>
@@ -135,13 +159,13 @@ export class TrainingsController {
   @Patch(':trainingId')
   public async UpdateTrainingDto(
     @Param('trainingId', MongoIdValidationPipe) trainingId: string,
-    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Req() { user: { id } }: RequestWithUser,
     @Body() dto: UpdatePartialTrainingDto,
   ): Promise<TrainingRdo> {
     const updatedTraining = await this.trainingsService.updateTraining(
       trainingId,
       dto,
-      sub!,
+      id!,
     );
     return fillDTO(TrainingRdo, updatedTraining?.toPOJO());
   }

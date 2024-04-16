@@ -85,6 +85,13 @@ export class TrainingsService {
     return await this.trainingsRepository.findMany(query ?? {}, trainerId);
   }
 
+  public async indexTrainerTrainings(
+    trainerId: string,
+    query?: IndexTrainingsQuery | undefined,
+  ): Promise<PaginationResult<TrainingEntity>> {
+    return await this.trainingsRepository.findMany(query ?? {}, trainerId);
+  }
+
   public async indexOrderedTrainings(
     trainerId: string,
     query: IndexAccountsQuery,

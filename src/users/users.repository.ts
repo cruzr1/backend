@@ -45,13 +45,19 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
   }: IndexUsersQuery): Promise<PaginationResult<UserEntity>> {
     const query: FilterQuery<IndexUsersQuery> = {};
     if (queryParams.location) {
-      query.location = queryParams.location;
+      query.location = { $in: [...queryParams.location] };
     }
     if (queryParams.level) {
       query.level = queryParams.level;
     }
     if (queryParams.trainType) {
       query.trainType = { $in: [...queryParams.trainType] };
+    }
+    if (queryParams.isReadyTrain) {
+      query.isReadyTrain = queryParams.isReadyTrain;
+    }
+    if (queryParams.role) {
+      query.role = queryParams.role;
     }
     const skip = (page - DEFAULT_PAGE_NUMBER) * take;
     const orderBy = { [sortByField]: sortByOrder };

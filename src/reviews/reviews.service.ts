@@ -33,7 +33,7 @@ export class ReviewsService {
     authorId: string,
     trainingId: string,
     dto: CreateReviewDto,
-  ): Promise<ReviewEntity> {
+  ): Promise<AuthorDataType> {
     const existReview = await this.getReviewByAuthorIdTrainingId(
       authorId,
       trainingId,
@@ -53,7 +53,9 @@ export class ReviewsService {
       },
       trainerId,
     );
-    return savedReview;
+    const { avatar, name } = await this.usersService.getUserEntity(authorId);
+
+    return { ...savedReview, name, avatar };
   }
 
   public async indexReviews(

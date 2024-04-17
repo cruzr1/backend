@@ -30,4 +30,11 @@ export class ApplicationRdo {
     example: 'Accepted',
   })
   public status: Status;
+
+  @Expose()
+  @ApiProperty({
+    description: 'Application update date',
+    example: '',
+  })
+  public updatedAt: Date;
 }

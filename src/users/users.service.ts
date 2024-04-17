@@ -109,6 +109,14 @@ export class UsersService {
         name,
       );
     }
+    const { friends: friendsOfFriend } = await this.getUserEntity(friendId);
+    const newFriendsListOfFriend: string[] = updateArray<string>(
+      friendsOfFriend,
+      userId,
+    );
+    await this.updateUser(friendId, {
+      friends: newFriendsListOfFriend,
+    });
     return updatedUser;
   }
 
@@ -171,9 +179,12 @@ export class UsersService {
     return await this.usersRepository.findMany(query ?? {});
   }
 
-  public async indexUserFriends(userId: string): Promise<UserEntity[]> {
+  public async indexUserFriends(
+    take: number,
+    userId: string,
+  ): Promise<PaginationResult<UserEntity>> {
     const { friends } = await this.getUserEntity(userId);
-    return await this.usersRepository.indexFriends(friends);
+    return await this.usersRepository.indexFriends(take, friends);
   }
 
   public async indexSubscribers(trainerId: string): Promise<UserEntity[]> {

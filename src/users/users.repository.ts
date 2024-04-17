@@ -73,14 +73,22 @@ export class UsersRepository extends MongoRepository<UserEntity, User> {
     };
   }
 
-  public async indexFriends(friendsIds: string[]): Promise<UserEntity[]> {
+  public async indexFriends(
+    take: number,
+    friendsIds: string[],
+  ): Promise<PaginationResult<UserEntity>> {
     const friendsObjectIds = friendsIds.map(
       (friendId) => new mongoose.Types.ObjectId(friendId),
     );
-    const userDocuments = await this.model
-      .find({ _id: { $in: [...friendsObjectIds] } })
-      .exec();
-    return userDocuments.map((user) => this.createEntityFromDocument(user));
+    const query = { _id: { $in: [...friendsObjectIds] } };
+    const [usersList, totalUsers] = await Promise.all([
+      this.model.find(query).limit(take).exec(),
+      this.model.countDocuments(query).exec(),
+    ]);
+    return {
+      entities: usersList.map((user) => this.createEntityFromDocument(user)),
+      totalItems: totalUsers,
+    };
   }
 
   public async indexSubscribers(trainerId: string): Promise<UserEntity[]> {

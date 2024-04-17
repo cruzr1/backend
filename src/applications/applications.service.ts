@@ -70,11 +70,20 @@ export class ApplicationsService {
       await this.notificationsService.createNewApplicationAcceptedNotification(
         updatedApplication.authorId,
       );
-      return await this.applicationsRepository.update(
-        applicationId,
-        updatedApplication,
-      );
     }
-    return existApplication;
+    return await this.applicationsRepository.update(
+      applicationId,
+      updatedApplication,
+    );
+  }
+
+  public async indexApplications(userId: string): Promise<ApplicationEntity[]> {
+    return await this.applicationsRepository.findMany(userId);
+  }
+
+  public async indexAuthorApplications(
+    authorId: string,
+  ): Promise<ApplicationEntity[]> {
+    return await this.applicationsRepository.findManyAuthor(authorId);
   }
 }

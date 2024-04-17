@@ -14,6 +14,7 @@ export class ApplicationEntity implements Application {
     this.userId = data.userId;
     this.trainingId = data.trainingId;
     this.status = data.status;
+    this.updatedAt = data.updatedAt;
   }
 
   public toPOJO(): Application {

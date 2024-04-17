@@ -16,4 +16,18 @@ export class ApplicationsRepository extends MongoRepository<
   ) {
     super(applicationModel, ApplicationEntity.fromObject);
   }
+
+  public async findMany(userId: string): Promise<ApplicationEntity[]> {
+    const applicationDocuments = await this.model.find({ userId }).exec();
+    return applicationDocuments.map((application) =>
+      this.createEntityFromDocument(application),
+    );
+  }
+
+  public async findManyAuthor(authorId: string): Promise<ApplicationEntity[]> {
+    const applicationDocuments = await this.model.find({ authorId }).exec();
+    return applicationDocuments.map((application) =>
+      this.createEntityFromDocument(application),
+    );
+  }
 }

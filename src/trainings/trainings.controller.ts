@@ -51,6 +51,7 @@ export class TrainingsController {
     @Req() { user: { id } }: RequestWithUser,
     @Query() query?: IndexTrainingsQuery,
   ): Promise<EntitiesWithPaginationRdo<TrainingRdo>> {
+    console.log(query);
     const trainingsWithPagination = await this.trainingsService.indexTrainings(
       id!,
       { ...query },

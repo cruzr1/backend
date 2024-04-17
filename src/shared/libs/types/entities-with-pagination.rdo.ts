@@ -5,10 +5,10 @@ export class EntitiesWithPaginationRdo<T> {
   public entities: T[];
 
   @Expose()
-  public totalPages: number;
+  public totalPages?: number;
 
   @Expose()
-  public currentPage: number;
+  public currentPage?: number;
 
   @Expose()
   public totalItems: number;

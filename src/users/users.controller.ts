@@ -31,7 +31,6 @@ import {
   TokenPayload,
   EntitiesWithPaginationRdo,
   UserRole,
-  User,
 } from 'src/shared/libs/types';
 import { IndexUsersQuery } from 'src/shared/query/index-users.query';
 import { JwtRefreshGuard } from '../shared/guards/jwt-refresh.guard';
@@ -41,6 +40,7 @@ import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import { MailService } from '../mail/mail.service';
 import { LoginUserPickDto } from './dto/login-user-pick.dto';
 import { UpdateUserPartialDto } from './dto/update-user-partial.dto';
+import { IndexFriendsQuery } from 'src/shared/query/index-friends.query';
 
 @ApiBearerAuth()
 @ApiTags('Сервис пользователей')
@@ -63,10 +63,10 @@ export class UsersController {
     @Query()
     query?: IndexUsersQuery,
   ): Promise<EntitiesWithPaginationRdo<UserRdo>> {
-    const UsersWithPagination = await this.usersService.indexUsers(query);
+    const usersWithPagination = await this.usersService.indexUsers(query);
     return {
-      ...UsersWithPagination,
-      entities: UsersWithPagination.entities.map((user) =>
+      ...usersWithPagination,
+      entities: usersWithPagination.entities.map((user) =>
         fillDTO(UserRdo, user.toPOJO()),
       ),
     };
@@ -78,16 +78,21 @@ export class UsersController {
     description: 'The following friends have been found.',
   })
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(UserRole.User))
   @Get('friends')
   public async indexFriends(
     @Req() { user: { sub } }: RequestWithTokenPayload,
-  ): Promise<UserRdo[]> {
-    const friendsList = await this.usersService.indexUserFriends(sub!);
-    return fillDTO<UserRdo, User>(
-      UserRdo,
-      friendsList.map((friend) => friend.toPOJO()),
+    @Query() query: IndexFriendsQuery,
+  ): Promise<EntitiesWithPaginationRdo<UserRdo>> {
+    const friendsWithPagination = await this.usersService.indexUserFriends(
+      query.take!,
+      sub!,
     );
+    return {
+      ...friendsWithPagination,
+      entities: friendsWithPagination.entities.map((friend) =>
+        fillDTO(UserRdo, friend.toPOJO()),
+      ),
+    };
   }
 
   @ApiOperation({ description: 'Добавить в друзья, удалить из списка друзей' })

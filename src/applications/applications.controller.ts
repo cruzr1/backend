@@ -97,4 +97,46 @@ export class ApplicationsController {
       await this.applicationsService.getApplicationEntity(applicationId);
     return fillDTO(ApplicationRdo, existApplication.toPOJO());
   }
+
+  @ApiOperation({ description: 'Список заявок на персональную тренировку' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The application list has been provided.',
+  })
+  @ApiParam({
+    name: 'userId',
+    description: 'Id пользователя',
+  })
+  @UseGuards(CheckAuthGuard)
+  @Get('index/:userId')
+  public async index(
+    @Param('userId', MongoIdValidationPipe) userId: string,
+  ): Promise<ApplicationRdo[]> {
+    const applicationsList =
+      await this.applicationsService.indexApplications(userId);
+    return applicationsList.map((applicationEntity) =>
+      fillDTO(ApplicationRdo, applicationEntity.toPOJO()),
+    );
+  }
+
+  @ApiOperation({ description: 'Список заявок на персональную тренировку' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The application list has been provided.',
+  })
+  @ApiParam({
+    name: 'authorId',
+    description: 'Id автора',
+  })
+  @UseGuards(CheckAuthGuard)
+  @Get('author/:authorId')
+  public async indexAuthorApplicaitons(
+    @Param('authorId', MongoIdValidationPipe) authorId: string,
+  ): Promise<ApplicationRdo[]> {
+    const applicationsList =
+      await this.applicationsService.indexAuthorApplications(authorId);
+    return applicationsList.map((applicationEntity) =>
+      fillDTO(ApplicationRdo, applicationEntity.toPOJO()),
+    );
+  }
 }

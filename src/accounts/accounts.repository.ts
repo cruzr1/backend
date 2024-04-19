@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import {
@@ -8,6 +8,11 @@ import {
 } from 'src/shared/libs/types';
 import { AccountEntity } from './account.entity';
 import { AccountModel } from './account.model';
+
+type QueryAccountsType = {
+  userId: string;
+  trainingsActive: number;
+};
 
 @Injectable()
 export class AccountsRepository extends MongoRepository<
@@ -59,5 +64,19 @@ export class AccountsRepository extends MongoRepository<
       ])
       .exec();
     return trainingsAggregated;
+  }
+
+  public async findManyByUserId(
+    userId: string,
+    isActiveTrainings?: boolean,
+  ): Promise<AccountEntity[]> {
+    const query: FilterQuery<QueryAccountsType> = { userId };
+    if (isActiveTrainings && isActiveTrainings === true) {
+      query.trainingsActive = { $gt: 0 };
+    }
+    const accountDocuments = await this.model.find(query).exec();
+    return accountDocuments.map((account) =>
+      this.createEntityFromDocument(account),
+    );
   }
 }

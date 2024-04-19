@@ -79,4 +79,14 @@ export class AccountsService {
     }
     return null;
   }
+
+  public async indexUserAccounts(
+    userId: string,
+    isActiveTrainings?: boolean,
+  ): Promise<AccountEntity[]> {
+    return await this.accountsRepository.findManyByUserId(
+      userId,
+      isActiveTrainings,
+    );
+  }
 }

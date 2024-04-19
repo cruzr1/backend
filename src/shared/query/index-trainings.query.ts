@@ -92,7 +92,6 @@ export class IndexTrainingsQuery {
   })
   @IsOptional()
   @IsNumber()
-  // @Max(DEFAULT_LIST_REQUEST_COUNT)
   @Type(() => Number)
   public take?: number = DEFAULT_LIST_REQUEST_COUNT;
 

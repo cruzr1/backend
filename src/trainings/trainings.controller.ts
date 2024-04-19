@@ -9,6 +9,7 @@ import {
   Req,
   Get,
   Query,
+  ParseBoolPipe,
 } from '@nestjs/common';
 import { TrainingsService } from './trainings.service';
 import {
@@ -25,7 +26,6 @@ import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
 import { RoleGuard } from 'src/shared/guards/check-role.guard';
 import {
   UserRole,
-  RequestWithTokenPayload,
   EntitiesWithPaginationRdo,
   RequestWithUser,
 } from 'src/shared/libs/types';
@@ -51,7 +51,6 @@ export class TrainingsController {
     @Req() { user: { id } }: RequestWithUser,
     @Query() query?: IndexTrainingsQuery,
   ): Promise<EntitiesWithPaginationRdo<TrainingRdo>> {
-    console.log(query);
     const trainingsWithPagination = await this.trainingsService.indexTrainings(
       id!,
       { ...query },
@@ -96,21 +95,49 @@ export class TrainingsController {
   @UseGuards(CheckAuthGuard)
   @Get('myOrders')
   public async indexOrders(
-    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Req() { user: { id } }: RequestWithUser,
     @Query() query?: IndexAccountsQuery,
-  ): Promise<TrainingsOrderedRdo[]> {
-    const trainingsOrdered = await this.trainingsService.indexOrderedTrainings(
-      sub!,
-      query ?? {},
-    );
-    return trainingsOrdered.map<TrainingsOrderedRdo>(
-      ({ training, trainingsOrderedCount, trainingsOrderedSum }) =>
-        fillDTO(TrainingsOrderedRdo, {
-          training: fillDTO(TrainingRdo, training.toPOJO()),
-          trainingsCount: trainingsOrderedCount,
-          trainingsSum: trainingsOrderedSum,
-        }),
-    );
+  ): Promise<EntitiesWithPaginationRdo<TrainingsOrderedRdo>> {
+    const trainingsWithPagination =
+      await this.trainingsService.indexOrderedTrainings(id!, query ?? {});
+    return {
+      ...trainingsWithPagination,
+      entities: trainingsWithPagination.entities.map<TrainingsOrderedRdo>(
+        ({ training, trainingsOrderedCount, trainingsOrderedSum }) =>
+          fillDTO(TrainingsOrderedRdo, {
+            training: fillDTO(TrainingRdo, training.toPOJO()),
+            trainingsCount: trainingsOrderedCount,
+            trainingsSum: trainingsOrderedSum,
+          }),
+      ),
+    };
+  }
+
+  @ApiOperation({ description: 'Мои покупки' })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'The following purchase trainings have been found.',
+  })
+  @UseGuards(RoleGuard(UserRole.User))
+  @UseGuards(CheckAuthGuard)
+  @Get('myPurchsases')
+  public async indexPurchases(
+    @Req() { user: { id } }: RequestWithUser,
+    @Query() query?: IndexAccountsQuery,
+    @Query('isActiveTrainings', new ParseBoolPipe())
+    isActiveTrainings?: boolean,
+  ): Promise<EntitiesWithPaginationRdo<TrainingRdo>> {
+    const trainingsWithPagination =
+      await this.trainingsService.indexPurchasedTrainings(
+        id!,
+        { ...query, isActiveTrainings } ?? {},
+      );
+    return {
+      ...trainingsWithPagination,
+      entities: trainingsWithPagination.entities.map<TrainingRdo>((training) =>
+        fillDTO(TrainingRdo, training.toPOJO()),
+      ),
+    };
   }
 
   @ApiOperation({ description: 'Заполнить базу данных начальными значениями' })
@@ -137,12 +164,9 @@ export class TrainingsController {
   @Post('/')
   public async create(
     @Body() dto: CreateTrainingDto,
-    @Req() { user: { sub } }: RequestWithTokenPayload,
+    @Req() { user: { id } }: RequestWithUser,
   ): Promise<TrainingRdo> {
-    const newTraining = await this.trainingsService.createNewTraining(
-      dto,
-      sub!,
-    );
+    const newTraining = await this.trainingsService.createNewTraining(dto, id!);
     return fillDTO(TrainingRdo, newTraining.toPOJO());
   }
 

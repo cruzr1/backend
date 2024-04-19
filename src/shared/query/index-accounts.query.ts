@@ -30,4 +30,19 @@ export class IndexAccountsQuery {
   @Type(() => Number)
   @IsIn(ACCOUNTS_SORT_BY_ORDERS)
   public sortByOrder?: number = DEFAULT_SORT_BY_ORDER;
+
+  @ApiProperty({
+    description: 'Лимит Количества выдачи',
+    example: '50',
+  })
+  @IsOptional()
+  @Type(() => Number)
+  public take?: number;
+
+  @ApiProperty({
+    description: 'Только активные тренировки',
+    example: 'true',
+  })
+  @IsOptional()
+  public isActiveTrainings?: boolean;
 }

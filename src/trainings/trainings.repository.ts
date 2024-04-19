@@ -1,4 +1,4 @@
-import { Model, FilterQuery } from 'mongoose';
+import { Model, FilterQuery, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { TrainingEntity } from './training.entity';
@@ -116,5 +116,22 @@ export class TrainingsRepository extends MongoRepository<
     return trainingsList.map((training) =>
       this.createEntityFromDocument(training),
     );
+  }
+
+  public async findManyByIds(
+    trainingIds: Types.ObjectId[],
+    take: number = DEFAULT_LIST_REQUEST_COUNT,
+  ): Promise<PaginationResult<TrainingEntity>> {
+    const query = { _id: { $in: trainingIds } };
+    const [trainingsList, totalItems] = await Promise.all([
+      this.model.find(query).limit(take).exec(),
+      this.model.countDocuments(query).exec(),
+    ]);
+    return {
+      entities: trainingsList.map((training) =>
+        this.createEntityFromDocument(training),
+      ),
+      totalItems,
+    };
   }
 }

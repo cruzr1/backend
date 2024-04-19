@@ -3,6 +3,7 @@ import {
   UnauthorizedException,
   Injectable,
 } from '@nestjs/common';
+import { Types } from 'mongoose';
 import { CreateTrainingDto } from './dto/create-training.dto';
 import { TrainingEntity } from './training.entity';
 import { TrainingsRepository } from './trainings.repository';
@@ -24,6 +25,7 @@ import { INITIAL_RATING } from './trainings.constant';
 import { generateTrainingEntities } from 'src/shared/libs/utils/database/generate-training';
 import { UpdatePartialTrainingDto } from './dto/update-partial-training.dto';
 import { OrdersRepository } from 'src/orders/orders.repository';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 @Injectable()
 export class TrainingsService {
@@ -32,6 +34,7 @@ export class TrainingsService {
     private readonly ordersRepository: OrdersRepository,
     private readonly notificationsService: NotificationsService,
     private readonly usersService: UsersService,
+    private readonly accountsService: AccountsService,
   ) {}
 
   public async createNewTraining(
@@ -92,10 +95,27 @@ export class TrainingsService {
     return await this.trainingsRepository.findMany(query ?? {}, trainerId);
   }
 
+  public async indexPurchasedTrainings(
+    userId: string,
+    query: IndexAccountsQuery,
+  ): Promise<PaginationResult<TrainingEntity>> {
+    const existAccounts = await this.accountsService.indexUserAccounts(
+      userId,
+      query?.isActiveTrainings,
+    );
+    const trainingObjectIds = existAccounts.map(
+      (account) => new Types.ObjectId(account.trainingId),
+    );
+    return await this.trainingsRepository.findManyByIds(
+      trainingObjectIds,
+      query?.take,
+    );
+  }
+
   public async indexOrderedTrainings(
     trainerId: string,
     query: IndexAccountsQuery,
-  ): Promise<TrainingOrdered[]> {
+  ): Promise<PaginationResult<TrainingOrdered>> {
     const { entities: trainings } = await this.trainingsRepository.findMany(
       {},
       trainerId,
@@ -110,7 +130,7 @@ export class TrainingsService {
       trainings: TrainingEntity[],
     ): TrainingEntity =>
       trainings.find((training) => training.id! === id) as TrainingEntity;
-    const { sortByField, sortByOrder } = query;
+    const { sortByField, sortByOrder, take } = query;
     const trainingsOrdered: TrainingOrdered[] = trainingsOrderedAggregated.map(
       ({ _id, trainingsCount, trainingSum }) => {
         const training: TrainingEntity = findTrainingById(_id, trainings);
@@ -128,7 +148,13 @@ export class TrainingsService {
           sortByOrder,
       );
     }
-    return trainingsOrdered;
+    if (take) {
+      return {
+        entities: trainingsOrdered.slice(0, take),
+        totalItems: trainingsOrdered.length,
+      };
+    }
+    return { entities: trainingsOrdered, totalItems: trainingsOrdered.length };
   }
 
   public async getTrainingsList(): Promise<TrainingEntity[]> {

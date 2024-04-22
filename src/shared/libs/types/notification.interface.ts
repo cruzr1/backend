@@ -8,4 +8,5 @@ export interface Notification {
   description: string;
   notifyStatus: NotifyStatus;
   payload: NotificationPayloadType;
+  createdAt?: Date;
 }

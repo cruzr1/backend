@@ -11,6 +11,7 @@ export class NotificationEntity implements Notification {
   description: string;
   notifyStatus: NotifyStatus;
   payload: NotificationPayloadType;
+  createdAt?: Date;
 
   constructor(data: Notification) {
     this.id = data.id;
@@ -18,6 +19,7 @@ export class NotificationEntity implements Notification {
     this.description = data.description;
     this.notifyStatus = data.notifyStatus;
     this.payload = data.payload;
+    this.createdAt = data.createdAt;
   }
 
   public toPOJO(): Notification {
@@ -28,6 +30,7 @@ export class NotificationEntity implements Notification {
       description: this.description,
       notifyStatus: this.notifyStatus,
       payload: this.payload,
+      createdAt: this.createdAt,
     };
   }
 

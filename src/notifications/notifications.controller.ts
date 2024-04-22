@@ -13,7 +13,10 @@ import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { NotificationRdo } from './rdo/notification.rdo';
 import { fillDTO } from 'src/shared/libs/utils/helpers';
 import { CheckAuthGuard } from 'src/shared/guards/check-auth.guard';
-import { RequestWithTokenPayload } from 'src/shared/libs/types';
+import {
+  RequestWithTokenPayload,
+  RequestWithUser,
+} from 'src/shared/libs/types';
 import { MongoIdValidationPipe } from 'src/shared/pipes/mongo-id-validation.pipe';
 
 @ApiBearerAuth()
@@ -29,7 +32,7 @@ export class NotificationsController {
   @UseGuards(CheckAuthGuard)
   @Get('/')
   public async index(
-    @Req() { user: { sub: userId } }: RequestWithTokenPayload,
+    @Req() { user: { id: userId } }: RequestWithUser,
   ): Promise<NotificationRdo> {
     const notificationsList =
       await this.notificationsService.indexNotifications(userId!);

@@ -3,7 +3,7 @@ POST http://localhost:3000/api/users/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new51@user.com",
+  "email": "new2@user.com",
   "name": "Alex",
   "password": "123456",
   "avatar": "avarar.jpg",
@@ -31,7 +31,7 @@ POST http://localhost:3000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "new3@user.com",
+  "email": "new1@user.com",
   "password": "123456"
 }
 

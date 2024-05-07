@@ -1,0 +1,66 @@
+version: '3.9'
+services:
+  fit-friends.mongo:
+    image: mongo:4.4
+    restart: always
+    container_name: fit-friends.mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: test
+      MONGO_INITDB_DATABASE: fit-friends
+    ports:
+      - :27017:27017
+    volumes:
+      - fit-friends.mongo:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/fit-friends --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    networks:
+      - fit-friends.network
+
+  fit-friends.notify.fakesmtp:
+    image: gessnerfl/fake-smtp-server:2.2.0
+    restart: always
+    container_name: "fit-friends.notify.fakesmtp"
+    hostname: "fit-friends.notify.fakesmtp"
+    ports:
+      - 8025:8025
+      - 1083:8080
+    networks:
+      - fit-friends.network
+
+  fit-friends.redis:
+    image: redis:latest
+    restart: always
+    container_name: fit-friends.redis
+    ports:
+      - "6379:6379"
+    environment:
+      QUEUE_HOST: localhost
+      QUEUE_PORT: 6379
+    networks:
+      - fit-friends.network
+
+  fit-friends.backend:
+    container_name: fit-friends.backend
+    depends_on:
+      - fit-friends.mongo
+      - fit-friends.notify.fakesmtp
+      - fit-friends.redis
+    restart: always
+    image: fit-friends.backend:latest
+    env_file:
+      - .backend.env
+    networks:
+      - fit-friends.network
+    ports:
+      - 3000:3000
+
+volumes:
+  fit-friends.mongo:
+
+networks:
+  fit-friends.network:
+    driver: bridge

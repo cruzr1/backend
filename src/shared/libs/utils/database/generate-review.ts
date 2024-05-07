@@ -5,7 +5,7 @@ import { MOCK_COMMENT } from './mocks/review.mocks';
 import { ReviewValidationParams } from 'src/reviews/reviews.constant';
 import { ReviewEntity } from 'src/reviews/review.entity';
 
-const generateTraining = (
+const generateReview = (
   usersList: UserEntity[],
   trainingsList: TrainingEntity[],
 ): ReviewEntity =>
@@ -24,7 +24,5 @@ export function generateReviewsEntities(
   usersList: UserEntity[],
   trainingsList: TrainingEntity[],
 ): ReviewEntity[] {
-  return Array.from({ length }, () =>
-    generateTraining(usersList, trainingsList),
-  );
+  return Array.from({ length }, () => generateReview(usersList, trainingsList));
 }
